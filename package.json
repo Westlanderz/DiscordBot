@@ -1,0 +1,28 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "General purpose typescript discord bot",
+  "main": "scr/bot.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node ./dist/bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Westlanderz/DiscordBot.git"
+  },
+  "author": "Noah Knegt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Westlanderz/DiscordBot/issues"
+  },
+  "homepage": "https://github.com/Westlanderz/DiscordBot#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.20"
+  },
+  "dependencies": {
+    "discord-akairo": "github:1Computer1/discord-akairo",
+    "discord.js": "github:discordjs/discord.js"
+  }
+}
