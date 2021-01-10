@@ -3,6 +3,7 @@ import { Command } from './commands/command';
 import { HelpCommand } from './commands/help';
 import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
+import { GreetCommand } from './commands/greet';
 
 /** Handler for bot commands issued by users. */
 export class CommandHandler {
@@ -13,7 +14,7 @@ export class CommandHandler {
     constructor(prefix: string) {
         const commandClasses = [
             // TODO: Add more commands here.
-            HelpCommand,
+            GreetCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
