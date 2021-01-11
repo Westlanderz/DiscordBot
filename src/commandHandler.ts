@@ -4,6 +4,7 @@ import { HelpCommand } from './commands/help';
 import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
 import { GreetCommand } from './commands/greet';
+import { PingCommand } from './commands/ping';
 
 /** Handler for bot commands issued by users. */
 export class CommandHandler {
@@ -15,6 +16,7 @@ export class CommandHandler {
         const commandClasses = [
             // TODO: Add more commands here.
             GreetCommand,
+            PingCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
