@@ -5,8 +5,9 @@ import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
 import { GreetCommand } from './commands/greet';
 import { PingCommand } from './commands/ping';
+import { WarnCommand } from './commands/warn';
 
-/** Handler for bot commands issued by users. */
+//* Handler for bot commands issued by users. *//
 export class CommandHandler {
     private commands: Command[];
 
@@ -17,6 +18,7 @@ export class CommandHandler {
             // TODO: Add more commands here.
             GreetCommand,
             PingCommand,
+            WarnCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
@@ -24,7 +26,7 @@ export class CommandHandler {
         this.prefix = prefix;
     }
 
-    /** Executes user commands contained in a message if appropriate. */
+    //* Executes user commands contained in a message if appropriate. *//
     async handleMessage(message: Message): Promise<void> {
         if (message.author.bot || !this.isCommand(message)) {
             return;
