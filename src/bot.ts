@@ -13,7 +13,7 @@ validateConfig(config);
 
 const commandHandler: CommandHandler = new CommandHandler(config.prefix);
 
-const client: Discord.Client = new Discord.Client();
+export const client: Discord.Client = new Discord.Client();
 
 client.on('ready', () => {
     console.log('Bot has started');
