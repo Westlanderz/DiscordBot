@@ -9,6 +9,7 @@ import { WarnCommand } from './commands/warn';
 import { KickCommand } from './commands/kick';
 import { MuteCommand, UnmuteCommand } from './commands/mute';
 import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './commands/sound';
+import { BanCommand } from './commands/ban';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
@@ -30,6 +31,7 @@ export class CommandHandler {
             PauseCommand,
             UnpauseCommand,
             EndCommand,
+            BanCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
