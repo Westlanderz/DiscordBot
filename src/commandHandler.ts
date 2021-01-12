@@ -7,6 +7,8 @@ import { GreetCommand } from './commands/greet';
 import { PingCommand } from './commands/ping';
 import { WarnCommand } from './commands/warn';
 import { KickCommand } from './commands/kick';
+import { MuteCommand } from './commands/mute';
+import { UnmuteCommand } from './commands/unmute';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
@@ -21,6 +23,8 @@ export class CommandHandler {
             PingCommand,
             WarnCommand,
             KickCommand,
+            MuteCommand,
+            UnmuteCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
@@ -39,9 +43,14 @@ export class CommandHandler {
         const allowedCommands = this.commands.filter((command) =>
             command.hasPermissionToRun(commandContext),
         );
+
         const matchedCommand = this.commands.find((command) =>
             command.commandNames.includes(commandContext.parsedCommandName),
         );
+
+        if (message.type == 'GUILD_MEMBER_JOIN'){
+            await this.commands.find((command) => command.commandNames.includes('GreetCommand')).run(commandContext);
+        }
 
         if (!matchedCommand) {
             await message.reply("I don't recognize that command. Try !help.");
