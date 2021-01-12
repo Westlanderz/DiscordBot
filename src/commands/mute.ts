@@ -13,7 +13,7 @@ export class MuteCommand implements Command {
         if (member){
             const mutedMember = await member.voice.setMute(true);
             console.log(mutedMember.user.username);
-            await parsedUserCommand.originalMessage.channel.send(`${mutedMember.user.username} has been kicked`);
+            await parsedUserCommand.originalMessage.channel.send(`${mutedMember.user.username} has been muted.`);
         }
     }
 

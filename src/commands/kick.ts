@@ -14,7 +14,7 @@ export class KickCommand implements Command {
         if (member){
             const kickedMember = await member.kick();
             console.log(kickedMember.user.username);
-            await parsedUserCommand.originalMessage.channel.send(`${kickedMember.user.username} has been kicked`);
+            await parsedUserCommand.originalMessage.channel.send(`${kickedMember.user.username} has been kicked.`);
         }
     }
 
