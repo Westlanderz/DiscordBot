@@ -10,7 +10,7 @@ export class PingCommand implements Command {
     }
 
     async run(parsedUserCommand: CommandContext): Promise<void> {
-        await parsedUserCommand.originalMessage.reply('pong! The current ping to the servers for this API is `' + Math.round(client.ws.ping) + 'ms`');
+        await parsedUserCommand.originalMessage.channel.send('pong! The current ping to the servers for this API is `' + Math.round(client.ws.ping) + 'ms`');
     }
 
     hasPermissionToRun(parsedUserCommand: CommandContext): boolean{

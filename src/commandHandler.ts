@@ -6,6 +6,7 @@ import { reactor } from './reactor';
 import { GreetCommand } from './commands/greet';
 import { PingCommand } from './commands/ping';
 import { WarnCommand } from './commands/warn';
+import { KickCommand } from './commands/kick';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
@@ -19,6 +20,7 @@ export class CommandHandler {
             GreetCommand,
             PingCommand,
             WarnCommand,
+            KickCommand,
         ];
 
         this.commands = commandClasses.map((CommandClass) => new CommandClass());
@@ -45,16 +47,18 @@ export class CommandHandler {
             await message.reply("I don't recognize that command. Try !help.");
             await reactor.failure(message);
         } else if (!allowedCommands.includes(matchedCommand)) {
-            await message.reply("you aren't allowed to use that command. Try !help.");
+            await message.reply("You aren't allowed to use that command. Try !help.");
             await reactor.failure(message);
         } else {
             await matchedCommand
                 .run(commandContext)
                 .then(() => {
-                    reactor.success(message);
+                    //reactor.success(message);
+                    console.log(`* ${matchedCommand.commandNames[0]} executed succesfully`)
                 })
                 .catch((reason) => {
                     reactor.failure(message);
+                    console.log(`Something went wrong with executing ${matchedCommand.commandNames[0]}, ${reason}`);
                 });
         }
     }
