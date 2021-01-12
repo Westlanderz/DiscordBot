@@ -19,9 +19,8 @@ export class KickCommand implements Command {
     }
 
     hasPermissionToRun(parsedUserCommand: CommandContext): boolean {
-        if (parsedUserCommand.originalMessage.member.hasPermission(["KICK_MEMBERS"]) || parsedUserCommand.originalMessage.member.hasPermission(["ADMINISTRATOR"])) {
+        if (parsedUserCommand.originalMessage.member.hasPermission(["KICK_MEMBERS"]) || parsedUserCommand.originalMessage.member.hasPermission(["ADMINISTRATOR"]))
             return true;
-        }
         return false;
     }
 }
