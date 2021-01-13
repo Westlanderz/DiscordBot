@@ -18,14 +18,16 @@ export class Reactor {
 
     /** Indicates to the user that the command was executed successfully. */
     async success(message: Message) {
-        if (!this.enableReactions) return;
+        if (!this.enableReactions) 
+            return;
 
         await message.react(getRandom(ACK_REACTIONS));
     }
 
     /** Indicates to the user that the command failed for some reason. */
     async failure(message: Message) {
-        if (!this.enableReactions) return;
+        if (!this.enableReactions) 
+            return;
 
         await message.reactions.removeAll();
         await message.react(getRandom(FAILURE_REACTIONS));
@@ -33,7 +35,8 @@ export class Reactor {
 
     /** Indicates to the user that the command is no longer active, as intended. */
     async expired(message: Message) {
-        if (!this.enableReactions) return;
+        if (!this.enableReactions) 
+            return;
 
         await message.reactions.removeAll();
         await message.react(getRandom(EXPIRED_REACTIONS));
