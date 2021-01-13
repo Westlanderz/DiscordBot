@@ -87,7 +87,10 @@ export class CommandHandler {
         }
     }
 
-    /** Determines whether or not a message is a user command. */
+    /** 
+     * Determines whether or not a message is a user command. 
+     * @param message Takes a Message from discord
+     */
     private isCommand(message: Message): boolean {
         return message.content.startsWith(this.prefix);
     }
