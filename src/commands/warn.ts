@@ -22,15 +22,16 @@ export class WarnCommand implements Command {
                 msg += args[index];
                 msg += ' ';
             }
-            await parsedUserCommand.originalMessage.reply(msg);
+            await parsedUserCommand.originalMessage.channel.send(msg);
             return;
         }
 
-        await parsedUserCommand.originalMessage.reply(`${args[0]} you have been warned.`);
+        await parsedUserCommand.originalMessage.channel.send(`${args[0]} you have been warned.`);
     }
 
     hasPermissionToRun(parsedUserCommand: CommandContext): boolean {
-        // TODO: Fix permissions, mods and admin only
-        return true;
+        if (parsedUserCommand.originalMessage.member.hasPermission(["KICK_MEMBERS"]) || parsedUserCommand.originalMessage.member.hasPermission(["ADMINISTRATOR"]))
+            return true;
+        return false;
     }
 }
