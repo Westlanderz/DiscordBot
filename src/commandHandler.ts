@@ -10,11 +10,11 @@ import { KickCommand } from './commands/kick';
 import { MuteCommand, UnmuteCommand } from './commands/mute';
 import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './commands/sound';
 import { BanCommand } from './commands/ban';
+import { ModChat } from './modChat';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
     private commands: Command[];
-
     private readonly prefix: string;
 
     constructor(prefix: string) {
@@ -45,6 +45,14 @@ export class CommandHandler {
             return;
         }
 
+        // TODO: fix the auto mod stuff
+        // let mod: ModChat;
+        // if (mod.checkAllCaps(message) || mod.checkBannedWords(message)) {
+        //     await message.delete();
+        //     await message.channel.send(`@${message.author.username} you have been warned for: `)
+        //     return;
+        // }
+
         const commandContext = new CommandContext(message, this.prefix);
 
         const allowedCommands = this.commands.filter((command) =>
@@ -55,8 +63,8 @@ export class CommandHandler {
             command.commandNames.includes(commandContext.parsedCommandName),
         );
 
-        if (message.type == 'GUILD_MEMBER_JOIN'){
-            await this.commands.find((command) => command.commandNames.includes('GreetCommand')).run(commandContext);
+        if (message.type == 'GUILD_MEMBER_JOIN') {
+            await message.channel.send(`Welcome to this Server`);
         }
 
         if (!matchedCommand) {
