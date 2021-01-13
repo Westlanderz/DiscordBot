@@ -10,7 +10,7 @@ export class MuteCommand implements Command {
 
     async run(parsedUserCommand: CommandContext): Promise<void> {
         const member = parsedUserCommand.originalMessage.mentions.members.first();
-        if (member){
+        if (member && member.voice.mute == false){
             const mutedMember = await member.voice.setMute(true);
             console.log(mutedMember.user.username);
             await parsedUserCommand.originalMessage.channel.send(`${mutedMember.user.username} has been muted.`);
@@ -33,7 +33,7 @@ export class UnmuteCommand implements Command {
 
     async run(parsedUserCommand: CommandContext): Promise<void> {
         const member = parsedUserCommand.originalMessage.mentions.members.first();
-        if (member){
+        if (member && member.voice.mute){
             const mutedMember = await member.voice.setMute(false);
             console.log(mutedMember.user.username);
             await parsedUserCommand.originalMessage.channel.send(`${mutedMember.user.username} has been unmuted.`);
