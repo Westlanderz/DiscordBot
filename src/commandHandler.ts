@@ -20,6 +20,7 @@ export class CommandHandler {
     constructor(prefix: string) {
         const commandClasses = [
             // TODO: Add more commands here.
+            // TODO: clear messages command, XP commands/ Points, sound skip commands, queue command, R6 commands, Twitch commands, Role commands, 
             GreetCommand,
             PingCommand,
             WarnCommand,
