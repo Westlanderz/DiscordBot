@@ -1,15 +1,15 @@
 import { Message } from 'discord.js';
 import { Command } from './commands/command';
-import { HelpCommand } from './commands/help';
+import { HelpCommand } from './commands/help/help';
 import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
-import { GreetCommand } from './commands/greet';
-import { PingCommand } from './commands/ping';
-import { WarnCommand } from './commands/warn';
-import { KickCommand } from './commands/kick';
-import { MuteCommand, UnmuteCommand } from './commands/mute';
-import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './commands/sound';
-import { BanCommand, TempbanCommand } from './commands/ban';
+import { GreetCommand } from './commands/greet/greet';
+import { PingCommand } from './commands/ping/ping';
+import { WarnCommand } from './commands/warn/warn';
+import { KickCommand } from './commands/kick/kick';
+import { MuteCommand, UnmuteCommand } from './commands/mute/mute';
+import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './commands/sounds/sound';
+import { BanCommand, TempbanCommand } from './commands/ban/ban';
 import { ModChat } from './modChat';
 
 //* Handler for bot commands issued by users. *//

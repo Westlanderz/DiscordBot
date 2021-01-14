@@ -1,5 +1,5 @@
-import { CommandContext } from "../commandContext";
-import { Command } from "./command";
+import { CommandContext } from "../../commandContext";
+import { Command } from "../command";
 import * as ytdl from "ytdl-core";
 
 var conn;

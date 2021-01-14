@@ -1,5 +1,5 @@
-import { CommandContext } from '../commandContext';
-import { Command } from './command';
+import { CommandContext } from '../../commandContext';
+import { Command } from '../command';
 
 export class KickCommand implements Command {
     commandNames = ['kick', 'timeout'];

@@ -1,6 +1,6 @@
 import { BanOptions } from 'discord.js';
-import { CommandContext } from '../commandContext';
-import { Command } from './command';
+import { CommandContext } from '../../commandContext';
+import { Command } from '../command';
 
 export class BanCommand implements Command {
     commandNames = ['ban', 'remove'];
@@ -52,12 +52,9 @@ export class TempbanCommand implements Command {
 
         const member = parsedUserCommand.originalMessage.mentions.members.first();
         const days = parsedUserCommand.args[1];
-        const options: BanOptions = {
-            days: +days
-        }
 
         if (member && days) {
-            const bannedMember = await member.ban(options);
+            const bannedMember = await member.ban({days: +days});
             await parsedUserCommand.originalMessage.channel.send(`${bannedMember.user.username} has been banned from this server for ${days} days.`);
         }
     }

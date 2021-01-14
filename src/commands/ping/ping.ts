@@ -1,6 +1,6 @@
-import { CommandContext } from '../commandContext';
-import { Command } from './command';
-import { client } from "../bot";
+import { CommandContext } from '../../commandContext';
+import { Command } from '../command';
+import { client } from "../../bot";
 
 export class PingCommand implements Command {
     commandNames = ['ping'];

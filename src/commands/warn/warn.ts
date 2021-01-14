@@ -1,5 +1,5 @@
-import { CommandContext } from '../commandContext';
-import { Command } from './command';
+import { CommandContext } from '../../commandContext';
+import { Command } from '../command';
 import * as fs from "fs";
 
 export class WarnCommand implements Command {
