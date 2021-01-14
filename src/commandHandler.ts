@@ -10,7 +10,7 @@ import { KickCommand } from './modules/kick/kick';
 import { MuteCommand, UnmuteCommand } from './modules/mute/mute';
 import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './modules/sounds/sound';
 import { BanCommand, TempbanCommand } from './modules/ban/ban';
-import { ModChat } from './modChat';
+import { ModChat } from './modules/autoMod/modChat';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
