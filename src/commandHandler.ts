@@ -104,6 +104,7 @@ export class CommandHandler {
     private loadModule(module) {
         module.includedCommands.forEach(commandClass => {
             this.commandClasses = [...this.commandClasses, commandClass];
+            console.log(`Loaded ${commandClass}`);
         });
         this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
     }
