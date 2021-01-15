@@ -2,7 +2,7 @@
   "name": "discordbot",
   "version": "1.0.0",
   "description": "General purpose typescript discord bot",
-  "main": "scr/bot.ts",
+  "main": "src/bot.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
