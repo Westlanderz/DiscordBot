@@ -1,9 +1,11 @@
-import { CommandContext } from '../../commandContext';
-import { Command } from '../command';
+import { CommandContext } from '../../../commandContext';
+import { Command } from '../../command';
 import * as fs from "fs";
+import Admin from '..';
 
 export class WarnCommand implements Command {
     commandNames = ['warn'];
+    moduleName = 'warn';
 
     getHelpMessage(commandPrefix: string): string {
         return `Use ${commandPrefix}warn [user] <reason> to warn a user with or without a reason.`

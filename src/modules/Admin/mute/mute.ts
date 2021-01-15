@@ -1,5 +1,6 @@
-import { CommandContext } from '../../commandContext';
-import { Command } from '../command';
+import Admin from '..';
+import { CommandContext } from '../../../commandContext';
+import { Command } from '../../command';
 
 export class MuteCommand implements Command {
     commandNames = ['mute'];

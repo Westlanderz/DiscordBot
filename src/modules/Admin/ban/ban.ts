@@ -1,6 +1,7 @@
 import { BanOptions } from 'discord.js';
-import { CommandContext } from '../../commandContext';
-import { Command } from '../command';
+import Admin from '..';
+import { CommandContext } from '../../../commandContext';
+import { Command } from '../../command';
 
 export class BanCommand implements Command {
     commandNames = ['ban', 'remove'];

@@ -4,7 +4,10 @@ import * as ytdl from "ytdl-core";
 
 var conn;
 
-export class JoinCommand implements Command {
+class Sounds {
+    moduleName: 'sounds';
+}
+export class JoinCommand extends Sounds implements Command {
     commandNames = ['join'];
 
     getHelpMessage(commandPrefix: string): string {
@@ -27,7 +30,7 @@ export class JoinCommand implements Command {
 }
 
 // TODO: Fix the sound player
-export class PlayCommand implements Command {
+export class PlayCommand extends Sounds implements Command {
     commandNames = ['play', 'audio', 'listen'];
 
     getHelpMessage(commandPrefix: string): string {
@@ -44,7 +47,7 @@ export class PlayCommand implements Command {
     }
 }
 
-export class PauseCommand implements Command {
+export class PauseCommand extends Sounds implements Command {
     commandNames = ['pause', 'break'];
 
     getHelpMessage(commandPrefix: string): string {
@@ -63,7 +66,7 @@ export class PauseCommand implements Command {
     }
 }
 
-export class UnpauseCommand implements Command {
+export class UnpauseCommand extends Sounds implements Command {
     commandNames = ['unpause', 'continue'];
 
     getHelpMessage(commandPrefix: string): string {
@@ -82,7 +85,7 @@ export class UnpauseCommand implements Command {
     }
 }
 
-export class EndCommand implements Command {
+export class EndCommand extends Sounds implements Command {
     commandNames = ['end', 'leave'];
 
     getHelpMessage(commandPrefix: string): string {

@@ -3,40 +3,32 @@ import { Command } from './modules/command';
 import { HelpCommand } from './modules/help/help';
 import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
-import { GreetCommand } from './modules/greet/greet';
-import { PingCommand } from './modules/ping/ping';
-import { WarnCommand } from './modules/warn/warn';
-import { KickCommand } from './modules/kick/kick';
-import { MuteCommand, UnmuteCommand } from './modules/mute/mute';
-import { JoinCommand, PlayCommand, PauseCommand, UnpauseCommand, EndCommand } from './modules/sounds/sound';
-import { BanCommand, TempbanCommand } from './modules/ban/ban';
 import { ModChat } from './modules/autoMod/modChat';
+import Admin from './modules/Admin';
+import { Module } from './modules/modules';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
     private commands: Command[];
+    private modules: Module[];
     private readonly prefix: string;
+    private commandClasses: any[];
+    private moduleClasses: any[];
+    
 
     constructor(prefix: string) {
-        const commandClasses = [
+        this.commandClasses = [
             // TODO: Add more commands here.
+            // TODO: Only add default modules
             // TODO: clear messages command, XP commands/ Points, sound skip commands, queue command, R6 commands, Twitch commands, Role commands, 
-            GreetCommand,
-            PingCommand,
-            WarnCommand,
-            KickCommand,
-            MuteCommand,
-            UnmuteCommand,
-            JoinCommand,
-            PlayCommand,
-            PauseCommand,
-            UnpauseCommand,
-            EndCommand,
-            BanCommand,
-            TempbanCommand,
         ];
 
-        this.commands = commandClasses.map((CommandClass) => new CommandClass());
+        this.moduleClasses = [
+            Admin
+        ];
+
+        this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
+        this.modules = this.moduleClasses.map((ModuleClass) => new ModuleClass());
         this.commands.push(new HelpCommand(this.commands));
         this.prefix = prefix;
     }
@@ -67,9 +59,29 @@ export class CommandHandler {
 
         if (message.type == 'GUILD_MEMBER_JOIN') {
             await message.channel.send(`Welcome to this Server`);
+            return;
         }
 
-        if (!matchedCommand) {
+        if (commandContext.parsedCommandName === 'load' && message.member.hasPermission('ADMINISTRATOR')){
+            const module = this.modules.find((module: Admin) =>{
+                if (module.moduleName == commandContext.args[0])
+                    return Admin;
+            });
+            this.loadModule(module);
+        } else if (commandContext.parsedCommandName === 'load' && !message.member.hasPermission('ADMINISTRATOR')) {
+            await message.reply(`You have no permission to run this command`);
+            await message.delete();
+            return;
+        } else if (commandContext.parsedCommandName === 'unload' && message.member.hasPermission('ADMINISTRATOR')){
+            const module = this.modules.find((command) =>
+                command.moduleName.includes(commandContext.args[0]),
+            );
+            this.unloadModule(module);
+        } else if (commandContext.parsedCommandName === 'unload' && !message.member.hasPermission('ADMINISTRATOR')) {
+            await message.reply(`You have no permission to run this command`);
+            await message.delete();
+            return;
+        } else if (!matchedCommand) {
             await message.reply("I don't recognize that command. Try !help.");
             await reactor.failure(message);
         } else if (!allowedCommands.includes(matchedCommand)) {
@@ -87,6 +99,20 @@ export class CommandHandler {
                     console.log(`Something went wrong with executing ${matchedCommand.commandNames[0]}, ${reason}`);
                 });
         }
+    }
+
+    private loadModule(module) {
+        module.includedCommands.forEach(commandClass => {
+            this.commandClasses = [...this.commandClasses, commandClass];
+        });
+        this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
+    }
+
+    private unloadModule(module) {
+        module.includedCommands.forEach(commandClass => {
+            const index = this.commandClasses.find(commandClass);
+            this.commandClasses = this.commandClasses.splice(index, 1);
+        })
     }
 
     /** 
