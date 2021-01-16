@@ -14,7 +14,7 @@ export class CommandHandler {
     private readonly prefix: string;
     private commandClasses: any[];
     private moduleClasses: any[];
-    
+    private loadedModules: any[];    
 
     constructor(prefix: string) {
         this.commandClasses = [
@@ -24,7 +24,11 @@ export class CommandHandler {
 
         this.moduleClasses = [
             // TODO: Only add default modules
-            Admin
+            Admin,
+        ];
+
+        this.loadedModules = [
+            
         ];
 
         this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
@@ -63,20 +67,45 @@ export class CommandHandler {
         }
 
         if (commandContext.parsedCommandName === 'load' && message.member.hasPermission('ADMINISTRATOR')){
-            const module = this.modules.find((module: Admin) =>{
-                if (module.moduleName == commandContext.args[0])
-                    return Admin;
-            });
-            this.loadModule(module);
+            if (commandContext.args.length === 0){
+                const modulesUnloaded: any[] = [];
+                for (let i = 0; i < this.modules.length; i++) {
+                    for (let j = 0; j < this.loadedModules.length; j++) {
+                        if (this.modules[i] != this.loadedModules[j])
+                            modulesUnloaded.push(this.modules[i]);
+                    }
+                }
+                const moduleNames = modulesUnloaded.map(
+                    (module) => module.moduleName,
+                );
+                
+                await commandContext.originalMessage.reply('You must provide a module to load, here is a list of modules you can load: `' + moduleNames.join(
+                    ', ',
+                ) + '`');
+            } else {
+                const module = this.modules.find((module) =>
+                    module.moduleName.includes(commandContext.args[0]),
+                );
+                this.loadModule(module, message);
+            }
         } else if (commandContext.parsedCommandName === 'load' && !message.member.hasPermission('ADMINISTRATOR')) {
             await message.reply(`You have no permission to run this command`);
             await message.delete();
             return;
         } else if (commandContext.parsedCommandName === 'unload' && message.member.hasPermission('ADMINISTRATOR')){
-            const module = this.modules.find((command) =>
-                command.moduleName.includes(commandContext.args[0]),
-            );
-            this.unloadModule(module);
+            if (commandContext.args.length === 0){
+                const moduleNames = this.loadedModules.map(
+                    (module) => module.moduleName,
+                );
+                await commandContext.originalMessage.reply('You must provide a module to unload, here is a list of modules you can load: `' + moduleNames.join(
+                    ', ',
+                ) + '`');
+            } else {
+                const module = this.modules.find((module) =>
+                    module.moduleName.includes(commandContext.args[0]),
+                );
+                this.unloadModule(module, message);
+            }
         } else if (commandContext.parsedCommandName === 'unload' && !message.member.hasPermission('ADMINISTRATOR')) {
             await message.reply(`You have no permission to run this command`);
             await message.delete();
@@ -101,22 +130,28 @@ export class CommandHandler {
         }
     }
 
-    private loadModule(module): void {
+    private loadModule(module: any, message: Message): void {
         module.includedCommands.forEach(commandClass => {
             this.commandClasses = [...this.commandClasses, commandClass];
         });
-        this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
+        this.loadedModules.push(module);
         this.updateCommands();
+        message.channel.send(`Loaded the module ${module.moduleName}`);
     }
 
-    private unloadModule(module): void {
+    private unloadModule(module: any, message: Message): void {
         for (let i = 0; i < this.commandClasses.length; i++) {
             for (let j = 0; j < module.includedCommands.length; j++) {
                 if (this.commandClasses[i] == module.includedCommands[j])
                     this.commandClasses.splice(i, 1);
             }
         }
+        for (let i = 0; i < this.loadedModules.length; i++) {
+            if (module == this.loadedModules[i])
+                this.loadedModules.splice(i, 1);
+        }
         this.updateCommands();
+        message.channel.send(`Unloaded the module ${module.moduleName}`)
     }
 
     private updateCommands(): void {
