@@ -19,11 +19,11 @@ export class CommandHandler {
     constructor(prefix: string) {
         this.commandClasses = [
             // TODO: Add more commands here.
-            // TODO: Only add default modules
             // TODO: clear messages command, XP commands/ Points, sound skip commands, queue command, R6 commands, Twitch commands, Role commands, 
         ];
 
         this.moduleClasses = [
+            // TODO: Only add default modules
             Admin
         ];
 
