@@ -101,19 +101,27 @@ export class CommandHandler {
         }
     }
 
-    private loadModule(module: Module) {
+    private loadModule(module): void {
         module.includedCommands.forEach(commandClass => {
             this.commandClasses = [...this.commandClasses, commandClass];
-            console.log(`Loaded ${commandClass}`);
         });
         this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
+        this.updateCommands();
     }
 
-    private unloadModule(module: Module) {
-        module.includedCommands.forEach(commandClass => {
-            const index = this.commandClasses.find(commandClass);
-            this.commandClasses = this.commandClasses.splice(index, 1);
-        })
+    private unloadModule(module): void {
+        for (let i = 0; i < this.commandClasses.length; i++) {
+            for (let j = 0; j < module.includedCommands.length; j++) {
+                if (this.commandClasses[i] == module.includedCommands[j])
+                    this.commandClasses.splice(i, 1);
+            }
+        }
+        this.updateCommands();
+    }
+
+    private updateCommands(): void {
+        this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
+        this.commands.push(new HelpCommand(this.commands));
     }
 
     /** 
