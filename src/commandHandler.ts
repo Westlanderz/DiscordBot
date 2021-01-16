@@ -101,7 +101,7 @@ export class CommandHandler {
         }
     }
 
-    private loadModule(module) {
+    private loadModule(module: Module) {
         module.includedCommands.forEach(commandClass => {
             this.commandClasses = [...this.commandClasses, commandClass];
             console.log(`Loaded ${commandClass}`);
@@ -109,7 +109,7 @@ export class CommandHandler {
         this.commands = this.commandClasses.map((CommandClass) => new CommandClass());
     }
 
-    private unloadModule(module) {
+    private unloadModule(module: Module) {
         module.includedCommands.forEach(commandClass => {
             const index = this.commandClasses.find(commandClass);
             this.commandClasses = this.commandClasses.splice(index, 1);
