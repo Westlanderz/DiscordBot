@@ -1,5 +1,5 @@
 import { CommandContext } from '../../commandContext';
-import { Command } from '../command';
+import { Command } from '../../modules/command';
 
 export class HelpCommand implements Command {
     readonly commandNames = ['help', 'halp', 'hlep'];

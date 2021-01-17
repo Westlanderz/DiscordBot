@@ -1,5 +1,5 @@
 import { CommandContext } from '../../commandContext';
-import { Command } from '../command';
+import { Command } from '../../modules/command';
 import { client } from "../../bot";
 
 export class PingCommand implements Command {
