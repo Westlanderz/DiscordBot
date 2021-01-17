@@ -11,12 +11,12 @@ function validateConfig(botConf: BotConfig) {
 
 validateConfig(config);
 
-const commandHandler: CommandHandler = new CommandHandler(config.prefix);
+const commandHandler = new CommandHandler(config.prefix);
 
-export const client: Discord.Client = new Discord.Client();
+export const client = new Discord.Client();
 
 client.on('ready', () => {
-    console.log('Bot has started');
+    console.log('* Bot has started');
 });
 
 client.on('message', (message: Message) => {
@@ -24,7 +24,7 @@ client.on('message', (message: Message) => {
 });
 
 client.on('error', (e) => {
-    console.error('Discord client error!', e);
+    console.error('* Discord client error!', e);
 });
 
 client.login(config.token);

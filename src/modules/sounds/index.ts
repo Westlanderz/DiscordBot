@@ -17,6 +17,6 @@ export default class Sounds implements Module {
             PauseCommand,
             UnpauseCommand,
             PlayCommand
-        ]
+        ];
     }
 }

@@ -16,7 +16,7 @@ export class CommandHandler {
     private readonly prefix: string;
     private commandClasses: any[];
     private moduleClasses: any[];
-    private loadedModules: any[];    
+    private loadedModules: any[]; 
 
     constructor(prefix: string) {
         this.commandClasses = [

@@ -12,6 +12,6 @@ export default class Default implements Module {
         this.includedCommands = [
             PingCommand,
             GreetCommand
-        ]
+        ];
     }
 }

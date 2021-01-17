@@ -17,6 +17,6 @@ export default class Admin implements Module {
             MuteCommand,
             UnmuteCommand,
             WarnCommand
-        ]
+        ];
     }
 }
