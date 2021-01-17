@@ -7,6 +7,7 @@ import { ModChat } from './modules/autoMod/modChat';
 import Admin from './modules/Admin';
 import { Module } from './modules/modules';
 import Sounds from './modules/sounds';
+import Default from './commands';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
@@ -37,6 +38,16 @@ export class CommandHandler {
         this.modules = this.moduleClasses.map((ModuleClass) => new ModuleClass());
         this.commands.push(new HelpCommand(this.commands));
         this.prefix = prefix;
+        this.initDefault();
+    }
+
+    private initDefault(): void {
+        const module = new Default();
+        module.includedCommands.forEach(commandClass => {
+            this.commandClasses = [...this.commandClasses, commandClass];
+        });
+        console.log(`* initialised default commands.`);
+        this.updateCommands();
     }
 
     //* Executes user commands contained in a message if appropriate. *//
@@ -44,10 +55,6 @@ export class CommandHandler {
         if (message.author.bot || !this.isCommand(message)) {
             return;
         }
-
-        console.log(new Sounds);
-        console.log(this.moduleClasses);
-        console.log(this.modules);
 
         // TODO: fix the auto mod stuff
         // let mod: ModChat;
@@ -143,6 +150,7 @@ export class CommandHandler {
         this.loadedModules.push(module);
         this.updateCommands();
         message.channel.send(`Loaded the module ${module.moduleName}`);
+        console.log(`* Loaded the module ${module.moduleName}`);
     }
 
     private unloadModule(module: any, message: Message): void {
@@ -157,7 +165,8 @@ export class CommandHandler {
                 this.loadedModules.splice(i, 1);
         }
         this.updateCommands();
-        message.channel.send(`Unloaded the module ${module.moduleName}`)
+        message.channel.send(`Unloaded the module ${module.moduleName}`);
+        console.log(`* Unloaded the module ${module.moduleName}`);
     }
 
     private updateCommands(): void {

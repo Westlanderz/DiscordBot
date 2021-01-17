@@ -5,13 +5,18 @@ import { MuteCommand, UnmuteCommand } from "./mute/mute";
 import { WarnCommand } from "./warn/warn";
 
 export default class Admin implements Module {
-    moduleName = 'admin';
-    includedCommands = [
-        BanCommand,
-        TempbanCommand,
-        KickCommand,
-        MuteCommand,
-        UnmuteCommand,
-        WarnCommand
-    ]
+    public readonly moduleName: string;
+    public readonly includedCommands: any[];
+
+    constructor() {
+        this.moduleName = 'admin';
+        this.includedCommands = [
+            BanCommand,
+            TempbanCommand,
+            KickCommand,
+            MuteCommand,
+            UnmuteCommand,
+            WarnCommand
+        ]
+    }
 }

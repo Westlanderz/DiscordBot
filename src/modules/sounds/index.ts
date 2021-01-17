@@ -6,12 +6,17 @@ import { PlayCommand } from "./play/play";
 import { UnpauseCommand } from "./unpause/unpause";
 
 export default class Sounds implements Module {
-    moduleName: 'sounds';
-    includedCommands: [
-        JoinCommand,
-        DisconnectCommand,
-        PauseCommand,
-        UnpauseCommand,
-        PlayCommand
-    ];
+    public readonly moduleName: string;
+    public readonly includedCommands: any[];
+
+    constructor() {
+        this.moduleName = 'sounds';
+        this.includedCommands = [
+            JoinCommand,
+            DisconnectCommand,
+            PauseCommand,
+            UnpauseCommand,
+            PlayCommand
+        ]
+    }
 }
