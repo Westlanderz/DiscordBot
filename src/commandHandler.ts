@@ -1,11 +1,12 @@
 import { Message } from 'discord.js';
 import { Command } from './modules/command';
-import { HelpCommand } from './modules/help/help';
+import { HelpCommand } from './commands/help/help';
 import { CommandContext } from './commandContext';
 import { reactor } from './reactor';
 import { ModChat } from './modules/autoMod/modChat';
 import Admin from './modules/Admin';
 import { Module } from './modules/modules';
+import Sounds from './modules/sounds';
 
 //* Handler for bot commands issued by users. *//
 export class CommandHandler {
@@ -25,6 +26,7 @@ export class CommandHandler {
         this.moduleClasses = [
             // TODO: Only add default modules
             Admin,
+            Sounds,
         ];
 
         this.loadedModules = [
@@ -42,6 +44,10 @@ export class CommandHandler {
         if (message.author.bot || !this.isCommand(message)) {
             return;
         }
+
+        console.log(new Sounds);
+        console.log(this.moduleClasses);
+        console.log(this.modules);
 
         // TODO: fix the auto mod stuff
         // let mod: ModChat;
@@ -68,7 +74,7 @@ export class CommandHandler {
 
         if (commandContext.parsedCommandName === 'load' && message.member.hasPermission('ADMINISTRATOR')){
             if (commandContext.args.length === 0){
-                const modulesUnloaded: any[] = [];
+                const modulesUnloaded = [];
                 for (let i = 0; i < this.modules.length; i++) {
                     for (let j = 0; j < this.loadedModules.length; j++) {
                         if (this.modules[i] != this.loadedModules[j])
