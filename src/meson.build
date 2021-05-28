@@ -1,4 +1,5 @@
 executable('discordbot',
-        ['main.cpp',
+        ['main.cpp', 'extern.cpp',
+        
         ]
     )

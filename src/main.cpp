@@ -45,7 +45,7 @@ int main() {
     | dpp::intents::GUILD_MESSAGE_REACTIONS 
     | dpp::intents::GUILD_MESSAGE_TYPING
     | dpp::intents::GUILD_MESSAGES
-    // | dpp::intents::GUILD_PRESENCES //Buggy buggy
+    | dpp::intents::GUILD_PRESENCES
     | dpp::intents::GUILD_VOICE_STATES
     | dpp::intents::GUILD_WEBHOOKS
     | dpp::intents::GUILDS;
@@ -74,10 +74,10 @@ int main() {
           << "I'm a simple bot meant to demonstrate the Discord++ library.\n"
           << "You can learn more about Discord++ at "
              "https://discord.gg/0usP6xmT4sQ4kIDh";
-      bot->call("POST",
-          "/channels/" + msg["channel_id"].get<std::string>() +
-          "/messages",
-          json({{"content", content.str()}}));
+      bot->createMessage()
+            ->content(content.str())
+            ->channel_id(dpp::get_snowflake(msg["channel_id"]))
+            ->run();
     });
 
     // Create handler for the MESSAGE_CREATE payload, this receives all messages
@@ -111,11 +111,10 @@ int main() {
 
                  std::cout << "Echoing " << name << '\n';
 
-                 // Echo the created message
-                 bot->call("POST",
-                           "/channels/" + msg["channel_id"].get<std::string>() +
-                               "/messages",
-                           json({{"content", content}}));
+                 bot->createMessage()
+                        ->content(content)
+                        ->channel_id(dpp::get_snowflake(msg["channel_id"]))
+                        ->run();
 
                  // Set status to Playing "with [author]"
                  bot->send(3,
