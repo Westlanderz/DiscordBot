@@ -4,26 +4,31 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>320</x>
-      <y>390</y>
+      <x>100</x>
+      <y>210</y>
       <w>410</w>
-      <h>240</h>
+      <h>310</h>
     </coordinates>
     <panel_attributes>Bot
 --
 -bot : DppBot
 -username : string
--servers : string[]
--commandhandlers : map&lt;string, CommandHandler&gt;
--parser : Parser
+-defaultPrefix : string
+-servers : Guild[]
+-commandhandlers : map&lt;Guild, CommandHandler&gt;
 -token : string
 -botOwnerRole : string
 -enableReactions : bool
+-guildhandler : GuildHandler
++self : json
 --
 +Bot(config : BotConfig)
 +login(token : string)
++setIntents(intents : int)
 +run()
 +isCommandHandler(server : string) : CommandHandler
++hasDPP() : DppBot
++isPrefix() : string
 
 </panel_attributes>
     <additional_attributes/>
@@ -31,17 +36,17 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>400</y>
+      <x>830</x>
+      <y>240</y>
       <w>310</w>
-      <h>270</h>
+      <h>290</h>
     </coordinates>
     <panel_attributes>CommandHandler
 --
+-guild : Guild
 -bot : Bot
--commands : Command[]
--modules : Module[]
 -prefix : string
+-modules : Module[]
 -loadedModules : Module[]
 --
 +CommandHandler(prefix : string)
@@ -52,99 +57,181 @@
 +updateCommands()
 +newPrefix()
 +isPrefix() : string
-+isCommand(message : Message) : bool</panel_attributes>
++isCommand(message : Message) : bool
++usesBot() : Bot
++isFromGuild() : Guild</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>460</y>
-      <w>290</w>
+      <x>500</x>
+      <y>300</y>
+      <w>350</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=bot
 r1=1
 </panel_attributes>
-    <additional_attributes>270.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>500</y>
-      <w>290</w>
+      <x>500</x>
+      <y>340</y>
+      <w>350</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=commandhandlers
 r1=*</panel_attributes>
-    <additional_attributes>10.0;20.0;270.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;330.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>970</x>
-      <y>890</y>
-      <w>80</w>
-      <h>80</h>
+      <x>720</x>
+      <y>730</y>
+      <w>260</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>Module
 --
---</panel_attributes>
+-name : string
+-includedCommands : Command[]
+-guilds : map&lt;Guild, Command&gt;
+--
++Module(name : string)
++isName() : string
++commands() : Command[]</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>1200</x>
-      <y>890</y>
-      <w>100</w>
-      <h>80</h>
+      <x>1050</x>
+      <y>730</y>
+      <w>220</w>
+      <h>160</h>
     </coordinates>
     <panel_attributes>Command
 --
---</panel_attributes>
+-name : string
+--
++Command(name : string)
++getHelpMessage() : string
++execute()
++hasPermsToRun() : bool</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1000</x>
-      <y>660</y>
+      <x>840</x>
+      <y>520</y>
       <w>90</w>
-      <h>260</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=modules
 r1=*</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;240.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1240</x>
-      <y>660</y>
-      <w>110</w>
-      <h>260</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-r1=*
-m1=commands</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;240.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1010</x>
-      <y>890</y>
-      <w>250</w>
+      <x>850</x>
+      <y>730</y>
+      <w>320</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=C
 r1=1..*</panel_attributes>
-    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>740</y>
+      <w>460</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>440.0;10.0;220.0;10.0;220.0;180.0;10.0;180.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>970</y>
+      <w>250</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Default
+--
+-name : string
+-includedCommands : Command[]
+--
++Default(name : string)
++isName() : string
++commands() : Command[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>150</x>
+      <y>670</y>
+      <w>150</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>GuildHandler
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>510</y>
+      <w>120</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+r1=1
+m1=guildhandler</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>0</y>
+      <w>330</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Main
+--
++bot : Bot
+--
++getToken() : string
++safeGetline(is : istream, t : string) : istream</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>80</y>
+      <w>30</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
