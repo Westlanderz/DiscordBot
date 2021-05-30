@@ -39,7 +39,7 @@ To start using this project for your own you can either download a prebuild vers
 
 ### Dependencies
 
-This bot is dependent on having [boost](https://www.boost.org/) and [openssl](https://www.openssl.org/) installed. Futhermore this discordbot is build apon the [discordpp](https://github.com/DiscordPP/discordpp) library, this already included in the download of this repo. If you like to build your own bot look at their library or extend this implementation on theirs.
+This bot is dependent on having [boost](https://www.boost.org/), [openssl](https://www.openssl.org/) and [json](https://github.com/nlohmann/json) installed. Futhermore this discordbot is build apon the [discordpp](https://github.com/DiscordPP/discordpp) library, this already included in the download of this repo. If you like to build your own bot look at their library or extend this implementation on theirs.
 
 ## Usage
 
