@@ -36,6 +36,10 @@ std::shared_ptr<DppBot> newBot(){
     return std::make_shared<DppBot>();
 }
 
+namespace asio = boost::asio;
+using json = nlohmann::json;
+namespace dpp = discordpp;
+
 #undef DPPBOTDEF
 
 #endif
