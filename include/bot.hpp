@@ -27,7 +27,7 @@ class Bot {
         virtual ~Bot();
 
         void login(std::string);
-        void setIntents(uint16_t intents);
+        void setIntents(uint16_t);
         void initServerJoiner();
         void initModules();
         void run();
