@@ -1,5 +1,11 @@
 # DiscordBot
 
+![GitHub](https://img.shields.io/github/license/Westlanderz/discordbot)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/westlanderz/discordbot)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/westlanderz/discordbot?include_prereleases)
+![GitHub issues](https://img.shields.io/github/issues/westlanderz/discordbot)
+![Discord](https://img.shields.io/discord/692815534865121370)
+
 ## Table of Contents
 
 1. [About The Project](#About)
