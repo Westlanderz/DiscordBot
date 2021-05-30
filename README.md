@@ -10,6 +10,7 @@
 
 1. [About The Project](#About)
     - [Status](#Status)
+    - [Versioning](#Versioning)
 2. [Getting Started](#Getting-started)
     - [Prerequisites](#Prerequisites)
     - [Dependencies](#Dependencies)
@@ -36,6 +37,18 @@ This bot, when its run by me, has three versions: first we have a stable version
 | **Master**     | [![Status Stable](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/master?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/master) |
 | **Beta**     | [![Status Beta](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/beta-releases?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/beta-releases)      |
 | **Dev** | [![Status Dev](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/development?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/development)     |
+
+### Versioning
+
+This bot is versioned as ` major.minor.patch `. Next to that it is possible it has a suffix in the next formatting:
+
+| Stage  | Version       |
+| ------ |:-------------:|
+| **Alpha** | 1.1.0-a.1 |
+| **Beta** | 1.1.0-b.4 |
+| **Release candidate** | 1.1.0-rc.2 |
+| **Release** | 1.2.0 |
+| **Post-release fixes** | 1.2.4-a.1 |
 
 ## Getting started
 
