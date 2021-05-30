@@ -1,9 +1,5 @@
 #include "../include/include.hpp"
 
-namespace asio = boost::asio;
-using json = nlohmann::json;
-namespace dpp = discordpp;
-
 std::string getToken();
 
 std::istream &safeGetline(std::istream &is, std::string &t);
@@ -88,19 +84,23 @@ int main() {
              for (const json &mention : msg["mentions"]) {
                  mentioned = mentioned or mention["id"] == self["id"];
              }
-             if (mentioned) {
+             if (mentioned or (msg["content"].get<std::string>().starts_with("!") and msg["author"]["id"] != self["id"])) {
                  // Identify and remove mentions of self from the message
                  std::string content = msg["content"].get<std::string>();
-                 unsigned int oldlength, length = content.length();
-                 do{
-                     oldlength = length;
-                     content = std::regex_replace(
-                         content,
-                         std::regex(R"(<@!?)" + self["id"].get<std::string>() +
-                                    R"(> ?)"),
-                         "");
-                     length = content.length();
-                 }while(oldlength > length);
+                 if(mentioned) {
+                    unsigned int oldlength, length = content.length();
+                    do{
+                        oldlength = length;
+                        content = std::regex_replace(
+                            content,
+                            std::regex(R"(<@!?)" + self["id"].get<std::string>() +
+                                        R"(> ?)"),
+                            "");
+                        length = content.length();
+                    }while(oldlength > length);
+                 } else {
+                     content = content.substr(bot->prefix.length());
+                 }
 
                  // Get the target user's display name
                  std::string name =
