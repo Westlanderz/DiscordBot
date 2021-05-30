@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>10</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1000</x>
-      <y>210</y>
-      <w>410</w>
-      <h>360</h>
+      <x>1092</x>
+      <y>147</y>
+      <w>287</w>
+      <h>287</h>
     </coordinates>
     <panel_attributes>Bot
 --
@@ -26,12 +26,15 @@
 +login(token : string)
 +setIntents(intents : int)
 +initServerJoiner()
++initModules()
 +run()
 +isCommandHandler(guild : Guild) : CommandHandler
 +hasDPP() : DppBot
 +isPrefix() : string
 +addCommandHandler(guild : Guild)
 +removeCommandHandler(guild : Guild)
++sendMessage(channelid : snowflake)
++sendMessage(user : User)
 
 </panel_attributes>
     <additional_attributes/>
@@ -39,10 +42,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1570</x>
-      <y>240</y>
-      <w>420</w>
-      <h>300</h>
+      <x>1498</x>
+      <y>147</y>
+      <w>294</w>
+      <h>287</h>
     </coordinates>
     <panel_attributes>CommandHandler
 --
@@ -50,7 +53,8 @@
 -bot : Bot
 -prefix : string
 -modules : Module[]
--loadedModules : Module[]
+-adminRole : Role
+-modRole : Role
 --
 +CommandHandler(guild : Guild, bot : Bot, prefix : string)
 +initHandlers()
@@ -58,139 +62,154 @@
 +handleMessage(message : Message)
 +loadModule(module : Module)
 +unloadModule(module : Module)
-+updateCommands()
++getCommands()
 +newPrefix()
 +isPrefix() : string
 +isCommand(message : Message) : bool
-+isFromGuild() : Guild</panel_attributes>
++isFromGuild() : Guild\
++addModRole()
++removeModRole()
++addAdminRole()
++removeAdminRole()
++modRole() : Role
++adminRole() : Role</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1400</x>
-      <y>300</y>
-      <w>190</w>
-      <h>50</h>
+      <x>1372</x>
+      <y>210</y>
+      <w>140</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=bot
 r1=1
 </panel_attributes>
-    <additional_attributes>170.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1400</x>
-      <y>340</y>
-      <w>190</w>
-      <h>50</h>
+      <x>1372</x>
+      <y>238</y>
+      <w>140</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=commandhandlers
 r1=*</panel_attributes>
-    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>1620</x>
-      <y>730</y>
-      <w>260</w>
-      <h>160</h>
+      <x>1526</x>
+      <y>511</y>
+      <w>182</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>Module
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +Module(name : string)
 +isName() : string
-+commands() : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>1910</x>
-      <y>1210</y>
-      <w>280</w>
-      <h>170</h>
+      <x>1729</x>
+      <y>770</y>
+      <w>196</w>
+      <h>133</h>
     </coordinates>
     <panel_attributes>Command
 --
--name : string
+-names : string[]
 -bot : Bot
 --
 +Command(name : string, bot : Bot)
 +getHelpMessage() : string
-+execute()
-+hasPermsToRun() : bool</panel_attributes>
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1740</x>
-      <y>530</y>
-      <w>90</w>
-      <h>230</h>
+      <x>1610</x>
+      <y>427</y>
+      <w>63</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=modules
 r1=*</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1750</x>
-      <y>730</y>
-      <w>320</w>
-      <h>510</h>
+      <x>1617</x>
+      <y>511</y>
+      <w>224</w>
+      <h>280</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=C
 r1=1..*</panel_attributes>
-    <additional_attributes>10.0;20.0;300.0;20.0;300.0;490.0</additional_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0;300.0;380.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>910</x>
-      <y>740</y>
-      <w>850</w>
-      <h>270</h>
+      <x>1400</x>
+      <y>518</y>
+      <w>224</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>830.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>300.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>790</x>
-      <y>990</y>
-      <w>250</w>
-      <h>120</h>
+      <x>1316</x>
+      <y>623</y>
+      <w>175</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Default
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +Default(name : string)
 +isName() : string
-+commands() : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1070</x>
+      <x>1120</x>
       <y>0</y>
-      <w>330</w>
-      <h>90</h>
+      <w>231</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>Main
 --
@@ -203,10 +222,10 @@ r1=1..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1140</x>
-      <y>80</y>
-      <w>30</w>
-      <h>150</h>
+      <x>1225</x>
+      <y>56</y>
+      <w>21</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -214,159 +233,1059 @@ r1=1..*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1050</x>
-      <y>990</y>
-      <w>260</w>
-      <h>120</h>
+      <x>1127</x>
+      <y>623</y>
+      <w>182</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Admin
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +Admin(name : string)
 +isName() : string
-+commands : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1170</x>
-      <y>740</y>
-      <w>590</w>
-      <h>270</h>
+      <x>1211</x>
+      <y>518</y>
+      <w>413</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>570.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>570.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1310</x>
-      <y>560</y>
-      <w>750</w>
-      <h>700</h>
+      <x>1309</x>
+      <y>427</y>
+      <w>574</w>
+      <h>378</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=bot
 r1=1</panel_attributes>
-    <additional_attributes>730.0;670.0;620.0;670.0;620.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
+    <additional_attributes>750.0;510.0;800.0;510.0;800.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>990</y>
-      <w>260</w>
-      <h>120</h>
+      <x>385</x>
+      <y>623</y>
+      <w>182</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>AutoMod
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +AutoMod(name : string)
 +isName() : string
-+commands : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1320</x>
-      <y>990</y>
-      <w>260</w>
-      <h>120</h>
+      <x>938</x>
+      <y>623</y>
+      <w>182</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Mod
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +Mod(name : string)
 +isName() : string
-+commands : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>530</x>
-      <y>990</y>
-      <w>250</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>Greeter
---
--name : string
--includedCommands : Command[]
---
-+Greeter(name : string)
-+isName() : string
-+commands() : Command[]</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>270</x>
-      <y>990</y>
-      <w>250</w>
-      <h>120</h>
+      <x>574</x>
+      <y>623</y>
+      <w>175</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Sound
 --
 -name : string
 -includedCommands : Command[]
+-loaded : bool
 --
 +Sound(name : string)
 +isName() : string
-+commands() : Command[]</panel_attributes>
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1440</x>
-      <y>740</y>
-      <w>320</w>
-      <h>270</h>
+      <x>1022</x>
+      <y>518</y>
+      <w>602</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>300.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>840.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>740</y>
-      <w>1110</w>
-      <h>270</h>
+      <x>840</x>
+      <y>518</y>
+      <w>784</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1090.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>1100.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>740</y>
-      <w>1380</w>
-      <h>270</h>
+      <x>651</x>
+      <y>518</y>
+      <w>973</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1360.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>1370.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>120</x>
-      <y>740</y>
-      <w>1640</w>
-      <h>270</h>
+      <x>469</x>
+      <y>518</y>
+      <w>1155</w>
+      <h>119</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1620.0;10.0;10.0;10.0;10.0;250.0</additional_attributes>
+    <additional_attributes>1630.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1540</x>
+      <y>777</y>
+      <w>294</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>400.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>910</y>
+      <w>329</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Help
+--
+-names : string[]
+-bot : Bot
+--
++Help(name : string, bot : Bot)
++getHelpMessage() : string
++buildHelpMessageForCommand(command : Command) : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string
++getCommands(guild : Guild)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>623</y>
+      <w>175</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Greeter
+--
+-name : string
+-includedCommands : Command[]
+-loaded : bool
+--
++Greeter(name : string)
++isName() : string
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1400</x>
+      <y>742</y>
+      <w>133</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0;170.0;210.0;170.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1218</x>
+      <y>910</y>
+      <w>161</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Ping
+--
+-names : string[]
+-bot : Bot
+--
++Ping(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1288</x>
+      <y>777</y>
+      <w>546</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>760.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1267</x>
+      <y>742</y>
+      <w>154</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>200.0;10.0;200.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>1120</y>
+      <w>189</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Ban
+--
+-names : string[]
+-bot : Bot
+--
++Ban(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>1323</y>
+      <w>189</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Kick
+--
+-names : string[]
+-bot : Bot
+--
++Kick(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1022</x>
+      <y>1323</y>
+      <w>168</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Mute
+--
+-names : string[]
+-bot : Bot
+--
++Mute(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1197</x>
+      <y>1323</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>UnMute
+--
+-names : string[]
+-bot : Bot
+--
++UnMute(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1204</x>
+      <y>1120</y>
+      <w>175</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>UnBan
+--
+-names : string[]
+-bot : Bot
+--
++UnBan(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1015</x>
+      <y>1120</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>AddRole
+--
+-names : string[]
+-bot : Bot
+--
++AddRole(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>805</x>
+      <y>1120</y>
+      <w>203</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>RemoveRole
+--
+-names : string[]
+-bot : Bot
+--
++RemoveRole(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>616</x>
+      <y>1120</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>EditRole
+--
+-names : string[]
+-bot : Bot
+--
++EditRole(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>406</x>
+      <y>1120</y>
+      <w>203</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>RemoveRole
+--
+-names : string[]
+-bot : Bot
+--
++RemoveRole(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>196</x>
+      <y>623</y>
+      <w>182</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Owner
+--
+-name : string
+-includedCommands : Command[]
+-loaded : bool
+--
++Owner(name : string)
++isName() : string
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1456</x>
+      <y>777</y>
+      <w>378</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>520.0;10.0;380.0;10.0;380.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1281</x>
+      <y>777</y>
+      <w>553</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>770.0;10.0;630.0;10.0;630.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>497</x>
+      <y>777</y>
+      <w>1337</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1890.0;10.0;1750.0;10.0;1750.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1099</x>
+      <y>777</y>
+      <w>735</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1030.0;10.0;890.0;10.0;890.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>896</x>
+      <y>777</y>
+      <w>938</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1320.0;10.0;1180.0;10.0;1180.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>700</x>
+      <y>777</y>
+      <w>1134</w>
+      <h>357</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1600.0;10.0;1460.0;10.0;1460.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1162</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;590.0;430.0;590.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>518</y>
+      <w>1344</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1900.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1043</x>
+      <y>910</y>
+      <w>168</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Load
+--
+-names : string[]
+-bot : Bot
+--
++Load(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>854</x>
+      <y>910</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>UnLoad
+--
+-names : string[]
+-bot : Bot
+--
++UnLoad(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>672</x>
+      <y>910</y>
+      <w>175</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Reload
+--
+-names : string[]
+-bot : Bot
+--
++Reload(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>483</x>
+      <y>910</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Contact
+--
+-names : string[]
+-bot : Bot
+--
++Contact(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>98</x>
+      <y>910</y>
+      <w>175</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Uptime
+--
+-names : string[]
+-bot : Bot
+--
++Uptime(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>910</y>
+      <w>196</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Traceback
+--
+-names : string[]
+-bot : Bot
+--
++Traceback(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1099</x>
+      <y>742</y>
+      <w>322</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>440.0;10.0;440.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>917</x>
+      <y>742</y>
+      <w>504</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>700.0;10.0;700.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>742</y>
+      <w>693</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>970.0;10.0;970.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>546</x>
+      <y>742</y>
+      <w>875</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1230.0;10.0;1230.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>742</y>
+      <w>1071</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1510.0;10.0;1510.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>154</x>
+      <y>742</y>
+      <w>1267</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1790.0;10.0;1790.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1162</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;890.0;430.0;890.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1393</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1970.0;430.0;1970.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1162</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1160.0;430.0;1160.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1162</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1450.0;430.0;1450.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>70</x>
+      <y>742</y>
+      <w>1211</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1710.0;430.0;1710.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>1323</y>
+      <w>189</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>VoiceKick
+--
+-names : string[]
+-bot : Bot
+--
++VoiceKick(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>637</x>
+      <y>1323</y>
+      <w>182</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>SoftBan
+--
+-names : string[]
+-bot : Bot
+--
++SoftBan(name : string, bot : Bot)
++getHelpMessage() : string
++execute(msg : Message)
++hasPermsToRun(user : User) : bool
++isName(name : string) : string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>63</x>
+      <y>742</y>
+      <w>980</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1210.0;740.0;1210.0;830.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1456</x>
+      <y>777</y>
+      <w>378</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>520.0;10.0;380.0;10.0;380.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1281</x>
+      <y>777</y>
+      <w>553</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>770.0;10.0;630.0;10.0;630.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1099</x>
+      <y>777</y>
+      <w>735</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1030.0;10.0;890.0;10.0;890.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>924</x>
+      <y>777</y>
+      <w>910</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1280.0;10.0;1140.0;10.0;1140.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>777</y>
+      <w>1106</w>
+      <h>560</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1560.0;10.0;1420.0;10.0;1420.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>63</x>
+      <y>742</y>
+      <w>1393</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1970.0;740.0;1970.0;830.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>63</x>
+      <y>742</y>
+      <w>1218</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1720.0;740.0;1720.0;830.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>63</x>
+      <y>742</y>
+      <w>1036</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1460.0;740.0;1460.0;830.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>63</x>
+      <y>742</y>
+      <w>980</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;930.0;740.0;930.0;830.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>623</y>
+      <w>182</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Cleanup
+--
+-name : string
+-includedCommands : Command[]
+-loaded : bool
+--
++Cleanup(name : string)
++isName() : string
++commands() : Command[]
++isLoaded() : bool
++load()
++unload()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1120</x>
+      <y>777</y>
+      <w>714</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1000.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>938</x>
+      <y>777</y>
+      <w>896</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1260.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>749</x>
+      <y>777</y>
+      <w>1085</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1530.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>777</y>
+      <w>1659</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2350.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>567</x>
+      <y>777</y>
+      <w>1267</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1790.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>371</x>
+      <y>777</y>
+      <w>1463</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2070.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>84</x>
+      <y>518</y>
+      <w>1540</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2180.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
 </diagram>
