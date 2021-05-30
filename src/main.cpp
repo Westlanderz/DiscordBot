@@ -56,8 +56,7 @@ int main() {
      * The `self` object contains all information about the 'bot' user.
     /*/
     json self;
-    bot->handlers.insert(
-        {"READY", [&self](json data) { self = data["user"]; }});
+    bot->handleREADY([&self](json data) { self = data["user"]; std::cout << "ready to roll" << std::endl;});
 
     bot->prefix = "~";
 
