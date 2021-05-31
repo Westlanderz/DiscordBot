@@ -32,13 +32,13 @@ void Help::execute(dpp::Message msg) {
         bool found{false};
         for(auto &command : allowed_commands) {
             if(command->isName(command_name)) {
-                command->isModule()->isHandler()->hasBot()->sendMessage(msg.channel_id, command->getHelpMessage());
+                command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, command->getHelpMessage());
                 found = true;
                 break;
             }
         }
         if(!found) {
-            module->isHandler()->hasBot()->sendMessage(msg.channel_id, "Could not find the command you were looking for.");
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Could not find the command you were looking for.");
         }
     } else {
         std::string help_msg = "Here is a list of commands you can run: ";
@@ -51,6 +51,6 @@ void Help::execute(dpp::Message msg) {
             }
         }
         help_msg.append("Try " + module->isHandler()->isPrefix() +  "help " + names[0] + " to learn more about one of them. Version: 0.1.0-a.1 https://github.com/Westlanderz/DiscordBot");
-        module->isHandler()->hasBot()->sendMessage(msg.channel_id, help_msg);
+        module->isHandler()->hasBot()->sendMessage(*msg.channel_id, help_msg);
     }
 }
