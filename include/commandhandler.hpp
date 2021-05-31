@@ -19,7 +19,7 @@ class CommandHandler {
 
     public:
         CommandHandler(Bot *, dpp::Guild, std::string);
-        virtual ~CommandHandler();
+        virtual ~CommandHandler() = default;
 
         void initDefault();
         void handleMessage(dpp::Message);
