@@ -34,7 +34,7 @@ class Bot {
         std::string isPrefix();
         void addCommandHandler(dpp::Guild);
         void removeCommandHandler(dpp::Guild);
-        void sendMessage(dpp::snowflake, std::string);
+        void sendMessage(dpp::sptr<const dpp::snowflake>, std::string);
         void sendMessage(dpp::User, std::string);
 };
 

@@ -59,8 +59,11 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
         commandhandlers.erase(remove);
 }
 
-void Bot::sendMessage(dpp::snowflake channelid, std::string message) {
-    
+void Bot::sendMessage(dpp::sptr<const dpp::snowflake> channelid, std::string message) {
+    bot->createMessage()
+        ->channel_id(*channelid)
+        ->content(message)
+        ->run();
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {
