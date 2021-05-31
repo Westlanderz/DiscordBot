@@ -32,7 +32,7 @@ class Bot {
         void initModules();
         void run();
         CommandHandler * isCommandHandler(dpp::Guild);
-        DppBot * hasDpp();
+        std::shared_ptr<DppBot> hasDpp();
         std::string isPrefix();
         void addCommandHandler(dpp::Guild);
         void removeCommandHandler(dpp::Guild);

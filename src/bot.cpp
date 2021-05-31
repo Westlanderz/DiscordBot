@@ -28,10 +28,13 @@ void Bot::run() {
 }
 
 CommandHandler * Bot::isCommandHandler(dpp::Guild guild) {
-
+    for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
+        if(it->first == guild)
+            return it->second;
+    }
 }
 
-DppBot * Bot::hasDpp() {
+std::shared_ptr<DppBot> Bot::hasDpp() {
     return bot;
 }
 
@@ -40,17 +43,18 @@ std::string Bot::isPrefix() {
 }
 
 void Bot::addCommandHandler(dpp::Guild guild) {
-    commandhandlers.push_back(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler()))
+    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler()));
 }
 
 void Bot::removeCommandHandler(dpp::Guild guild) {
     delete commandhandlers.at(guild);
-    std::map<dpp::Guild, CommandHandler *>::iterator remove = nullptr;
+    std::map<dpp::Guild, CommandHandler *>::iterator remove = commandhandlers.end();
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
-        if(*it->first == guild)
+        if(it->first == guild)
             remove = it;
     }
-    commandhandlers.erase(remove);
+    if(remove != commandhandlers.end())
+        commandhandlers.erase(remove);
 }
 
 void Bot::sendMessage(dpp::snowflake channelid) {
