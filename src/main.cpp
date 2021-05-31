@@ -1,4 +1,4 @@
-#include "../include/include.hpp"
+#include "../include/bot.hpp"
 
 std::string getToken();
 
@@ -26,11 +26,9 @@ int main() {
         exit(1);
     }
 
-    std::shared_ptr<DppBot> bot = newBot();
+    Bot bot("DevBot", "!");
 
-    bot->debugUnhandled = false;
-
-    bot->intents = dpp::intents::DIRECT_MESSAGE_REACTIONS
+    uint16_t intents = dpp::intents::DIRECT_MESSAGE_REACTIONS
     | dpp::intents::DIRECT_MESSAGE_TYPING
     | dpp::intents::DIRECT_MESSAGES
     | dpp::intents::GUILD_BANS
@@ -46,89 +44,11 @@ int main() {
     | dpp::intents::GUILD_WEBHOOKS
     | dpp::intents::GUILDS;
 
-    /*/
-     * Create handler for the READY payload, this may be handled by the bot in
-    the future.
-     * The `self` object contains all information about the 'bot' user.
-    /*/
-    json self;
-    bot->handleREADY([&self](json data) { self = data["user"]; std::cout << "ready to roll" << std::endl;});
-
-    bot->prefix = "~";
-
-    bot->respond("help", "Mention me and I'll echo your message back!");
-    
-    bot->respond("about", [&bot](json msg) {
-      std::ostringstream content;
-      content
-          << "Sure thing, "
-          << (msg["member"]["nick"].is_null()
-              ? msg["author"]["username"].get<std::string>()
-              : msg["member"]["nick"].get<std::string>())
-          << "!\n"
-          << "I'm a simple bot meant to demonstrate the Discord++ library.\n"
-          << "You can learn more about Discord++ at "
-             "https://discord.gg/0usP6xmT4sQ4kIDh";
-      bot->createMessage()
-            ->content(content.str())
-            ->channel_id(dpp::get_snowflake(msg["channel_id"]))
-            ->run();
-    });
-
-    // Create handler for the MESSAGE_CREATE payload, this receives all messages
-    // sent that the bot can see.
-    bot->handlers.insert(
-        {"MESSAGE_CREATE", [&bot, &self](json msg) {
-             // Scan through mentions in the message for self
-             bool mentioned = false;
-             for (const json &mention : msg["mentions"]) {
-                 mentioned = mentioned or mention["id"] == self["id"];
-             }
-             if (mentioned or (msg["content"].get<std::string>().starts_with("!") and msg["author"]["id"] != self["id"])) {
-                 // Identify and remove mentions of self from the message
-                 std::string content = msg["content"].get<std::string>();
-                 if(mentioned) {
-                    unsigned int oldlength, length = content.length();
-                    do{
-                        oldlength = length;
-                        content = std::regex_replace(
-                            content,
-                            std::regex(R"(<@!?)" + self["id"].get<std::string>() +
-                                        R"(> ?)"),
-                            "");
-                        length = content.length();
-                    }while(oldlength > length);
-                 } else {
-                     content = content.substr(bot->prefix.length());
-                 }
-
-                 // Get the target user's display name
-                 std::string name =
-                     (msg["member"]["nick"].is_null()
-                          ? msg["author"]["username"].get<std::string>()
-                          : msg["member"]["nick"].get<std::string>());
-
-                 std::cout << "Echoing " << name << '\n';
-
-                 bot->createMessage()
-                        ->content(content)
-                        ->channel_id(dpp::get_snowflake(msg["channel_id"]))
-                        ->run();
-
-                 // Set status to Playing "with [author]"
-                 bot->send(3,
-                           {{"game", {{"name", "with " + name}, {"type", 0}}},
-                            {"status", "online"},
-                            {"afk", false},
-                            {"since", "null"}});
-             }
-         }});
-
-    std::shared_ptr<asio::io_context> aioc = std::make_shared<asio::io_context>();
-
-    bot->initBot(6, token, aioc);
-
-    bot->run();
+    bot.setIntents(intents);
+    bot.initServerJoiner();
+    bot.initHandlers();
+    bot.login(getToken());
+    bot.run();
 
     return 0;
 }
