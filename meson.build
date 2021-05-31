@@ -1,4 +1,4 @@
-project('Discordbot', 'cpp', version: '0.1.0-dev')
+project('Discordbot', 'cpp', version: '0.1.0-a.1')
 
 cpp_compiler = meson.get_compiler('cpp')
 add_project_arguments('--std=c++2a', '-c', '-fcoroutines', '-ggdb', language: 'cpp')
