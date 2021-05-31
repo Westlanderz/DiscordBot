@@ -36,6 +36,7 @@ class CommandHandler {
         void removeAdminRole(dpp::Role);
         std::vector<dpp::Role> modRoles();
         std::vector<dpp::Role> adminRoles();
+        Bot * hasBot();
 };
 
 #endif
