@@ -7,7 +7,7 @@
       <x>1550</x>
       <y>210</y>
       <w>410</w>
-      <h>410</h>
+      <h>380</h>
     </coordinates>
     <panel_attributes>Bot
 --
@@ -20,13 +20,11 @@
 -botOwnerRole : string
 -enableReactions : bool
 +self : json
-+modules : Module[]
 --
 +Bot(name : string, prefix : string)
 +login(token : string)
 +setIntents(intents : int)
 +initHandlers()
-+initModules()
 +run()
 +isCommandHandler(guild : Guild) : CommandHandler
 +hasDPP() : DppBot
@@ -105,29 +103,31 @@ r1=*</panel_attributes>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>2170</x>
+      <x>2150</x>
       <y>730</y>
-      <w>260</w>
-      <h>220</h>
+      <w>300</w>
+      <h>250</h>
     </coordinates>
     <panel_attributes>Module
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Module(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLInterface</id>
     <coordinates>
-      <x>2460</x>
+      <x>2490</x>
       <y>1100</y>
       <w>280</w>
       <h>190</h>
@@ -135,7 +135,7 @@ r1=*</panel_attributes>
     <panel_attributes>Command
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Command(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -162,13 +162,13 @@ r1=*</panel_attributes>
     <coordinates>
       <x>2300</x>
       <y>730</y>
-      <w>320</w>
+      <w>350</w>
       <h>400</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=C
 r1=1..*</panel_attributes>
-    <additional_attributes>10.0;20.0;300.0;20.0;300.0;380.0</additional_attributes>
+    <additional_attributes>10.0;20.0;330.0;20.0;330.0;380.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -187,20 +187,22 @@ r1=1..*</panel_attributes>
       <x>1870</x>
       <y>890</y>
       <w>250</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Default
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Default(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -236,20 +238,22 @@ r1=1..*</panel_attributes>
       <x>1600</x>
       <y>890</y>
       <w>260</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Admin
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Admin(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -264,38 +268,27 @@ r1=1..*</panel_attributes>
     <additional_attributes>570.0;10.0;10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1860</x>
-      <y>610</y>
-      <w>820</w>
-      <h>540</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=bot
-r1=1</panel_attributes>
-    <additional_attributes>750.0;510.0;800.0;510.0;800.0;110.0;10.0;110.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
       <x>540</x>
       <y>890</y>
       <w>260</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>AutoMod
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +AutoMod(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -304,20 +297,22 @@ r1=1</panel_attributes>
       <x>1330</x>
       <y>890</y>
       <w>260</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Mod
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Mod(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -326,20 +321,22 @@ r1=1</panel_attributes>
       <x>810</x>
       <y>890</y>
       <w>250</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Sound
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Sound(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -391,11 +388,11 @@ r1=1</panel_attributes>
     <coordinates>
       <x>2190</x>
       <y>1110</y>
-      <w>420</w>
+      <w>450</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>400.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>430.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -408,7 +405,7 @@ r1=1</panel_attributes>
     <panel_attributes>Help
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Help(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -425,33 +422,35 @@ r1=1</panel_attributes>
       <x>1070</x>
       <y>890</y>
       <w>250</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Greeter
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Greeter(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1990</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>190</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;210.0;170.0;210.0;170.0;240.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0;170.0;180.0;170.0;210.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -464,7 +463,7 @@ r1=1</panel_attributes>
     <panel_attributes>Ping
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Ping(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -478,23 +477,23 @@ r1=1</panel_attributes>
     <coordinates>
       <x>1830</x>
       <y>1110</y>
-      <w>780</w>
+      <w>810</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>760.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>790.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1800</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>220</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>200.0;10.0;200.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>200.0;10.0;200.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -507,7 +506,7 @@ r1=1</panel_attributes>
     <panel_attributes>Ban
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Ban(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -527,7 +526,7 @@ r1=1</panel_attributes>
     <panel_attributes>Kick
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Kick(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -547,7 +546,7 @@ r1=1</panel_attributes>
     <panel_attributes>Mute
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Mute(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -567,7 +566,7 @@ r1=1</panel_attributes>
     <panel_attributes>UnMute
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +UnMute(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -587,7 +586,7 @@ r1=1</panel_attributes>
     <panel_attributes>UnBan
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +UnBan(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -607,7 +606,7 @@ r1=1</panel_attributes>
     <panel_attributes>AddRole
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +AddRole(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -627,7 +626,7 @@ r1=1</panel_attributes>
     <panel_attributes>RemoveRole
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +RemoveRole(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -647,7 +646,7 @@ r1=1</panel_attributes>
     <panel_attributes>EditRole
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +EditRole(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -667,7 +666,7 @@ r1=1</panel_attributes>
     <panel_attributes>RemoveRole
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +RemoveRole(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -682,20 +681,22 @@ r1=1</panel_attributes>
       <x>270</x>
       <y>890</y>
       <w>260</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Owner
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Owner(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -703,78 +704,78 @@ r1=1</panel_attributes>
     <coordinates>
       <x>2070</x>
       <y>1110</y>
-      <w>540</w>
+      <w>570</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>520.0;10.0;380.0;10.0;380.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>550.0;10.0;380.0;10.0;380.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1820</x>
       <y>1110</y>
-      <w>790</w>
+      <w>820</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>770.0;10.0;630.0;10.0;630.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>800.0;10.0;630.0;10.0;630.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>700</x>
       <y>1110</y>
-      <w>1910</w>
+      <w>1940</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1890.0;10.0;1750.0;10.0;1750.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>1920.0;10.0;1750.0;10.0;1750.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1560</x>
       <y>1110</y>
-      <w>1050</w>
+      <w>1080</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1030.0;10.0;890.0;10.0;890.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>1060.0;10.0;890.0;10.0;890.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1270</x>
       <y>1110</y>
-      <w>1340</w>
+      <w>1370</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1320.0;10.0;1180.0;10.0;1180.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>1350.0;10.0;1180.0;10.0;1180.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>990</x>
       <y>1110</y>
-      <w>1620</w>
+      <w>1650</w>
       <h>510</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1600.0;10.0;1460.0;10.0;1460.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
+    <additional_attributes>1630.0;10.0;1460.0;10.0;1460.0;440.0;10.0;440.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1660</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;590.0;430.0;590.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;590.0;400.0;590.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -798,7 +799,7 @@ r1=1</panel_attributes>
     <panel_attributes>Load
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Load(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -818,7 +819,7 @@ r1=1</panel_attributes>
     <panel_attributes>UnLoad
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +UnLoad(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -838,7 +839,7 @@ r1=1</panel_attributes>
     <panel_attributes>Reload
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Reload(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -858,7 +859,7 @@ r1=1</panel_attributes>
     <panel_attributes>Contact
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Contact(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -878,7 +879,7 @@ r1=1</panel_attributes>
     <panel_attributes>Uptime
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Uptime(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -898,7 +899,7 @@ r1=1</panel_attributes>
     <panel_attributes>Traceback
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +Traceback(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -911,133 +912,133 @@ r1=1</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1560</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>460</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>440.0;10.0;440.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>440.0;10.0;440.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1300</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>720</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>700.0;10.0;700.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>700.0;10.0;700.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1030</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>990</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>970.0;10.0;970.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>970.0;10.0;970.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>770</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1250</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1230.0;10.0;1230.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>1230.0;10.0;1230.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>490</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1530</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1510.0;10.0;1510.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>1510.0;10.0;1510.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>210</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1810</w>
-      <h>260</h>
+      <h>230</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1790.0;10.0;1790.0;210.0;10.0;210.0;10.0;240.0</additional_attributes>
+    <additional_attributes>1790.0;10.0;1790.0;180.0;10.0;180.0;10.0;210.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1660</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;890.0;430.0;890.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;890.0;400.0;890.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1990</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1970.0;430.0;1970.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;1970.0;400.0;1970.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1660</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1160.0;430.0;1160.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;1160.0;400.0;1160.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1660</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1450.0;430.0;1450.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;1450.0;400.0;1450.0;510.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>90</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1730</w>
-      <h>560</h>
+      <h>530</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 </panel_attributes>
-    <additional_attributes>1640.0;10.0;1640.0;200.0;10.0;200.0;10.0;430.0;1710.0;430.0;1710.0;540.0</additional_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;170.0;10.0;170.0;10.0;400.0;1710.0;400.0;1710.0;510.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -1050,7 +1051,7 @@ r1=1</panel_attributes>
     <panel_attributes>VoiceKick
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +VoiceKick(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -1070,7 +1071,7 @@ r1=1</panel_attributes>
     <panel_attributes>SoftBan
 --
 -names : string[]
--bot : Bot
+-module : Module
 --
 +SoftBan(name : string, bot : Bot)
 +getHelpMessage() : string
@@ -1083,111 +1084,111 @@ r1=1</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>80</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1400</w>
-      <h>850</h>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1210.0;740.0;1210.0;830.0</additional_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;160.0;10.0;160.0;10.0;710.0;1210.0;710.0;1210.0;800.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>2070</x>
       <y>1110</y>
-      <w>540</w>
+      <w>570</w>
       <h>800</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>520.0;10.0;380.0;10.0;380.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+    <additional_attributes>550.0;10.0;380.0;10.0;380.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1820</x>
       <y>1110</y>
-      <w>790</w>
+      <w>820</w>
       <h>800</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>770.0;10.0;630.0;10.0;630.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+    <additional_attributes>800.0;10.0;630.0;10.0;630.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1560</x>
       <y>1110</y>
-      <w>1050</w>
+      <w>1080</w>
       <h>800</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1030.0;10.0;890.0;10.0;890.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+    <additional_attributes>1060.0;10.0;890.0;10.0;890.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1310</x>
       <y>1110</y>
-      <w>1300</w>
+      <w>1330</w>
       <h>800</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1280.0;10.0;1140.0;10.0;1140.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+    <additional_attributes>1310.0;10.0;1140.0;10.0;1140.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1030</x>
       <y>1110</y>
-      <w>1580</w>
+      <w>1610</w>
       <h>800</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1560.0;10.0;1420.0;10.0;1420.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
+    <additional_attributes>1590.0;10.0;1420.0;10.0;1420.0;740.0;10.0;740.0;10.0;780.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>80</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1990</w>
-      <h>850</h>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1970.0;740.0;1970.0;830.0</additional_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;160.0;10.0;160.0;10.0;710.0;1970.0;710.0;1970.0;800.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>80</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1740</w>
-      <h>850</h>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1720.0;740.0;1720.0;830.0</additional_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;160.0;10.0;160.0;10.0;710.0;1720.0;710.0;1720.0;800.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>80</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1480</w>
-      <h>850</h>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;1460.0;740.0;1460.0;830.0</additional_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;160.0;10.0;160.0;10.0;710.0;1460.0;710.0;1460.0;800.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>80</x>
-      <y>1060</y>
+      <y>1090</y>
       <w>1400</w>
-      <h>850</h>
+      <h>820</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>1380.0;10.0;1380.0;190.0;10.0;190.0;10.0;740.0;930.0;740.0;930.0;830.0</additional_attributes>
+    <additional_attributes>1380.0;10.0;1380.0;160.0;10.0;160.0;10.0;710.0;930.0;710.0;930.0;800.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -1195,20 +1196,22 @@ r1=1</panel_attributes>
       <x>0</x>
       <y>890</y>
       <w>260</w>
-      <h>180</h>
+      <h>210</h>
     </coordinates>
     <panel_attributes>Cleanup
 --
 -name : string
 -includedCommands : Command[]
 -loaded : bool
+-commandHandler : CommandHandler
 --
 +Cleanup(name : string)
 +isName() : string
 +commands() : Command[]
 +isLoaded() : bool
 +load()
-+unload()</panel_attributes>
++unload()
++isHandler() : CommandHandler</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1216,66 +1219,66 @@ r1=1</panel_attributes>
     <coordinates>
       <x>1590</x>
       <y>1110</y>
-      <w>1020</w>
+      <w>1050</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1000.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>1030.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1330</x>
       <y>1110</y>
-      <w>1280</w>
+      <w>1310</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1260.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>1290.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1060</x>
       <y>1110</y>
-      <w>1550</w>
+      <w>1580</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1530.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>1560.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>240</x>
       <y>1110</y>
-      <w>2370</w>
+      <w>2400</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>2350.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>2380.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>800</x>
       <y>1110</y>
-      <w>1810</w>
+      <w>1840</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>1790.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>1820.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
       <y>1110</y>
-      <w>2090</w>
+      <w>2120</w>
       <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>2070.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>2100.0;10.0;10.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
