@@ -14,14 +14,13 @@ class CommandHandler {
         dpp::Guild guild;
         std::string prefix;
         std::vector<Module *> modules;
-        dpp::Role adminRole;
-        dpp::Role modRole;
+        std::vector<dpp::Role> adminRole;
+        std::vector<dpp::Role> modRole;
 
     public:
-        CommandHandler(Bot *, dpp::Guild, std::string, std::vector<Module *>);
+        CommandHandler(Bot *, dpp::Guild, std::string);
         virtual ~CommandHandler();
 
-        void initHandlers();
         void initDefault();
         void handleMessage(dpp::Message);
         void loadModule(Module *);
@@ -29,14 +28,14 @@ class CommandHandler {
         std::vector<Command *> getCommands();
         void newPrefix(std::string);
         std::string isPrefix();
-        bool isCommand(dpp::Message);
+        bool isCommand(std::string);
         dpp::Guild isFromGuild();
         void addModRole(dpp::Role);
         void removeModRole(dpp::Role);
         void addAdminRole(dpp::Role);
         void removeAdminRole(dpp::Role);
-        dpp::Role modRole();
-        dpp::Role adminRole();
+        std::vector<dpp::Role> modRoles();
+        std::vector<dpp::Role> adminRoles();
 };
 
 #endif
