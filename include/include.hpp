@@ -32,10 +32,6 @@
 extern template class discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>;
 using DppBot = discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>;
 
-std::shared_ptr<DppBot> newBot(){
-    return std::make_shared<DppBot>();
-}
-
 namespace asio = boost::asio;
 using json = nlohmann::json;
 namespace dpp = discordpp;
