@@ -1,4 +1,5 @@
 #include "../include/bot.hpp"
+#include "../include/commandhandler.hpp"
 
 Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{prefix} {
     bot = newBot();
@@ -16,11 +17,11 @@ void Bot::setIntents(uint16_t intents) {
 }
 
 void Bot::initServerJoiner() {
-    bot->handleGUILD_CREATE();
+    bot->handleGUILD_CREATE([this](dpp::Guild guild) {});
 }
 
-void Bot::initModules() {
-
+void Bot::initHandlers() {
+    bot->handleMESSAGE_CREATE([this](dpp::Message msg) {});
 }
 
 void Bot::run() {
@@ -43,24 +44,25 @@ std::string Bot::isPrefix() {
 }
 
 void Bot::addCommandHandler(dpp::Guild guild) {
-    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler()));
+    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(this, guild, defaultPrefix)));
 }
 
 void Bot::removeCommandHandler(dpp::Guild guild) {
-    delete commandhandlers.at(guild);
     std::map<dpp::Guild, CommandHandler *>::iterator remove = commandhandlers.end();
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
-        if(it->first == guild)
+        if(it->first == guild) {
             remove = it;
+            delete it->second;
+        }
     }
     if(remove != commandhandlers.end())
         commandhandlers.erase(remove);
 }
 
-void Bot::sendMessage(dpp::snowflake channelid) {
+void Bot::sendMessage(dpp::snowflake channelid, std::string message) {
     
 }
 
-void Bot::sendMessage(dpp::User user) {
+void Bot::sendMessage(dpp::User user, std::string message) {
     
 }

@@ -6,7 +6,6 @@
 #include "include.hpp"
 
 class CommandHandler;
-class Module;
 
 class Bot {
     private:
@@ -21,7 +20,6 @@ class Bot {
     
     public:
         json self;
-        std::vector<Module *> modules;
 
         Bot(std::string, std::string);
         virtual ~Bot();
@@ -29,15 +27,15 @@ class Bot {
         void login(std::string);
         void setIntents(uint16_t);
         void initServerJoiner();
-        void initModules();
+        void initHandlers();
         void run();
         CommandHandler * isCommandHandler(dpp::Guild);
         std::shared_ptr<DppBot> hasDpp();
         std::string isPrefix();
         void addCommandHandler(dpp::Guild);
         void removeCommandHandler(dpp::Guild);
-        void sendMessage(dpp::snowflake);
-        void sendMessage(dpp::User);
+        void sendMessage(dpp::snowflake, std::string);
+        void sendMessage(dpp::User, std::string);
 };
 
 #endif
