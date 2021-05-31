@@ -9,7 +9,7 @@ class Help : public Command {
         Module *module;
 
     public:
-        Help(std::vector<std::string>, Module *);
+        Help(std::vector<std::string>);
 
         virtual std::string getHelpMessage() override;
         virtual void execute(dpp::Message) override;

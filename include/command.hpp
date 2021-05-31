@@ -11,9 +11,8 @@ class Command {
         Module *module;
 
     public:
-        Command(std::vector<std::string> names, Module *module) {
+        Command(std::vector<std::string> names) {
             this->names = names;
-            this->module = module;
         }
         virtual ~Command() = default;
 
@@ -32,6 +31,7 @@ class Command {
         };
         virtual Module * isModule() { return module; };
         virtual std::string getName() { return names.at(0); };
+        virtual void addToModule(Module *module) { this->module = module; };
 };
 
 #endif

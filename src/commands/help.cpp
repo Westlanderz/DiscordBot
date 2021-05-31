@@ -3,7 +3,7 @@
 #include "../../include/commandhandler.hpp"
 #include "../../include/bot.hpp"
 
-Help::Help(std::vector<std::string> names, Module *module): Command(names, module) {
+Help::Help(std::vector<std::string> names): Command(names) {
     this->names = names;
     this->module = module;
 }
