@@ -3,14 +3,47 @@
 #include "../include/module.hpp"
 #include "../include/command.hpp"
 
-CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {}
+#include "../include/modules/default.hpp"
+
+#include "../include/commands/help.hpp"
+
+CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
+    std::vector<Command *> commands;
+    std::vector<std::string> names;
+    //TODO: this block for every module
+    {//TODO: list commands here
+    names.at(0) = "help";
+    commands.push_back(new Help(names));
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    // names.at(0) = "help";
+    // commands.push_back();
+    auto default_module = new Default("default", this, commands);
+    modules.push_back(default_module);
+    for(auto &command : commands) {
+        command->addToModule(default_module);
+    }
+    commands.clear();}
+}
 
 void CommandHandler::initDefault() {
     loadModule(modules.at(0));
 }
 
 void CommandHandler::handleMessage(dpp::Message msg) {
-
+    std::string content = *msg.content;
+    if(content.starts_with(prefix))
+        bot->sendMessage(msg.channel_id, "This is a command");
 }
 
 void CommandHandler::loadModule(Module *module) {
@@ -92,4 +125,8 @@ std::vector<dpp::Role> CommandHandler::modRoles() {
 
 std::vector<dpp::Role> CommandHandler::adminRoles() {
     return adminRole;
+}
+
+Bot * CommandHandler::hasBot() {
+    return bot;
 }
