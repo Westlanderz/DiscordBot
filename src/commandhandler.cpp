@@ -7,12 +7,15 @@
 
 #include "../include/commands/help.hpp"
 
-CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
+CommandHandler::CommandHandler(Bot *bot, dpp::Guild guild, std::string prefix) {
+    this->bot = bot;
+    this->guild = guild;
+    this->prefix = prefix;
     std::vector<Command *> commands;
     std::vector<std::string> names;
     //TODO: this block for every module
-    {//TODO: list commands here
-    names.at(0) = "help";
+    //TODO: list commands here
+    names.push_back("help");
     commands.push_back(new Help(names));
     // names.at(0) = "help";
     // commands.push_back();
@@ -33,7 +36,7 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     for(auto &command : commands) {
         command->addToModule(default_module);
     }
-    commands.clear();}
+    commands.clear();
 }
 
 void CommandHandler::initDefault() {
@@ -42,8 +45,13 @@ void CommandHandler::initDefault() {
 
 void CommandHandler::handleMessage(dpp::Message msg) {
     std::string content = *msg.content;
-    if(content.starts_with(prefix))
-        bot->sendMessage(msg.channel_id, "This is a command");
+    std::cout << "Why dump core" << std::endl;
+    if(content.starts_with(prefix)) {
+        std::cout << "Why dump core here" << std::endl;
+        std::cout << content << std::endl;
+        // bot->sendMessage(*msg.channel_id, "This is a command");
+    }
+    std::cout << "Why not check" << std::endl;
 }
 
 void CommandHandler::loadModule(Module *module) {
