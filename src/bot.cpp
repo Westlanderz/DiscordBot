@@ -1,10 +1,15 @@
 #include "../include/bot.hpp"
 #include "../include/commandhandler.hpp"
 
+std::shared_ptr<DppBot> newBot(){
+    return std::make_shared<DppBot>();
+}
+
 Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{prefix} {
     bot = newBot();
     botOwnerRole = "asdasdasd";
     bot->prefix = prefix;
+    bot->debugUnhandled = false;
 }
 
 void Bot::login(std::string token) {
@@ -17,22 +22,28 @@ void Bot::setIntents(uint16_t intents) {
 }
 
 void Bot::initServerJoiner() {
-    bot->handleGUILD_CREATE([this](dpp::Guild guild) {});
+    bot->handleGUILD_CREATE([this](dpp::Guild guild) {
+        addCommandHandler(this, guild);
+    });
 }
 
 void Bot::initHandlers() {
-    bot->handleMESSAGE_CREATE([this](dpp::Message msg) {});
+    bot->handleREADY([this](json data) { self = data["user"]; std::cout << "Connected to the servers" << std::endl;});
+    bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
+        this->isCommandHandler(*msg.guild_id->get())->handleMessage(msg);
+    });
 }
 
 void Bot::run() {
     bot->run();
 }
 
-CommandHandler * Bot::isCommandHandler(dpp::Guild guild) {
+CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
-        if(it->first == guild)
+        if(it->first["id"] == guild_id)
             return it->second;
     }
+    return nullptr;
 }
 
 std::shared_ptr<DppBot> Bot::hasDpp() {
@@ -43,8 +54,8 @@ std::string Bot::isPrefix() {
     return defaultPrefix;
 }
 
-void Bot::addCommandHandler(dpp::Guild guild) {
-    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(this, guild, defaultPrefix)));
+void Bot::addCommandHandler(Bot *bot, dpp::Guild guild) {
+    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(bot, guild, defaultPrefix)));
 }
 
 void Bot::removeCommandHandler(dpp::Guild guild) {
@@ -59,13 +70,17 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
         commandhandlers.erase(remove);
 }
 
-void Bot::sendMessage(dpp::sptr<const dpp::snowflake> channelid, std::string message) {
+void Bot::sendMessage(const dpp::snowflake channelid, std::string message) {
+    std::cout << "check send 1" << std::endl;
     bot->createMessage()
-        ->channel_id(*channelid)
+        ->channel_id(channelid)
         ->content(message)
         ->run();
+    std::cout << "check send 2" << std::endl;
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {
-    
+    bot->createDM()
+        ->recipient_id(user["id"])
+        ->run();
 }

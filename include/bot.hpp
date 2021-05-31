@@ -22,20 +22,20 @@ class Bot {
         json self;
 
         Bot(std::string, std::string);
-        virtual ~Bot();
+        virtual ~Bot() = default;
 
         void login(std::string);
         void setIntents(uint16_t);
         void initServerJoiner();
         void initHandlers();
         void run();
-        CommandHandler * isCommandHandler(dpp::Guild);
+        CommandHandler * isCommandHandler(const dpp::snowflake);
         std::shared_ptr<DppBot> hasDpp();
         std::string isPrefix();
-        void addCommandHandler(dpp::Guild);
+        void addCommandHandler(Bot *, dpp::Guild);
         void removeCommandHandler(dpp::Guild);
-        void sendMessage(dpp::sptr<const dpp::snowflake>, std::string);
-        void sendMessage(dpp::User, std::string);
+        void sendMessage(const dpp::snowflake, std::string);
+        void sendMessage(dpp::User, std::string); 
 };
 
 #endif
