@@ -4,5 +4,6 @@ executable('discordbot',
          'commandhandler.cpp',
          'modules/default.cpp',
          'commands/help.cpp',
+         'commands/uptime.cpp',
         ]
     )

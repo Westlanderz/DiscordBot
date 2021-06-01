@@ -6,6 +6,7 @@
 #include "../include/modules/default.hpp"
 
 #include "../include/commands/help.hpp"
+#include "../include/commands/uptime.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
@@ -14,8 +15,8 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     //TODO: list commands here
     names.push_back("help");
     commands.push_back(new Help(names));
-    // names.at(0) = "help";
-    // commands.push_back();
+    names.at(0) = "uptime";
+    commands.push_back(new Uptime(names));
     // names.at(0) = "help";
     // commands.push_back();
     // names.at(0) = "help";
