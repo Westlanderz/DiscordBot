@@ -47,7 +47,7 @@ void Help::execute(dpp::Message msg) {
                 help_msg.append(", ");
             }
         }
-        help_msg.append("Try " + module->isHandler()->isPrefix() +  "help " + names[0] + " to learn more about one of them. Version: 0.1.0-a.1 https://github.com/Westlanderz/DiscordBot");
+        help_msg.append("Try " + module->isHandler()->isPrefix() + names[0] + " to learn more about one of them. Version: 0.1.0-a.1 https://github.com/Westlanderz/DiscordBot");
         module->isHandler()->hasBot()->sendMessage(*msg.channel_id, help_msg);
     }
 }
