@@ -3,10 +3,7 @@
 #include "../../include/commandhandler.hpp"
 #include "../../include/bot.hpp"
 
-Help::Help(std::vector<std::string> names): Command(names) {
-    this->names = names;
-    this->module = module;
-}
+Help::Help(std::vector<std::string> names): Command(names) {}
 
 std::string Help::getHelpMessage() {
     return "I think you know how to use this command";
@@ -16,6 +13,7 @@ void Help::execute(dpp::Message msg) {
     std::vector<Command *> commands = module->isHandler()->getCommands();
     std::vector<Command *> allowed_commands;
     dpp::User sender;
+    std::cout << "help command is executing" << std::endl;
     for(auto &command : commands) {
         if(command->hasPermsToRun())
             allowed_commands.push_back(command);

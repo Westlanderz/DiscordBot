@@ -19,7 +19,7 @@ class CommandHandler {
 
     public:
         CommandHandler(Bot *, dpp::Guild, std::string);
-        virtual ~CommandHandler() = default;
+        virtual ~CommandHandler();
 
         void initDefault();
         void handleMessage(dpp::Message);
@@ -28,7 +28,7 @@ class CommandHandler {
         std::vector<Command *> getCommands();
         void newPrefix(std::string);
         std::string isPrefix();
-        bool isCommand(std::string);
+        Command * isCommand(std::string);
         dpp::Guild isFromGuild();
         void addModRole(dpp::Role);
         void removeModRole(dpp::Role);

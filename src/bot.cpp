@@ -30,7 +30,15 @@ void Bot::initServerJoiner() {
 void Bot::initHandlers() {
     bot->handleREADY([this](json data) { self = data["user"]; std::cout << "Connected to the servers" << std::endl;});
     bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
-        this->isCommandHandler(*msg.guild_id->get())->handleMessage(msg);
+        dpp::User author = *msg.author;
+        if(author["id"] == self["id"]) {
+            return;
+        }
+        auto handler = this->isCommandHandler(*msg.guild_id->get());
+        if(handler != nullptr)
+            handler->handleMessage(msg);
+        else 
+            this->sendMessage(*msg.channel_id, "WTF this server does not have a handler contact SenpaiR6#1717");
     });
 }
 
@@ -40,8 +48,9 @@ void Bot::run() {
 
 CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
-        if(it->first["id"] == guild_id)
+        if(it->first["id"] == std::to_string(guild_id)) {
             return it->second;
+        }
     }
     return nullptr;
 }
@@ -71,12 +80,10 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
 }
 
 void Bot::sendMessage(const dpp::snowflake channelid, std::string message) {
-    std::cout << "check send 1" << std::endl;
     bot->createMessage()
         ->channel_id(channelid)
         ->content(message)
         ->run();
-    std::cout << "check send 2" << std::endl;
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {

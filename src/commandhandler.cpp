@@ -7,10 +7,7 @@
 
 #include "../include/commands/help.hpp"
 
-CommandHandler::CommandHandler(Bot *bot, dpp::Guild guild, std::string prefix) {
-    this->bot = bot;
-    this->guild = guild;
-    this->prefix = prefix;
+CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
     std::vector<std::string> names;
     //TODO: this block for every module
@@ -39,19 +36,25 @@ CommandHandler::CommandHandler(Bot *bot, dpp::Guild guild, std::string prefix) {
     commands.clear();
 }
 
+CommandHandler::~CommandHandler() {
+    for(auto &module : modules) {
+        delete module;
+    }
+}
+
 void CommandHandler::initDefault() {
     loadModule(modules.at(0));
 }
 
 void CommandHandler::handleMessage(dpp::Message msg) {
     std::string content = *msg.content;
-    std::cout << "Why dump core" << std::endl;
-    if(content.starts_with(prefix)) {
-        std::cout << "Why dump core here" << std::endl;
-        std::cout << content << std::endl;
-        // bot->sendMessage(*msg.channel_id, "This is a command");
+    auto command = this->isCommand(content);
+    if(command != nullptr) {
+        std::cout << &command << std::endl;
+        command->execute(msg);
+    } else if(content.starts_with(prefix)) {
+        bot->sendMessage(*msg.channel_id, "Could not find the command you were looking for, try " + this->isPrefix() +  "help to get a list of commands.");
     }
-    std::cout << "Why not check" << std::endl;
 }
 
 void CommandHandler::loadModule(Module *module) {
@@ -63,11 +66,13 @@ void CommandHandler::unloadModule(Module *module) {
 }
 
 std::vector<Command *> CommandHandler::getCommands() {
-    std::vector<Command *> loadedCommands;
-    for(auto it = modules.begin(); it != modules.end(); it++) {
-        if((*it)->isLoaded()) {
-            for(auto loaded = (*it)->commands().begin(); loaded != (*it)->commands().end(); loaded++)
+    std::vector<Command *> loadedCommands, commands;
+    for(auto &_module : modules) {
+        if(_module->isLoaded()) {
+            commands = _module->commands();
+            for(auto loaded = commands.begin(); loaded != commands.end(); loaded++) {
                 loadedCommands.push_back(*loaded);
+            }
         }
     }
     return loadedCommands;
@@ -81,18 +86,26 @@ std::string CommandHandler::isPrefix() {
     return prefix;
 }
 
-bool CommandHandler::isCommand(std::string msg) {
+Command * CommandHandler::isCommand(std::string msg) {
     std::size_t command = msg.find(" ");
-    if(command != std::string::npos) {
-        std::string to_find = msg.substr(bot->isPrefix().length(), command);
-        for(auto it = modules.begin(); it != modules.end(); it++) {
-            for(auto commands = (*it)->commands().begin(); commands != (*it)->commands().end(); commands++) {
-                if((*commands)->isName(to_find))
-                    return true;
-            }
+    std::string to_find;
+    std::vector<Command *> loadedCommands;
+    if(command != std::string::npos && msg.starts_with(prefix)) {
+        to_find = msg.substr(bot->isPrefix().length(), command - 1);
+        loadedCommands = this->getCommands();
+        for(auto &command : loadedCommands) {
+            if(command->isName(to_find))
+                return command;
+        }
+    } else if(msg.starts_with(prefix)) {
+        to_find = msg.substr(bot->isPrefix().length());
+        loadedCommands = this->getCommands();
+        for(auto &command : loadedCommands) {
+            if(command->isName(to_find))
+                return command;
         }
     }
-    return false;
+    return nullptr;
 }
 
 dpp::Guild CommandHandler::isFromGuild() {
