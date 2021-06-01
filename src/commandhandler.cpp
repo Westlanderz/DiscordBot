@@ -50,7 +50,6 @@ void CommandHandler::handleMessage(dpp::Message msg) {
     std::string content = *msg.content;
     auto command = this->isCommand(content);
     if(command != nullptr) {
-        std::cout << &command << std::endl;
         command->execute(msg);
     } else if(content.starts_with(prefix)) {
         bot->sendMessage(*msg.channel_id, "Could not find the command you were looking for, try " + this->isPrefix() +  "help to get a list of commands.");

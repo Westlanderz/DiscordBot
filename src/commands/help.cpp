@@ -13,7 +13,6 @@ void Help::execute(dpp::Message msg) {
     std::vector<Command *> commands = module->isHandler()->getCommands();
     std::vector<Command *> allowed_commands;
     dpp::User sender;
-    std::cout << "help command is executing" << std::endl;
     for(auto &command : commands) {
         if(command->hasPermsToRun())
             allowed_commands.push_back(command);
