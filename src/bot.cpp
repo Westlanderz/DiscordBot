@@ -10,6 +10,7 @@ Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{pr
     botOwnerRole = "asdasdasd";
     bot->prefix = prefix;
     bot->debugUnhandled = false;
+    starttime = std::chrono::high_resolution_clock::now();
 }
 
 void Bot::login(std::string token) {
@@ -23,7 +24,7 @@ void Bot::setIntents(uint16_t intents) {
 
 void Bot::initServerJoiner() {
     bot->handleGUILD_CREATE([this](dpp::Guild guild) {
-        addCommandHandler(this, guild);
+        this->addCommandHandler(this, guild);
     });
 }
 
@@ -39,6 +40,9 @@ void Bot::initHandlers() {
             handler->handleMessage(msg);
         else 
             this->sendMessage(*msg.channel_id, "WTF this server does not have a handler contact SenpaiR6#1717");
+    });
+    bot->handleGUILD_DELETE([this](dpp::Guild guild) {
+        this->removeCommandHandler(guild);
     });
 }
 
@@ -90,4 +94,11 @@ void Bot::sendMessage(dpp::User user, std::string message) {
     bot->createDM()
         ->recipient_id(user["id"])
         ->run();
+}
+
+double Bot::uptime() {
+    auto now = std::chrono::high_resolution_clock::now();
+    auto time_now = std::chrono::high_resolution_clock::to_time_t(now);
+    auto time_start = std::chrono::high_resolution_clock::to_time_t(starttime);
+    return std::difftime(time_now, time_start);
 }

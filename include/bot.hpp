@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <chrono>
 #include "include.hpp"
 
 class CommandHandler;
@@ -17,6 +18,7 @@ class Bot {
         std::string token;
         std::string botOwnerRole;
         bool enableReactions;
+        std::chrono::_V2::high_resolution_clock::time_point starttime;
     
     public:
         json self;
@@ -35,7 +37,9 @@ class Bot {
         void addCommandHandler(Bot *, dpp::Guild);
         void removeCommandHandler(dpp::Guild);
         void sendMessage(const dpp::snowflake, std::string);
-        void sendMessage(dpp::User, std::string); 
+        void sendMessage(dpp::User, std::string);
+        double uptime();
+
 };
 
 #endif
