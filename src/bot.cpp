@@ -96,6 +96,13 @@ void Bot::sendMessage(dpp::User user, std::string message) {
         ->run();
 }
 
+void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
+    bot->createMessage()
+        ->channel_id(channelid)
+        ->embed(embed.getEmbed())
+        ->run();
+}
+
 double Bot::uptime() {
     auto now = std::chrono::high_resolution_clock::now();
     auto time_now = std::chrono::high_resolution_clock::to_time_t(now);
