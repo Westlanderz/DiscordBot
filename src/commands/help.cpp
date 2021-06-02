@@ -29,6 +29,12 @@ void Help::execute(dpp::Message msg) {
         bool found{false};
         for(auto &command : allowed_commands) {
             if(command->isName(command_name)) {
+                // dpp::MessageEmbed embed;
+                // embed.setAuthor(module->isHandler()->hasBot()->self["username"], NULL);
+                // embed.setTitle("Generated help message");
+                // embed.addField(command->getName(), command->getHelpMessage(), true);
+                // embed.setTimestamp2("");
+                // command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
                 command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, command->getHelpMessage());
                 found = true;
                 break;
