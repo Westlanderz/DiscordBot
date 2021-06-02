@@ -7,6 +7,7 @@
 
 #include "../include/commands/help.hpp"
 #include "../include/commands/uptime.hpp"
+#include "../include/commands/traceback.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
@@ -15,20 +16,29 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     //TODO: list commands here
     names.push_back("help");
     commands.push_back(new Help(names));
-    names.at(0) = "uptime";
+    names.clear();
+    names.push_back("uptime");
     commands.push_back(new Uptime(names));
+    names.clear();
+    names.push_back("traceback");
+    names.push_back("trace");
+    commands.push_back(new Traceback(names));
+    // names.clear();
     // names.at(0) = "help";
     // commands.push_back();
+    // names.clear();
     // names.at(0) = "help";
     // commands.push_back();
+    // names.clear();
     // names.at(0) = "help";
     // commands.push_back();
+    // names.clear();
     // names.at(0) = "help";
     // commands.push_back();
+    // names.clear();
     // names.at(0) = "help";
     // commands.push_back();
-    // names.at(0) = "help";
-    // commands.push_back();
+    // names.clear();
     auto default_module = new Default("default", this, commands);
     modules.push_back(default_module);
     for(auto &command : commands) {
