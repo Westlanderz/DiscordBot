@@ -36,7 +36,7 @@ void Bot::initServerJoiner() {
 }
 
 void Bot::initHandlers() {
-    bot->handleREADY([this](json data) { self = data["user"]; std::cout << "Connected to the servers" << std::endl;});
+    bot->handleREADY([this](json data) { self = data["user"]; std::cout << "\033[32;1mConnected to the servers\033[0m" << std::endl;});
     bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
         dpp::User author = *msg.author;
         if(author["id"] == self["id"]) {
