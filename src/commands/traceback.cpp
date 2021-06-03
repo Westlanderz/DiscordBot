@@ -4,6 +4,8 @@
 #include "../../include/bot.hpp"
 #include "../../include/commandexception.hpp"
 
+#include<algorithm>
+
 Traceback::Traceback(std::vector<std::string> names): Command(names) {}
 
 std::string Traceback::getHelpMessage() {
@@ -12,18 +14,34 @@ std::string Traceback::getHelpMessage() {
 
 void Traceback::execute(dpp::Message msg) {
     auto author = *msg.author.get();
-    dpp::User owner = json({});
     std::size_t find_args = msg.content->find(" ");
     std::size_t find_command = msg.content->find(" ", find_args + 1);
     std::string command_name = "";
+    dpp::User owner;
     if(find_args != std::string::npos) {
         if(find_command != std::string::npos) {
             command_name = msg.content->substr(find_args + 1, find_command - find_args);
         } else {
             command_name = msg.content->substr(find_args + 1);
         }
+        std::transform(command_name.begin(), command_name.end(), command_name.begin(), ::tolower);
+        CommandException *exception = module->isHandler()->getLastException();
+        if(command_name.compare("true")) {
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id.get(), exception->what());
+        } else {
+            
+            for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
+                if(guild.at(0)["members"].at(i)["user"]["id"] == authorid)
+                    owner = guild.at(0)["members"].at(i)["user"];
+            }
+            module->isHandler()->hasBot()->sendMessage(owner, exception->what());
+        }
     } else {
-        module->isHandler()->hasBot()->sendMessage(*msg.channel_id.get(), "This is the tracback command. Implemantation comes later.");
+        for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
+            if(guild.at(0)["members"].at(i)["user"]["id"] == authorid)
+                owner = guild.at(0)["members"].at(i)["user"];
+        }
+        module->isHandler()->hasBot()->sendMessage(owner, exception->what());
     }
 }
     
