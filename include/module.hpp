@@ -21,7 +21,11 @@ class Module {
             this->commandHandler = commandHandler;
             this->includedCommands = includedCommands;
         };
-        virtual ~Module() = default;
+        virtual ~Module() {
+            for(auto &command : this->includedCommands) {
+                delete command;
+            }
+        };
 
         virtual std::string isName() { return name; };
         virtual std::vector<Command *> commands() { return includedCommands; };

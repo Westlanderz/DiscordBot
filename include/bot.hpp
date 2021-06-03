@@ -24,7 +24,7 @@ class Bot {
         json self;
 
         Bot(std::string, std::string);
-        virtual ~Bot() = default;
+        virtual ~Bot();
 
         void login(std::string);
         void setIntents(uint16_t);
