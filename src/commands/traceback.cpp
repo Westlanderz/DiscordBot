@@ -18,6 +18,7 @@ void Traceback::execute(dpp::Message msg) {
     std::size_t find_command = msg.content->find(" ", find_args + 1);
     std::string command_name = "";
     dpp::User owner;
+    dpp::Guild guild = module->isHandler()->isFromGuild();
     if(find_args != std::string::npos) {
         if(find_command != std::string::npos) {
             command_name = msg.content->substr(find_args + 1, find_command - find_args);
@@ -25,23 +26,22 @@ void Traceback::execute(dpp::Message msg) {
             command_name = msg.content->substr(find_args + 1);
         }
         std::transform(command_name.begin(), command_name.end(), command_name.begin(), ::tolower);
-        CommandException *exception = module->isHandler()->getLastException();
-        if(command_name.compare("true")) {
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id.get(), exception->what());
+        if(!command_name.compare("true")) {
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "errmsg");
         } else {
-            
-            for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
-                if(guild.at(0)["members"].at(i)["user"]["id"] == authorid)
+            for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
+                if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                     owner = guild.at(0)["members"].at(i)["user"];
             }
-            module->isHandler()->hasBot()->sendMessage(owner, exception->what());
+            module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
         }
     } else {
-        for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
-            if(guild.at(0)["members"].at(i)["user"]["id"] == authorid)
+        for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
+            std::cout << guild.at(0)["members"].at(i).dump(1) << std::endl << std::endl;
+            if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                 owner = guild.at(0)["members"].at(i)["user"];
         }
-        module->isHandler()->hasBot()->sendMessage(owner, exception->what());
+        module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
     }
 }
     
@@ -66,5 +66,6 @@ bool Traceback::hasPermsToRun(dpp::User user) {
     } catch (CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << " \033[1;36m" << e.getErrorNumber() + " " + e.getErrorOffset() << "\033[0m" << std::endl;
         module->isHandler()->setLastException(&e);
+        return false;
     }
 }
