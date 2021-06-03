@@ -14,7 +14,7 @@ void Help::execute(dpp::Message msg) {
     std::vector<Command *> allowed_commands;
     dpp::User sender;
     for(auto &command : commands) {
-        if(command->hasPermsToRun())
+        if(command->hasPermsToRun(*msg.author.get()))
             allowed_commands.push_back(command);
     }
     std::size_t find_args = msg.content->find(" ");
