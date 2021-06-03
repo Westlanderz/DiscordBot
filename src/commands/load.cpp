@@ -2,6 +2,7 @@
 #include "../../include/module.hpp"
 #include "../../include/commandhandler.hpp"
 #include "../../include/bot.hpp"
+#include "../../include/commandexception.hpp"
 
 Load::Load(std::vector<std::string> names): Command(names) {}
 
@@ -10,11 +11,30 @@ std::string Load::getHelpMessage() {
 }
 
 void Load::execute(dpp::Message msg) {
-
+    std::size_t find_args = msg.content->find(" ");
+    std::size_t find_command = msg.content->find(" ", find_args + 1);
+    std::string module_name = "";
+    if(find_args != std::string::npos) {
+        if(find_command != std::string::npos) {
+            module_name = msg.content->substr(find_args + 1, find_command - find_args);
+        } else {
+            module_name = msg.content->substr(find_args + 1);
+        }
+        for(auto &_module : module->isHandler()->getModules()) {
+            if(_module->isName(module_name) && !_module->isLoaded()) {
+                module->isHandler()->loadModule(_module);
+                module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Loaded the " + _module->getName() + " module for you.");
+                std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+            } else {
+                module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Unable to find this module or this module is already loaded");
+                std::cout << "\033[1;31mCould not execute " + this->getName() + "\033[0m" << std::endl;
+            }
+        }
+    }
 }
 
 bool Load::hasPermsToRun(dpp::User user) {
-    // module->isHandler()->addAdminRole(798590668137562132);
+    module->isHandler()->addAdminRole(798590668137562132);
     std::vector<dpp::snowflake> admin = module->isHandler()->adminRoles();
     std::vector<Module *> modules = module->isHandler()->getModules();
     dpp::Guild guild = module->isHandler()->isFromGuild();
@@ -30,5 +50,6 @@ bool Load::hasPermsToRun(dpp::User user) {
             }
         }
     }
+    std::cout << (isAdmin ? "\033[1;32mPermission granted\033[0m" : "\033[1;31mNot enough permissions\033[0m")<< std::endl;
     return isAdmin;
 }

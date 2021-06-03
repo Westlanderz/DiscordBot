@@ -2,6 +2,7 @@
 #include "../../include/module.hpp"
 #include "../../include/commandhandler.hpp"
 #include "../../include/bot.hpp"
+#include "../../include/commandexception.hpp"
 
 Help::Help(std::vector<std::string> names): Command(names) {}
 
