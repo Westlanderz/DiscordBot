@@ -7,6 +7,7 @@
 class Bot;
 class Module;
 class Command;
+class CommandException;
 
 class CommandHandler {
     private:
@@ -16,6 +17,7 @@ class CommandHandler {
         std::vector<Module *> modules;
         std::vector<dpp::snowflake> adminRole;
         std::vector<dpp::snowflake> modRole;
+        CommandException *lastException;
 
     public:
         CommandHandler(Bot *, dpp::Guild, std::string);
@@ -38,6 +40,7 @@ class CommandHandler {
         std::vector<dpp::snowflake> modRoles();
         std::vector<dpp::snowflake> adminRoles();
         Bot * hasBot();
+        CommandException * getLastException();
 };
 
 #endif

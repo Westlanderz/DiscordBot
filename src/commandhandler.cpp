@@ -1,6 +1,7 @@
 #include "../include/commandhandler.hpp"
 #include "../include/bot.hpp"
 #include "../include/module.hpp"
+#include "../include/commandexception.hpp"
 
 #include "../include/modules/default.hpp"
 
@@ -40,6 +41,7 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     // commands.push_back();
     // names.clear();
     auto default_module = new Default("default", this, commands);
+    this->loadModule(default_module);
     modules.push_back(default_module);
     for(auto &command : commands) {
         command->addToModule(default_module);
@@ -63,8 +65,6 @@ void CommandHandler::handleMessage(dpp::Message msg) {
     dpp::User author = *msg.author.get();
     if(command != nullptr && command->hasPermsToRun(author)) {
         command->execute(msg);
-    } else if(content.starts_with(prefix)) {
-        bot->sendMessage(*msg.channel_id, "Could not find the command you were looking for, try " + this->isPrefix() +  "help to get a list of commands.");
     }
 }
 
@@ -165,4 +165,8 @@ std::vector<dpp::snowflake> CommandHandler::adminRoles() {
 
 Bot * CommandHandler::hasBot() {
     return bot;
+}
+
+CommandException * CommandHandler::getLastException() {
+    return lastException;
 }
