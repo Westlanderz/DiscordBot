@@ -60,11 +60,19 @@ void CommandHandler::initDefault() {
 }
 
 void CommandHandler::handleMessage(dpp::Message msg) {
-    std::string content = *msg.content.get();
-    Command *command = this->isCommand(content);
-    dpp::User author = *msg.author.get();
-    if(command != nullptr && command->hasPermsToRun(author)) {
-        command->execute(msg);
+    try {
+        std::cout << *msg.content.get() << std::endl;
+        std::string content = *msg.content.get();
+        Command *command = this->isCommand(content);
+        dpp::User author = *msg.author.get();
+        if(command != nullptr && command->hasPermsToRun(author)) {
+            command->execute(msg);
+        } else if(command == nullptr && content.starts_with(prefix)) {
+            bot->sendMessage(*msg.channel_id.get(), false, "I cannot find this command");
+            throw CommandException("This is not a known command", EXECUTE_ERROR, 0);
+        }
+    } catch(CommandException &e) {
+        std::cerr << "\033[1;31m" << e.what() << " \033[0m" << std::endl;
     }
 }
 

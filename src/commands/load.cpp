@@ -24,15 +24,15 @@ void Load::execute(dpp::Message msg) {
             for(auto &_module : module->isHandler()->getModules()) {
                 if(_module->isName(module_name) && !_module->isLoaded()) {
                     module->isHandler()->loadModule(_module);
-                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Loaded the " + _module->getName() + " module for you.");
+                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Loaded the " + _module->getName() + " module for you.");
                     std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
                 } else {
-                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Unable to find this module or this module is already loaded");
+                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Unable to find this module or this module is already loaded");
                     throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
                 }
             }
         } else {
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "You have not given a module to load. " + this->getHelpMessage());
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "You have not given a module to load. " + this->getHelpMessage());
             throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);
         }
     } catch(CommandException &e) {

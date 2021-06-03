@@ -46,7 +46,7 @@ void Bot::initHandlers() {
         if(handler != nullptr)
             handler->handleMessage(msg);
         else 
-            this->sendMessage(*msg.channel_id, "WTF this server does not have a handler contact SenpaiR6#1717");
+            this->sendMessage(*msg.channel_id, false, "WTF this server does not have a handler contact SenpaiR6#1717");
     });
     bot->handleGUILD_DELETE([this](dpp::Guild guild) {
         this->removeCommandHandler(guild);
@@ -90,18 +90,18 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
         commandhandlers.erase(remove);
 }
 
-void Bot::sendMessage(const dpp::snowflake channelid, std::string message) {
+void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string message) {
     bot->createMessage()
         ->channel_id(channelid)
         ->content(message)
+        ->tts(tts)
         ->run();
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {
-    // bot->createDM()
-    //     ->recipient_id(user["id"])
-    //     ->payload()
-    //     ->run();
+    bot->createDM()
+        ->recipient_id(dpp::get_snowflake(user["id"]))
+        ->run();
 }
 
 void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
