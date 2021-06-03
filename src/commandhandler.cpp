@@ -1,13 +1,13 @@
 #include "../include/commandhandler.hpp"
 #include "../include/bot.hpp"
 #include "../include/module.hpp"
-#include "../include/command.hpp"
 
 #include "../include/modules/default.hpp"
 
 #include "../include/commands/help.hpp"
 #include "../include/commands/uptime.hpp"
 #include "../include/commands/traceback.hpp"
+#include "../include/commands/load.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
@@ -23,20 +23,20 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     names.push_back("traceback");
     names.push_back("trace");
     commands.push_back(new Traceback(names));
+    names.clear();
+    names.push_back("load");
+    commands.push_back(new Load(names));
     // names.clear();
-    // names.at(0) = "help";
+    // names.push_back("help");
     // commands.push_back();
     // names.clear();
-    // names.at(0) = "help";
+    // names.push_back("help");
     // commands.push_back();
     // names.clear();
-    // names.at(0) = "help";
+    // names.push_back("help");
     // commands.push_back();
     // names.clear();
-    // names.at(0) = "help";
-    // commands.push_back();
-    // names.clear();
-    // names.at(0) = "help";
+    // names.push_back("help");
     // commands.push_back();
     // names.clear();
     auto default_module = new Default("default", this, commands);
@@ -58,9 +58,10 @@ void CommandHandler::initDefault() {
 }
 
 void CommandHandler::handleMessage(dpp::Message msg) {
-    std::string content = *msg.content;
-    auto command = this->isCommand(content);
-    if(command != nullptr) {
+    std::string content = *msg.content.get();
+    Command *command = this->isCommand(content);
+    dpp::User author = *msg.author.get();
+    if(command != nullptr && command->hasPermsToRun(author)) {
         command->execute(msg);
     } else if(content.starts_with(prefix)) {
         bot->sendMessage(*msg.channel_id, "Could not find the command you were looking for, try " + this->isPrefix() +  "help to get a list of commands.");
@@ -73,6 +74,10 @@ void CommandHandler::loadModule(Module *module) {
 
 void CommandHandler::unloadModule(Module *module) {
     module->unload();
+}
+
+std::vector<Module *> CommandHandler::getModules() {
+    return modules;
 }
 
 std::vector<Command *> CommandHandler::getCommands() {
@@ -122,39 +127,39 @@ dpp::Guild CommandHandler::isFromGuild() {
     return guild;
 }
 
-void CommandHandler::addModRole(dpp::Role role) {
-    modRole.push_back(role);
+void CommandHandler::addModRole(const dpp::snowflake id) {
+    modRole.push_back(id);
 }
 
-void CommandHandler::removeModRole(dpp::Role role) {
+void CommandHandler::removeModRole(const dpp::snowflake id) {
     auto remove = modRole.end();
     for(auto it = modRole.begin(); it != modRole.end(); it++) {
-        if(*it == role)
+        if(*it == id)
             remove = it;
     }
     if(remove != modRole.end())
         modRole.erase(remove);
 }
 
-void CommandHandler::addAdminRole(dpp::Role role) {
-    adminRole.push_back(role);
+void CommandHandler::addAdminRole(const dpp::snowflake id) {
+    adminRole.push_back(id);
 }
 
-void CommandHandler::removeAdminRole(dpp::Role role) {
+void CommandHandler::removeAdminRole(const dpp::snowflake id) {
     auto remove = adminRole.end();
     for(auto it = adminRole.begin(); it != adminRole.end(); it++) {
-        if(*it == role)
+        if(*it == id)
             remove = it;
     }
     if(remove != adminRole.end())
         adminRole.erase(remove);
 }
 
-std::vector<dpp::Role> CommandHandler::modRoles() {
+std::vector<dpp::snowflake> CommandHandler::modRoles() {
     return modRole;
 }
 
-std::vector<dpp::Role> CommandHandler::adminRoles() {
+std::vector<dpp::snowflake> CommandHandler::adminRoles() {
     return adminRole;
 }
 
