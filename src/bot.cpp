@@ -98,9 +98,10 @@ void Bot::sendMessage(const dpp::snowflake channelid, std::string message) {
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {
-    bot->createDM()
-        ->recipient_id(user["id"])
-        ->run();
+    // bot->createDM()
+    //     ->recipient_id(user["id"])
+    //     ->payload()
+    //     ->run();
 }
 
 void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
