@@ -18,7 +18,7 @@ class Command {
 
         virtual std::string getHelpMessage() = 0;
         virtual void execute(dpp::Message) = 0;
-        virtual bool hasPermsToRun(dpp::User user = NULL) { return true; };
+        virtual bool hasPermsToRun(dpp::User user) { return true; };
         virtual bool isName(std::string name) {
             for(auto &_name : names) {
                 if(!_name.compare(name))
