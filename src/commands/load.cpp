@@ -11,25 +11,30 @@ std::string Load::getHelpMessage() {
 }
 
 void Load::execute(dpp::Message msg) {
-    std::size_t find_args = msg.content->find(" ");
-    std::size_t find_command = msg.content->find(" ", find_args + 1);
-    std::string module_name = "";
-    if(find_args != std::string::npos) {
-        if(find_command != std::string::npos) {
-            module_name = msg.content->substr(find_args + 1, find_command - find_args);
-        } else {
-            module_name = msg.content->substr(find_args + 1);
-        }
-        for(auto &_module : module->isHandler()->getModules()) {
-            if(_module->isName(module_name) && !_module->isLoaded()) {
-                module->isHandler()->loadModule(_module);
-                module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Loaded the " + _module->getName() + " module for you.");
-                std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+    try {
+        std::size_t find_args = msg.content->find(" ");
+        std::size_t find_command = msg.content->find(" ", find_args + 1);
+        std::string module_name = "";
+        if(find_args != std::string::npos) {
+            if(find_command != std::string::npos) {
+                module_name = msg.content->substr(find_args + 1, find_command - find_args);
             } else {
-                module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Unable to find this module or this module is already loaded");
-                std::cout << "\033[1;31mCould not execute " + this->getName() + "\033[0m" << std::endl;
+                module_name = msg.content->substr(find_args + 1);
+            }
+            for(auto &_module : module->isHandler()->getModules()) {
+                if(_module->isName(module_name) && !_module->isLoaded()) {
+                    module->isHandler()->loadModule(_module);
+                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Loaded the " + _module->getName() + " module for you.");
+                    std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+                } else {
+                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Unable to find this module or this module is already loaded");
+                    throw(CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0));
+                }
             }
         }
+    } catch(CommandException &e) {
+        std::cerr << "\033[1;31m" << e.what() << " with error code \033[1;36" << e.getErrorNumber() << "\033[0m" << std::endl;
+        module->isHandler()->setLastException(&e);
     }
 }
 

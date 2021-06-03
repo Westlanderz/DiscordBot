@@ -44,7 +44,7 @@ void Help::execute(dpp::Message msg) {
             }
             if(!found) {
                 module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Could not find the command you were looking for.");
-                throw CommandException("\033[1;31mWas not able to find " + command_name + " while executing " + this->getName() + "\033[0m", FIND_ERROR, 0);
+                throw CommandException("Was not able to find " + command_name + " while executing " + this->getName(), FIND_ERROR, 0);
             }
         } else {
             std::string help_msg = "Here is a list of commands you can run: ";
@@ -61,5 +61,6 @@ void Help::execute(dpp::Message msg) {
         }
     } catch(CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << "\033[0m stopped searching with error code \033[1;36m" << e.getErrorNumber() << "\033[0m" << std::endl;
+        module->isHandler()->setLastException(&e);
     }    
 }

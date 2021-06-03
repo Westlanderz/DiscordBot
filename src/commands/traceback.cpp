@@ -47,5 +47,6 @@ bool Traceback::hasPermsToRun(dpp::User user) {
             return isOwner;
     } catch (CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << " \033[1;36m" << e.getErrorNumber() + " " + e.getErrorOffset() << "\033[0m" << std::endl;
+        module->isHandler()->setLastException(&e);
     }
 }
