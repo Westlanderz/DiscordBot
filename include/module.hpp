@@ -28,7 +28,12 @@ class Module {
             }
         };
 
-        virtual std::string isName() { return name; };
+        virtual std::string getName() { return name; };
+        virtual bool isName(std::string name) {
+            if(!this->name.compare(name))
+                    return true;
+            return false;
+        };
         virtual std::vector<Command *> commands() { return includedCommands; };
         virtual bool isLoaded() { return loaded; };
         virtual void load() { loaded = true; };
