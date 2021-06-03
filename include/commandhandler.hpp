@@ -41,6 +41,7 @@ class CommandHandler {
         std::vector<dpp::snowflake> adminRoles();
         Bot * hasBot();
         CommandException * getLastException();
+        void setLastException(CommandException *);
 };
 
 #endif

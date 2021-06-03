@@ -170,3 +170,7 @@ Bot * CommandHandler::hasBot() {
 CommandException * CommandHandler::getLastException() {
     return lastException;
 }
+
+void CommandHandler::setLastException(CommandException *exception) {
+    lastException = exception;
+}
