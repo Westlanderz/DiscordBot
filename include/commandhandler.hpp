@@ -14,8 +14,8 @@ class CommandHandler {
         dpp::Guild guild;
         std::string prefix;
         std::vector<Module *> modules;
-        std::vector<dpp::Role> adminRole;
-        std::vector<dpp::Role> modRole;
+        std::vector<dpp::snowflake> adminRole;
+        std::vector<dpp::snowflake> modRole;
 
     public:
         CommandHandler(Bot *, dpp::Guild, std::string);
@@ -25,17 +25,18 @@ class CommandHandler {
         void handleMessage(dpp::Message);
         void loadModule(Module *);
         void unloadModule(Module *);
+        std::vector<Module *> getModules();
         std::vector<Command *> getCommands();
         void newPrefix(std::string);
         std::string isPrefix();
         Command * isCommand(std::string);
         dpp::Guild isFromGuild();
-        void addModRole(dpp::Role);
-        void removeModRole(dpp::Role);
-        void addAdminRole(dpp::Role);
-        void removeAdminRole(dpp::Role);
-        std::vector<dpp::Role> modRoles();
-        std::vector<dpp::Role> adminRoles();
+        void addModRole(const dpp::snowflake);
+        void removeModRole(const dpp::snowflake);
+        void addAdminRole(const dpp::snowflake);
+        void removeAdminRole(const dpp::snowflake);
+        std::vector<dpp::snowflake> modRoles();
+        std::vector<dpp::snowflake> adminRoles();
         Bot * hasBot();
 };
 
