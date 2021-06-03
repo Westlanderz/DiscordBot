@@ -6,5 +6,6 @@ executable('discordbot',
          'commands/help.cpp',
          'commands/uptime.cpp',
          'commands/traceback.cpp',
+         'commands/load.cpp',
         ]
     )
