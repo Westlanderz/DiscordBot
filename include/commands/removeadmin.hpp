@@ -1,0 +1,5 @@
+#ifndef REMOVEADMIN_HPP
+#define REMOVEADMIN_HPP
+
+
+#endif // REMOVEADMIN_HPP
