@@ -7,10 +7,17 @@ std::shared_ptr<DppBot> newBot(){
 
 Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{prefix} {
     bot = newBot();
-    botOwnerRole = "asdasdasd";
+    botOwnerRole = "owner_YAGPDB2U";
     bot->prefix = prefix;
     bot->debugUnhandled = false;
     starttime = std::chrono::high_resolution_clock::now();
+}
+
+Bot::~Bot() {
+    for(auto &handler : this->commandhandlers) {
+        delete handler.second;
+    }
+    this->commandhandlers.clear();
 }
 
 void Bot::login(std::string token) {
