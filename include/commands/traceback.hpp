@@ -8,6 +8,7 @@ class Traceback : public Command {
         Traceback(std::vector<std::string>);
         std::string getHelpMessage();
         void execute(dpp::Message);
+        bool hasPermsToRun(dpp::User) override;
 };
 
 #endif // __TRACEBACK_H__
