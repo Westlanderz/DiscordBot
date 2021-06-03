@@ -5,8 +5,9 @@
 #include <string>
 #include <iostream>
 
+#include "command.hpp"
+
 class CommandHandler;
-class Command;
 
 class Module {
     private:
