@@ -6,6 +6,7 @@ add_project_arguments('--std=c++2a', '-c', '-fcoroutines', '-ggdb', language: 'c
 add_project_link_arguments('-lssl', language: 'cpp')
 add_project_link_arguments('-lcrypto', language: 'cpp')
 add_project_link_arguments('-lpthread', language: 'cpp')
+add_project_link_arguments('-lfmt', language: 'cpp')
 
 add_project_link_arguments('-odiscordbot', language: 'cpp')
 
