@@ -60,7 +60,7 @@ bool Traceback::hasPermsToRun(dpp::User user) {
             }
         }
         if(!isOwner)
-            throw(CommandException("Could not find the owner in this server " + module->isHandler()->isFromGuild().at(0)["name"].get<std::string>(), PERMISSION_ERROR, 0));
+            throw CommandException("Could not find the owner in this server " + module->isHandler()->isFromGuild().at(0)["name"].get<std::string>(), PERMISSION_ERROR, 0);
         else
             return isOwner;
     } catch (CommandException &e) {

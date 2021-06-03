@@ -28,12 +28,12 @@ void Load::execute(dpp::Message msg) {
                     std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
                 } else {
                     module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Unable to find this module or this module is already loaded");
-                    throw(CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0));
+                    throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
                 }
             }
         } else {
             module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "You have not given a module to load. " + this->getHelpMessage());
-            throw(CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0));
+            throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);
         }
     } catch(CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << " \033[1;35mwith error code \033[1;36m" << e.getErrorNumber() << " \033[0m" << std::endl;
