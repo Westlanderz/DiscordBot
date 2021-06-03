@@ -28,24 +28,19 @@ void Help::execute(dpp::Message msg) {
             } else {
                 command_name = msg.content->substr(find_args + 1);
             }
-            bool found{false};
             for(auto &command : allowed_commands) {
                 if(command->isName(command_name)) {
-                    // dpp::MessageEmbed embed;
-                    // embed.setAuthor(module->isHandler()->hasBot()->self["username"], NULL);
-                    // embed.setTitle("Generated help message");
-                    // embed.addField(command->getName(), command->getHelpMessage(), true);
-                    // embed.setTimestamp2("");
-                    // command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
-                    command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, command->getHelpMessage());
-                    found = true;
-                    break;
+                    dpp::MessageEmbed embed;
+                    embed.setAuthor(module->isHandler()->hasBot()->self["username"], "");
+                    embed.setTitle("Generated help message");
+                    embed.addField(command->getName(), command->getHelpMessage(), true);
+                    embed.setColor(0xFFCC00);
+                    command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
+                    return;
                 }
             }
-            if(!found) {
-                module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Could not find the command you were looking for.");
-                throw CommandException("Was not able to find " + command_name + " while executing " + this->getName(), FIND_ERROR, 0);
-            }
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Could not find the command you were looking for.");
+            throw CommandException("Was not able to find " + command_name + " while executing " + this->getName(), FIND_ERROR, 0);
         } else {
             std::string help_msg = "Here is a list of commands you can run: ";
             for(auto &command : allowed_commands) {
@@ -57,7 +52,7 @@ void Help::execute(dpp::Message msg) {
                 }
             }
             help_msg.append("Try " + module->isHandler()->isPrefix() + names[0] + " to learn more about one of them. Version: 0.1.0-a.1 https://github.com/Westlanderz/DiscordBot");
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, help_msg);
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, true, help_msg);
         }
     } catch(CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << "\033[0m stopped searching with error code \033[1;36m" << e.getErrorNumber() << "\033[0m" << std::endl;
