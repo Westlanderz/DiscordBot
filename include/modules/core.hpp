@@ -1,9 +1,9 @@
-#ifndef default_hpp
-#define default_hpp
+#ifndef CORE_HPP
+#define CORE_HPP
 
 #include "../module.hpp"
 
-class Default : public Module {
+class Core : public Module {
     private:
         std::string name;
         std::vector<Command *> includedCommands;
@@ -11,8 +11,8 @@ class Default : public Module {
         CommandHandler *commandHandler;
 
     public:
-        Default(std::string, CommandHandler *, std::vector<Command *>);
+        Core(std::string, CommandHandler *, std::vector<Command *>);
 
 };
 
-#endif
+#endif // CORE_HPP
