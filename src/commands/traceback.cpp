@@ -27,13 +27,13 @@ void Traceback::execute(dpp::Message msg) {
         }
         std::transform(command_name.begin(), command_name.end(), command_name.begin(), ::tolower);
         if(!command_name.compare("true")) {
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "errmsg");
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "errmsg");
         } else {
             for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
                 if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                     owner = guild.at(0)["members"].at(i)["user"];
             }
-            module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
+            // module->isHandler()->hasBot()->sendMessage(dpp::get_snowflake(owner["id"]), false, "errmsg");
         }
     } else {
         for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
@@ -41,7 +41,7 @@ void Traceback::execute(dpp::Message msg) {
             if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                 owner = guild.at(0)["members"].at(i)["user"];
         }
-        module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
+        // module->isHandler()->hasBot()->sendMessage(dpp::get_snowflake(owner["id"]), false, "errmsg");
     }
 }
     
