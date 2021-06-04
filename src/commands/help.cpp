@@ -14,9 +14,9 @@ void Help::execute(dpp::Message msg) {
     try {
         std::vector<Command *> commands = module->isHandler()->getCommands();
         std::vector<Command *> allowed_commands;
-        dpp::User sender;
+        dpp::User sender = *msg.author.get();
         for(auto &command : commands) {
-            if(command->hasPermsToRun(*msg.author.get()))
+            if(command->hasPermsToRun(sender))
                 allowed_commands.push_back(command);
         }
         std::size_t find_args = msg.content->find(" ");
@@ -35,11 +35,14 @@ void Help::execute(dpp::Message msg) {
                     embed.setTitle("Generated help message");
                     embed.addField(command->getName(), command->getHelpMessage(), true);
                     embed.setColor(0xFFCC00);
-                    command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
+                    module->isHandler()->hasBot()->hasDpp()->createDM()
+                        ->recipient_id(dpp::get_snowflake(sender["id"]))
+                        ->run();
+                    // command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
                     return;
                 }
             }
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, "Could not find the command you were looking for.");
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false,"Could not find the command you were looking for.");
             throw CommandException("Was not able to find " + command_name + " while executing " + this->getName(), FIND_ERROR, 0);
         } else {
             std::string help_msg = "Here is a list of commands you can run: ";
