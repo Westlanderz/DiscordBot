@@ -37,5 +37,5 @@ void Uptime::execute(dpp::Message msg) {
         output.append(std::to_string(minutes)).append(minutes > 1 ? " minutes, " : " minute, ");
     if(seconds != 0 || minutes > 0 || hours > 0 || days > 0 || months > 0 || years > 0)
         output.append(std::to_string(seconds)).append(seconds > 1 ? " seconds." : " second.");
-    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, output);
+    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, output);
 }
