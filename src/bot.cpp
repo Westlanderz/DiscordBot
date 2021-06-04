@@ -1,8 +1,6 @@
 #include "../include/bot.hpp"
 #include "../include/commandhandler.hpp"
 
-dpp::snowflake lastmsgid, lastchid;
-
 std::shared_ptr<DppBot> newBot(){
     return std::make_shared<DppBot>();
 }
@@ -42,9 +40,9 @@ void Bot::initHandlers() {
     bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
         dpp::User author = *msg.author;
         if(author["id"] == self["id"]) {
-            lastmsgid = *msg.id.get();
             return;
         }
+        // this->sendMessage(author, "Testing DM creation");
         auto handler = this->isCommandHandler(*msg.guild_id->get());
         if(handler != nullptr)
             handler->handleMessage(msg);
@@ -95,37 +93,26 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
     if(remove != commandhandlers.end())
         commandhandlers.erase(remove);
 }
-// std::vector<dpp::snowflake> msgids;
+
 void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string message) {
     bot->createMessage()
         ->channel_id(channelid)
         ->content(message)
         ->tts(tts)
         ->run();
-    lastchid = channelid;
-    dpp::MessageEmbed embed;
-    embed.setAuthor(this->self["username"], "");
-    embed.setTitle("Generated help message");
-    embed.addField("Testing embed", message, true);
-    embed.setColor(0xFFCC00);
-    // bot->editMessage()
-    //     ->channel_id(lastchid)
-    //     ->message_id(lastmsgid)
-    //     ->content("")
-    //     ->flags(1 << 2)
-    //     ->embed(embed.getEmbed())
-    //     ->run();
-    //TODO testing bulk
-    // msgids.push_back(lastmsgid);
-    // if(msgids.size() >= 10)
-    //     bot->bulkDeleteMessages()
-    //         ->channel_id(lastchid)
-    //         ->messages(msgids)
-    //         ->run();
-    // bot->deleteMessage()
-    //     ->channel_id(lastchid)
-    //     ->message_id(lastmsgid)
-    //     ->run();
+}
+
+void Bot::sendMessage(dpp::User user, std::string message) {
+    std::cout << user.dump(1) << std::endl;
+    std::cout << dpp::get_snowflake(user["id"]) << std::endl;
+    bot->createDM()
+        ->recipient_id(dpp::get_snowflake(user["id"]))
+        ->onRead([this, message](bool error, dpp::json res) {
+            std::cout << res.dump(1) << std::endl;
+            std::cout << error << std::endl;
+            std::cout << message << std::endl;
+        })
+        ->run();
 }
 
 void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {

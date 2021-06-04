@@ -37,6 +37,7 @@ class Bot {
         void addCommandHandler(Bot *, dpp::Guild);
         void removeCommandHandler(dpp::Guild);
         void sendMessage(const dpp::snowflake, bool, std::string);
+        void sendMessage(dpp::User, std::string);
         void sendMessage(const dpp::snowflake, const dpp::MessageEmbed);
         double uptime();
 
