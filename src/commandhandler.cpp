@@ -61,14 +61,16 @@ void CommandHandler::initDefault() {
 
 void CommandHandler::handleMessage(dpp::Message msg) {
     try {
-        std::cout << *msg.content.get() << std::endl;
         std::string content = *msg.content.get();
         Command *command = this->isCommand(content);
         dpp::User author = *msg.author.get();
         if(command != nullptr && command->hasPermsToRun(author)) {
             command->execute(msg);
+        } else if(command != nullptr && !command->hasPermsToRun(author)) {
+            bot->sendMessage(*msg.channel_id.get(), false, "You do not have the permission to run this command");
+            throw CommandException("Not enough permissions to run this " + command->getName(), PERMISSION_ERROR, 0);
         } else if(command == nullptr && content.starts_with(prefix)) {
-            bot->sendMessage(*msg.channel_id.get(), false, "I cannot find this command");
+            bot->sendMessage(*msg.channel_id.get(), false, "I cannot find this command, this is either not a command or the module with that command is not loaded yet.");
             throw CommandException("This is not a known command", EXECUTE_ERROR, 0);
         }
     } catch(CommandException &e) {
