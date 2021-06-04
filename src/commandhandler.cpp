@@ -3,12 +3,13 @@
 #include "../include/module.hpp"
 #include "../include/commandexception.hpp"
 
-#include "../include/modules/default.hpp"
+#include "../include/modules/core.hpp"
 
 #include "../include/commands/help.hpp"
 #include "../include/commands/uptime.hpp"
 #include "../include/commands/traceback.hpp"
 #include "../include/commands/load.hpp"
+#include "../include/commands/unload.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
@@ -27,6 +28,9 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     names.clear();
     names.push_back("load");
     commands.push_back(new Load(names));
+    names.clear();
+    names.push_back("unload");
+    commands.push_back(new UnLoad(names));
     // names.clear();
     // names.push_back("help");
     // commands.push_back();
@@ -37,10 +41,7 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     // names.push_back("help");
     // commands.push_back();
     // names.clear();
-    // names.push_back("help");
-    // commands.push_back();
-    // names.clear();
-    auto default_module = new Default("default", this, commands);
+    auto default_module = new Core("core", this, commands);
     this->loadModule(default_module);
     modules.push_back(default_module);
     for(auto &command : commands) {
