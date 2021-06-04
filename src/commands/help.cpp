@@ -35,14 +35,11 @@ void Help::execute(dpp::Message msg) {
                     embed.setTitle("Generated help message");
                     embed.addField(command->getName(), command->getHelpMessage(), true);
                     embed.setColor(0xFFCC00);
-                    module->isHandler()->hasBot()->hasDpp()->createDM()
-                        ->recipient_id(dpp::get_snowflake(sender["id"]))
-                        ->run();
-                    // command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
+                    command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
                     return;
                 }
             }
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false,"Could not find the command you were looking for.");
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Could not find the command you were looking for.");
             throw CommandException("Was not able to find " + command_name + " while executing " + this->getName(), FIND_ERROR, 0);
         } else {
             std::string help_msg = "Here is a list of commands you can run: ";
@@ -55,7 +52,7 @@ void Help::execute(dpp::Message msg) {
                 }
             }
             help_msg.append("Try " + module->isHandler()->isPrefix() + names[0] + " to learn more about one of them. Version: 0.1.0-a.1 https://github.com/Westlanderz/DiscordBot");
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, true, help_msg);
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, help_msg);
         }
     } catch(CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << "\033[0m stopped searching with error code \033[1;36m" << e.getErrorNumber() << "\033[0m" << std::endl;

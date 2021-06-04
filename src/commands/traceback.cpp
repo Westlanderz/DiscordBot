@@ -33,15 +33,14 @@ void Traceback::execute(dpp::Message msg) {
                 if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                     owner = guild.at(0)["members"].at(i)["user"];
             }
-            // module->isHandler()->hasBot()->sendMessage(dpp::get_snowflake(owner["id"]), false, "errmsg");
+            module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
         }
     } else {
         for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
-            std::cout << guild.at(0)["members"].at(i).dump(1) << std::endl << std::endl;
             if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
                 owner = guild.at(0)["members"].at(i)["user"];
         }
-        // module->isHandler()->hasBot()->sendMessage(dpp::get_snowflake(owner["id"]), false, "errmsg");
+        module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
     }
 }
     
