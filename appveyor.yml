@@ -26,18 +26,15 @@ build_script:
 
 - sh: >-
 
-    mkdir bin ; cd bin
-
-
-
+    mkdir bin
+    cd bin
     meson ..
-
-
-
     ninja
 
 test: off
 
 on_finish:
 
-- sh: rm -rf DiscordBot/
+- sh: >-
+  cd ../..
+  rm -rf DiscordBot/
