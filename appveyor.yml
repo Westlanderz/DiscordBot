@@ -1,16 +1,23 @@
 version: 1.0.{build}
+
+pull_requests:
+  do_not_increment_build_number: true
+
 branches:
   only:
   - master
   - beta-releases
   - development
+
 skip_tags: true
+
 build_script:
+
 - sh: >-
+
     mkdir bin ; cd bin
-
     meson ..
-
     ninja
+
 test: off
 deploy: off
