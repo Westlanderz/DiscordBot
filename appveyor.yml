@@ -18,9 +18,14 @@ skip_tags: true
 
 image: Ubuntu2004
 
-install:
+init:
 
 - sh: ''
+
+install:
+
+- sh: apt install meson
+
 
 build_script:
 
