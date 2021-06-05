@@ -226,8 +226,8 @@ sptr<const std::string> render_target() override {
 
 // https://discord.com/developers/docs/resources/channel#create-message
 // UndarkAido/Aido#8614 verified channel_id, content, filename, filetype, file
-// TODO nonce, tts, embed, allowed_mentions, and message_reference are
-// unverified
+// Westlanderz/SenpaiR6#1717 verified embed
+// TODO nonce, tts, allowed_mentions, and message_reference are unverified
 #define Bot PluginEndpoints
 #define Parent FileCall
 #define Class CreateMessageCall
@@ -457,7 +457,8 @@ sptr<const std::string> render_target() override {
 #include "../macros/defineCallClose.hh"
 
 // https://discord.com/developers/docs/resources/channel#edit-message
-// TODO unverified
+// Westlanderz/SenpaiR6#1717 verified channel_id, message_id, content, embed and flags
+// TODO allowed_mentions is unverified
 #define Bot PluginEndpoints
 #define Parent JsonCall
 #define Class EditMessageCall
@@ -508,7 +509,7 @@ sptr<const json> render_payload() override {
 #include "../macros/defineCallClose.hh"
 
 // https://discord.com/developers/docs/resources/channel#delete-message
-// TODO unverified
+// Verified by Westlanderz/SenpaiR6#1717
 #define Bot PluginEndpoints
 #define Parent Call
 #define Class DeleteMessageCall
