@@ -36,5 +36,6 @@ test: off
 on_finish:
 
 - sh: >-
-  cd ../..
-  rm -rf DiscordBot/
+
+    cd ../..
+    rm -rf DiscordBot/
