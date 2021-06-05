@@ -40,20 +40,20 @@ void Bot::initHandlers() {
     bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
         dpp::User author = *msg.author;
         if(author["id"] == self["id"]) {
+            std::cout << "\033[1;36mThis message was send by the bot itself, do not respond to it!\033[0m" << std::endl;
             return;
         }
-        // this->sendMessage(author, "Testing DM creation");
         auto handler = this->isCommandHandler(*msg.guild_id->get());
         if(handler != nullptr)
             handler->handleMessage(msg);
-        else 
+        else
             this->sendMessage(*msg.channel_id, false, "WTF this server does not have a handler contact SenpaiR6#1717");
     });
     bot->handleGUILD_DELETE([this](dpp::Guild guild) {
         this->removeCommandHandler(guild);
     });
-    bot->handleCHANNEL_CREATE([this](dpp::Message msg) {
-        std::cout << *msg.content.get() << std::endl;
+    bot->handleCHANNEL_CREATE([this](dpp::Channel ch) {
+        //std::cout << ch.dump(4) << std::endl;
     });
 }
 
@@ -103,14 +103,10 @@ void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string mess
 }
 
 void Bot::sendMessage(dpp::User user, std::string message) {
-    std::cout << user.dump(1) << std::endl;
-    std::cout << dpp::get_snowflake(user["id"]) << std::endl;
     bot->createDM()
         ->recipient_id(dpp::get_snowflake(user["id"]))
         ->onRead([this, message](bool error, dpp::json res) {
-            std::cout << res.dump(1) << std::endl;
-            std::cout << error << std::endl;
-            std::cout << message << std::endl;
+            this->sendMessage(dpp::get_snowflake(res["body"]["id"]), false, message);
         })
         ->run();
 }
