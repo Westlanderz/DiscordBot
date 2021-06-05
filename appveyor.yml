@@ -7,9 +7,9 @@ branches:
 skip_tags: true
 build_script:
 - sh: >-
-    mkdir bin ; cd bin
-    meson ..
-    ninja
+  mkdir bin ; cd bin ;
+  meson .. ;
+  ninja
 
 test: off
 deploy: off
