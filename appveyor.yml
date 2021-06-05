@@ -1,17 +1,12 @@
 version: 1.0.{build}
 
 pull_requests:
-
   do_not_increment_build_number: true
 
 branches:
-
   only:
-
   - master
-
   - beta-releases
-
   - development
 
 skip_tags: true
@@ -19,28 +14,18 @@ skip_tags: true
 image: Ubuntu2004
 
 init:
-
 - sh: ''
 
 install:
-
 - sh: sudo apt install meson
 
 
 build_script:
+- sh: mkdir bin ; cd bin ; meson .. ; ninja
 
-- sh: >-
-
-  - mkdir bin
-  - cd bin
-  - meson ..
-  - ninja
 
 test: off
 
 on_finish:
 
-- sh: >-
-
-  - cd ../..
-  - rm -rf DiscordBot/
+- sh: cd ../.. ; rm -rf DiscordBot/
