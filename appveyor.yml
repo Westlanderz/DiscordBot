@@ -6,10 +6,9 @@ branches:
   - beta-releases
 skip_tags: true
 build_script:
-- sh: >-
-  mkdir bin ; cd bin ;
-  meson .. ;
-  ninja
+- sh: mkdir bin ; cd bin ; meson .. ; ninja
 
 test: off
 deploy: off
+on_finish:
+- sh: cd ../.. ; rm -rf DiscordBot/
