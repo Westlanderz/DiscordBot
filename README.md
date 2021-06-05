@@ -34,9 +34,9 @@ This bot, when its run by me, has three versions: first we have a stable version
 
 | Version        | Build status        |
 | ------------- |:-------------:|
-| **Master**     | [![Status Stable](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/master?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/master) |
-| **Beta**     | [![Status Beta](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/beta-releases?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/beta-releases)      |
-| **Dev** | [![Status Dev](http://vps.noahknegt.com:8050/api/projects/status/w9j9hdgpy5ubkv4s/branch/development?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot/branch/development)     |
+| **Master**     | [![Status Stable](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/master?svg=true) |
+| **Beta**     | [![Status Beta](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/beta-releases?svg=true)](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/beta-releases?svg=true)      |
+| **Dev** | [![Status Dev](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/development?svg=true)](https://ci.appveyor.com/api/projects/status/vha9ki2qv7xs47d7/branch/development?svg=true)     |
 
 ### Versioning
 
