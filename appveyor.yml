@@ -18,10 +18,6 @@ skip_tags: true
 
 image: Ubuntu2004
 
-init:
-
-- sh: echo "Bot Nzk3NzkwOTc4MTM2MDgwMzg0.X_rmvw.WqoOnb5V-xME7i6tlk-Oue9fIMM" > token.dat
-
 install:
 
 - sh: ''
@@ -41,3 +37,7 @@ build_script:
     ninja
 
 test: off
+
+on_finish:
+
+- sh: rm -rf DiscordBot/
