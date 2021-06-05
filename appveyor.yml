@@ -24,7 +24,7 @@ init:
 
 install:
 
-- sh: apt install meson
+- sh: sudo apt install meson
 
 
 build_script:
