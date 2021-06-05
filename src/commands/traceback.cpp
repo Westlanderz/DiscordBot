@@ -30,17 +30,19 @@ void Traceback::execute(dpp::Message msg) {
             module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "errmsg");
         } else {
             for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
-                if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
-                    owner = guild.at(0)["members"].at(i)["user"];
+                if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"]) {
+                    owner = author;
+                    module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
+                }
             }
-            module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
         }
     } else {
         for(std::size_t i = 0; i < guild.at(0)["members"].size(); i++) {
-            if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"])
-                owner = guild.at(0)["members"].at(i)["user"];
+            if(guild.at(0)["members"].at(i)["user"]["id"] == author["id"]){
+                owner = author;
+                module->isHandler()->hasBot()->sendMessage(owner, "TESTING");
+            }
         }
-        module->isHandler()->hasBot()->sendMessage(owner, "errmsg");
     }
 }
     
