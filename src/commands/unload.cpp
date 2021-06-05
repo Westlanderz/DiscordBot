@@ -27,32 +27,35 @@ void UnLoad::execute(dpp::Message msg) {
                 throw CommandException("Can not unload " + module_name, EXECUTE_ERROR, 0);
             unload_msg = "Unable to find this module or this module is not yet loaded. These are the current loaded modules: ";
             for(auto &_module : modules) {
-                if(_module->isName(module_name) && _module->isLoaded() && module_name.compare("core") != 0) {
+                if(_module->isName(module_name) && _module->isLoaded() && _module->getName().compare("core")) {
                     module->isHandler()->unloadModule(_module);
                     module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Unloaded the " + _module->getName() + " module for you.");
                     std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+                    return;
                 } else {
-                    if(_module->isLoaded()) {
+                    if(_module->isLoaded() && _module->getName().compare("core")) {
                         unload_msg.append(_module->getName());
                         if(!_module->getName().compare(modules.at(modules.size() - 1)->getName()))
                             unload_msg.append(". ");
                         else
                             unload_msg.append(", ");
-                    }
-                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, unload_msg);
-                    throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
+                    } else
+                        unload_msg.append(". ");
                 }
             }
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, unload_msg);
+            throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
         } else {
             unload_msg = "You have not given a module to unload. Please select one of the following modules to unload: ";
             for(auto &_module : modules) {
-                if(_module->isLoaded() && module_name.compare("core") != 0) {
+                if(_module->isLoaded() && _module->getName().compare("core")) {
                     unload_msg.append(_module->getName());
                     if(!_module->getName().compare(modules.at(modules.size() - 1)->getName()))
                         unload_msg.append(". ");
                     else
                         unload_msg.append(", ");
-                }
+                } else
+                    unload_msg.append(". ");
             }
             module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, unload_msg + this->getHelpMessage());
             throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);

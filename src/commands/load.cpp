@@ -15,24 +15,47 @@ void Load::execute(dpp::Message msg) {
         std::size_t find_args = msg.content->find(" ");
         std::size_t find_command = msg.content->find(" ", find_args + 1);
         std::string module_name = "";
+        std::string load_msg = "";
+        std::vector<Module *> modules = module->isHandler()->getModules();
         if(find_args != std::string::npos) {
             if(find_command != std::string::npos) {
                 module_name = msg.content->substr(find_args + 1, find_command - find_args);
             } else {
                 module_name = msg.content->substr(find_args + 1);
             }
-            for(auto &_module : module->isHandler()->getModules()) {
+            load_msg = "Unable to find this module or this module is already loaded. These are the modules you have not loaded: ";
+            for(auto &_module : modules) {
                 if(_module->isName(module_name) && !_module->isLoaded()) {
                     module->isHandler()->loadModule(_module);
                     module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Loaded the " + _module->getName() + " module for you.");
                     std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+                    return;
                 } else {
-                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Unable to find this module or this module is already loaded");
-                    throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
+                    if(!_module->isLoaded()) {
+                        load_msg.append(_module->getName());
+                        if(!_module->getName().compare(modules.at(modules.size() - 1)->getName()))
+                            load_msg.append(". ");
+                        else
+                            load_msg.append(", ");
+                    } else
+                        load_msg.append(". ");
                 }
             }
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, load_msg);
+            throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
         } else {
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "You have not given a module to load. " + this->getHelpMessage());
+            load_msg = "You have not given a module to load. Please select one of the following modules to load: ";
+            for(auto &_module : modules) {
+                if(!_module->isLoaded()) {
+                    load_msg.append(_module->getName());
+                    if(!_module->getName().compare(modules.at(modules.size() - 1)->getName()))
+                        load_msg.append(". ");
+                    else
+                        load_msg.append(", ");
+                } else
+                    load_msg.append(". ");
+            }
+            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, load_msg);
             throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);
         }
     } catch(CommandException &e) {
