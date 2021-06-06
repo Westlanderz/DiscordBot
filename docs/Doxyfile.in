@@ -974,6 +974,7 @@ USE_MDFILE_AS_MAINPAGE = "@README_PATH@"
 # The default value is: NO.
 
 SOURCE_BROWSER         = NO
+VERBATIM_HEADERS       = NO
 
 # Setting the INLINE_SOURCES tag to YES will include the body of functions,
 # classes and enums directly into the documentation.
@@ -2067,7 +2068,7 @@ INCLUDE_PATH           =
 # used.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-INCLUDE_FILE_PATTERNS  = 
+INCLUDE_FILE_PATTERNS  = *.hpp
 
 # The PREDEFINED tag can be used to specify one or more macro names that are
 # defined before the preprocessor is started (similar to the -D option of e.g.
