@@ -78,12 +78,13 @@ ninja
 
 ### Running
 
-Once you have downloaded or compiled the bot, complete the following steps to run the bot:
+Once you have downloaded or compiled the bot, complete the following steps to run the bot (if you already have a token.dat file with a token in it you can start at step 5):
 
 1. ` cd .. ` to move up one folder.
 2. Get your discordbot secret from [here](https://discord.com/developers/applications).
-3. ` echo Bot <secret> > token.dat ` (this only needs to be done once)
-4. ` ./bin/discordbot `
+3. ` echo Bot <secret> > token.dat `
+4. ` cd bin `
+5. ` ./src/discordbot `
 
 ## Release History
 
