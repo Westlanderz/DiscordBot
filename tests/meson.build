@@ -1,6 +1,15 @@
-tests_src = files('test_entry.cpp', 'sample4.cc')
+tests_src = files('main_test.cpp', 'extern.cpp',
+         'bot.cpp',
+         'commandhandler.cpp',
+         'modules/core.cpp',
+         'commands/help.cpp',
+         'commands/uptime.cpp',
+         'commands/traceback.cpp',
+         'commands/load.cpp',
+         'commands/unload.cpp',
+)
 
-include_dirs = ['.']
+include_dirs = ['.', '../include']
 
 gtestexe = executable(
   'gtest-all',
