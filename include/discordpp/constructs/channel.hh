@@ -50,10 +50,10 @@ enum ChannelType : int{
 
 class CONSTRUCTNAME : public util::ConstructIn {
   public:
-#include "discordpp/CONSTRUCTIN/POPULATEVARS.hh"
+#include "../CONSTRUCTIN/POPULATEVARS.hh"
 };
 
-#include "discordpp/CONSTRUCTIN/FROMJSON.hh"
+#include "../CONSTRUCTIN/FROMJSON.hh"
 
 #undef CONSTRUCTKEYS
 #undef CONSTRUCTNAME
