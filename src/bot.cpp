@@ -1,10 +1,21 @@
 #include "../include/bot.hpp"
 #include "../include/commandhandler.hpp"
 
+/**
+ * @brief Creates a new shared pointer to a DppBot
+ * 
+ * @return std::shared_ptr<DppBot> 
+ */
 std::shared_ptr<DppBot> newBot(){
     return std::make_shared<DppBot>();
 }
 
+/**
+ * @brief Construct a new Bot:: Bot object
+ * 
+ * @param name a std::string that sets the username
+ * @param prefix a std::string that provides the bot with a default prefix to use
+ */
 Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{prefix} {
     bot = newBot();
     botOwnerRole = "owner_YAGPDB2U";
@@ -13,6 +24,10 @@ Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{pr
     starttime = std::chrono::high_resolution_clock::now();
 }
 
+/**
+ * @brief Destroy the Bot:: Bot object
+ * 
+ */
 Bot::~Bot() {
     for(auto &handler : this->commandhandlers) {
         delete handler.second;
@@ -20,21 +35,39 @@ Bot::~Bot() {
     this->commandhandlers.clear();
 }
 
+/**
+ * @brief Initialises the bot object
+ * 
+ * @param token std::string that is the token to login with at discord
+ */
 void Bot::login(std::string token) {
     std::shared_ptr<asio::io_context> aioc = std::make_shared<asio::io_context>();
     bot->initBot(6, token, aioc);
 }
 
+/**
+ * @brief initialises the intents the bot has
+ * 
+ * @param intents a uint16_t with all the intents in it
+ */
 void Bot::setIntents(uint16_t intents) {
     bot->intents = intents;
 }
 
+/**
+ * @brief initialises the adding of commandhandlers when joining a server
+ * 
+ */
 void Bot::initServerJoiner() {
     bot->handleGUILD_CREATE([this](dpp::Guild guild) {
         this->addCommandHandler(this, guild);
     });
 }
 
+/**
+ * @brief initialises all the other handlers like the messagehandler
+ * 
+ */
 void Bot::initHandlers() {
     bot->handleREADY([this](json data) { self = data["user"]; std::cout << "\033[1;35mConnected to the servers\033[0m" << std::endl;});
     bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
@@ -57,10 +90,20 @@ void Bot::initHandlers() {
     });
 }
 
+/**
+ * @brief runs the bot
+ * 
+ */
 void Bot::run() {
     bot->run();
 }
 
+/**
+ * @brief finds the commandhandler that belongs to that guild
+ * 
+ * @param guild_id a dpp::snowflake that uniquely defines a guild
+ * @return CommandHandler* returns the pointer to the handler of the given guild
+ */
 CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
         if(it->first["id"] == std::to_string(guild_id)) {
@@ -70,18 +113,39 @@ CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
     return nullptr;
 }
 
+/**
+ * @brief this gives the bot atribute back to the user
+ * 
+ * @return std::shared_ptr<DppBot> the bot object
+ */
 std::shared_ptr<DppBot> Bot::hasDpp() {
     return bot;
 }
 
+/**
+ * @brief this checks the default prefix of this bot
+ * 
+ * @return std::string the default prefix to return
+ */
 std::string Bot::isPrefix() {
     return defaultPrefix;
 }
 
+/**
+ * @brief this adds a new commandhandler to this bot and maps it to the given guild
+ * 
+ * @param bot the bot to link to the commandhandler
+ * @param guild the guild to map the new commandhandler to
+ */
 void Bot::addCommandHandler(Bot *bot, dpp::Guild guild) {
     commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(bot, guild, defaultPrefix)));
 }
 
+/**
+ * @brief this removes a commandhandler from the bot
+ * 
+ * @param guild the guild to remove the commandhandler from
+ */
 void Bot::removeCommandHandler(dpp::Guild guild) {
     std::map<dpp::Guild, CommandHandler *>::iterator remove = commandhandlers.end();
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
@@ -94,6 +158,13 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
         commandhandlers.erase(remove);
 }
 
+/**
+ * @brief This function sends a message to a given channel
+ * 
+ * @param channelid the channelid to send the message to
+ * @param tts this boolean sets if the message should use text-to-speech
+ * @param message the message you want to send to the channel
+ */
 void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string message) {
     bot->createMessage()
         ->channel_id(channelid)
@@ -102,6 +173,12 @@ void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string mess
         ->run();
 }
 
+/**
+ * @brief This function sends a message to a given user
+ * 
+ * @param user the user object to send the message to
+ * @param message the message you want to send
+ */
 void Bot::sendMessage(dpp::User user, std::string message) {
     bot->createDM()
         ->recipient_id(dpp::get_snowflake(user["id"]))
@@ -111,6 +188,12 @@ void Bot::sendMessage(dpp::User user, std::string message) {
         ->run();
 }
 
+/**
+ * @brief This function sends an embeddedmessage to a given channel
+ * 
+ * @param channelid the channelid to send the message to
+ * @param embed the embedded message to send to that channel
+ */
 void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
     bot->createMessage()
         ->channel_id(channelid)
@@ -118,6 +201,11 @@ void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
         ->run();
 }
 
+/**
+ * @brief This returns the current uptime of the bot
+ * 
+ * @return double the uptime of the bot
+ */
 double Bot::uptime() {
     auto now = std::chrono::high_resolution_clock::now();
     auto time_now = std::chrono::high_resolution_clock::to_time_t(now);
