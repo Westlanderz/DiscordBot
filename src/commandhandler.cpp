@@ -10,8 +10,10 @@
 #include "../include/commands/traceback.hpp"
 #include "../include/commands/load.hpp"
 #include "../include/commands/unload.hpp"
+#include "../include/commands/addadmin.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
+    this->addAdminRole(798590668137562132);
     std::vector<Command *> commands;
     std::vector<std::string> names;
     //TODO: this block for every module
@@ -27,13 +29,15 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     commands.push_back(new Traceback(names));
     names.clear();
     names.push_back("load");
+    names.push_back("l");
     commands.push_back(new Load(names));
     names.clear();
     names.push_back("unload");
+    names.push_back("ul");
     commands.push_back(new UnLoad(names));
-    // names.clear();
-    // names.push_back("help");
-    // commands.push_back();
+    names.clear();
+    names.push_back("addadmin");
+    commands.push_back(new AddAdmin(names));
     // names.clear();
     // names.push_back("help");
     // commands.push_back();

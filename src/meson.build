@@ -8,5 +8,6 @@ executable('discordbot',
          'commands/traceback.cpp',
          'commands/load.cpp',
          'commands/unload.cpp',
+         'commands/addadmin.cpp'
         ]
     )
