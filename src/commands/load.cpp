@@ -65,7 +65,6 @@ void Load::execute(dpp::Message msg) {
 }
 
 bool Load::hasPermsToRun(dpp::User user) {
-    module->isHandler()->addAdminRole(798590668137562132);
     std::vector<dpp::snowflake> admin = module->isHandler()->adminRoles();
     std::vector<Module *> modules = module->isHandler()->getModules();
     dpp::Guild guild = module->isHandler()->isFromGuild();
