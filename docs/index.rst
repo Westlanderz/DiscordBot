@@ -1,0 +1,5 @@
+Docs
+====
+
+.. doxygenstruct:: discordbot
+   :members:

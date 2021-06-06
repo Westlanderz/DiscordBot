@@ -13,4 +13,9 @@ doxyfile = configure_file(input: 'Doxyfile.in',
 
 doxygen = find_program('doxygen')
 
+sphinxexe = find_program('sphinx-build')
+
+sdata = '-Dbreathe_projects.Discordbot=' + join_paths(meson.build_root(),'docs')
+
 doc_target = run_target('doc',command: [doxygen, doxyfile])
+sphinx_target = run_target('docs', command: [sphinxexe, '-bhtml', sdata, join_paths(meson.source_root(),'docs'), join_paths(meson.build_root(),'docs/sphinx')])
