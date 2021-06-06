@@ -1,5 +1,0 @@
-Docs
-====
-
-.. doxygenstruct:: discordbot
-   :members:
