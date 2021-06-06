@@ -10,7 +10,8 @@ skip_tags: true
 build_script:
 - sh: mkdir bin ; cd bin ; meson .. ; ninja
 
-test: off
+test_script:
+- sh: ninja test
 deploy: off
 on_finish:
 - sh: cd ../.. ; rm -rf DiscordBot/

@@ -8,6 +8,7 @@ add_project_link_arguments('-lcrypto', language: 'cpp')
 add_project_link_arguments('-lpthread', language: 'cpp')
 add_project_link_arguments('-lfmt', language: 'cpp')
 
-add_project_link_arguments('-odiscordbot', language: 'cpp')
-
-subdir('src/')
+subdir('src')
+#subdir('include')
+subdir('tests')
+#subdir('docs')
