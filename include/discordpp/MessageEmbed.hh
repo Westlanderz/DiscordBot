@@ -6,6 +6,7 @@
 #include <iomanip>
 
 #include <nlohmann/json.hpp>
+#include <iostream>
 
 namespace discordpp {
 
