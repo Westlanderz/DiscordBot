@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <vector>
 
 #include <boost/asio.hpp>
 
