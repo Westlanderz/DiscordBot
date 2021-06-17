@@ -73,6 +73,11 @@ bool Reload::hasPermsToRun(dpp::User user) {
     dpp::Guild guild = module->isHandler()->isFromGuild();
     bool isAdmin = false;
     std::string authorid = user["id"].get<std::string>();
+    std::string compareUser = user["username"].get<std::string>()
+                .append("#")
+                .append(user["discriminator"].get<std::string>());
+    if(module->isHandler()->hasBot()->isOwner(compareUser))
+        return true;
     for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
         if(guild.at(0)["members"].at(i)["user"]["id"] == authorid){
             for(std::size_t j = 0; j < guild.at(0)["members"].at(i)["roles"].size(); ++j) {

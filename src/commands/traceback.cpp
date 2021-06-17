@@ -49,21 +49,28 @@ void Traceback::execute(dpp::Message msg) {
 
 bool Traceback::hasPermsToRun(dpp::User user) {
     try {
-        std::string owner = "SenpaiR6";
+        std::vector<dpp::snowflake> admin = module->isHandler()->adminRoles();
         std::vector<Module *> modules = module->isHandler()->getModules();
         dpp::Guild guild = module->isHandler()->isFromGuild();
-        bool isOwner = false;
+        bool isAdmin = false;
         std::string authorid = user["id"].get<std::string>();
+        std::string compareUser = user["username"].get<std::string>()
+                    .append("#")
+                    .append(user["discriminator"].get<std::string>());
+        if(module->isHandler()->hasBot()->isOwner(compareUser))
+            return true;
         for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
             if(guild.at(0)["members"].at(i)["user"]["id"] == authorid){
-                if(guild.at(0)["members"].at(i)["user"]["username"].get<std::string>() == owner)
-                    isOwner = true;
+                for(std::size_t j = 0; j < guild.at(0)["members"].at(i)["roles"].size(); ++j) {
+                    for(auto &role : admin) {
+                        if(guild.at(0)["members"].at(i)["roles"].at(j) == std::to_string(role))
+                            isAdmin = true;
+                    }
+                }
             }
         }
-        if(!isOwner)
-            throw CommandException("Could not find the owner in this server " + module->isHandler()->isFromGuild().at(0)["name"].get<std::string>(), PERMISSION_ERROR, 0);
-        else
-            return isOwner;
+        std::cout << (isAdmin ? "\033[1;32mPermission granted\033[0m" : "\033[1;31mNot enough permissions\033[0m")<< std::endl;
+        return isAdmin;
     } catch (CommandException &e) {
         std::cerr << "\033[1;31m" << e.what() << " \033[1;36m" << e.getErrorNumber() + " " + e.getErrorOffset() << "\033[0m" << std::endl;
         module->isHandler()->setLastException(&e);
