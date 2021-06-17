@@ -1,4 +1,5 @@
-token.dat
+config.json
 .vscode
 build
 *.txt
+*.bak
