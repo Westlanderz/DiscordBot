@@ -1,27 +1,36 @@
-#ifndef bot_hpp
-#define bot_hpp
+#ifndef BOT_HPP
+#define BOT_HPP
 
 #include <vector>
 #include <map>
 #include <chrono>
-#include "include.hpp"
+#include <string>
+
+#include "discordpp/constructs/todo.hh"
+#include "discordpp/alias.hh"
+#include "discordpp/MessageEmbed.hh"
 
 class CommandHandler;
+class BotInterface;
+
+namespace dpp = discordpp;
 
 class Bot {
     private:
-        std::shared_ptr<DppBot> bot;
+        BotInterface *bot;
         std::string username;
         std::string defaultPrefix;
         std::vector<dpp::Guild> servers;
         std::map<dpp::Guild, CommandHandler *> commandhandlers;
         std::string token;
         std::string botOwnerRole;
+        std::vector<std::string> botOwners;
         bool enableReactions;
         std::chrono::_V2::high_resolution_clock::time_point starttime;
     
     public:
-        json self;
+        dpp::json self;
+        dpp::json config;
 
         Bot(std::string, std::string);
         virtual ~Bot();
@@ -32,15 +41,16 @@ class Bot {
         void initHandlers();
         void run();
         CommandHandler * isCommandHandler(const dpp::snowflake);
-        std::shared_ptr<DppBot> hasDpp();
+        BotInterface * hasDpp();
         std::string isPrefix();
         void addCommandHandler(Bot *, dpp::Guild);
         void removeCommandHandler(dpp::Guild);
         void sendMessage(const dpp::snowflake, bool, std::string);
         void sendMessage(dpp::User, std::string);
         void sendMessage(const dpp::snowflake, const dpp::MessageEmbed);
+        dpp::json getRoles(const dpp::snowflake);
         double uptime();
-
+        bool isOwner(std::string);
 };
 
-#endif
+#endif // BOT_HPP
