@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "../include/commandhandler.hpp"
 #include "../include/bot.hpp"
 #include "../include/module.hpp"
@@ -13,7 +15,6 @@
 #include "../include/commands/addadmin.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
-    this->addAdminRole(798590668137562132);
     std::vector<Command *> commands;
     std::vector<std::string> names;
     //TODO: this block for every module
@@ -54,6 +55,8 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     commands.clear();
 }
 
+CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix, std::vector<Module *> module): bot{bots}, guild{guilds}, prefix{defaultPrefix}, modules{module} {}
+
 CommandHandler::~CommandHandler() {
     for(auto &module : modules) {
         delete module;
@@ -85,6 +88,22 @@ void CommandHandler::handleMessage(dpp::Message msg) {
 
 void CommandHandler::loadModule(Module *module) {
     module->load();
+    auto config = this->hasBot()->config;
+    std::ofstream configfile("../config.json");
+    for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
+        if(config["guild_settings"].at(i)["id"] == this->guild.at(0)["id"]) {
+            bool found = false;
+            for(std::size_t j = 0; j < config["guild_settings"].at(i)["loadedModules"].size(); ++j) {
+                if(!config["guild_settings"].at(i)["loadedModules"].at(j).get<std::string>().compare(module->getName()))
+                    found = true;
+            }
+            if(!found)
+                config["guild_settings"].at(i)["loadedModules"].push_back(module->getName());
+            break;
+        }
+    }
+    configfile << config;
+    configfile.close();
 }
 
 void CommandHandler::unloadModule(Module *module) {
