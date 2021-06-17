@@ -1,14 +1,6 @@
 #include "../include/bot.hpp"
 #include "../include/commandhandler.hpp"
-
-/**
- * @brief Creates a new shared pointer to a DppBot
- * 
- * @return std::shared_ptr<DppBot> 
- */
-std::shared_ptr<DppBot> newBot(){
-    return std::make_shared<DppBot>();
-}
+#include "../include/botinterface.hpp"
 
 /**
  * @brief Construct a new Bot:: Bot object
@@ -17,11 +9,15 @@ std::shared_ptr<DppBot> newBot(){
  * @param prefix a std::string that provides the bot with a default prefix to use
  */
 Bot::Bot(std::string name, std::string prefix): username{name}, defaultPrefix{prefix} {
-    bot = newBot();
+    this->bot = new BotInterface();
     botOwnerRole = "owner_YAGPDB2U";
-    bot->prefix = prefix;
-    bot->debugUnhandled = false;
+    bot->isDppBot()->prefix = prefix;
+    bot->isDppBot()->debugUnhandled = false;
     starttime = std::chrono::high_resolution_clock::now();
+    std::ifstream configfile("../config.json");
+    this->config = dpp::json::parse(configfile);
+    for(std::size_t i = 0; i < config["owners"].size(); ++i)
+        this->botOwners.push_back(config["owners"].at(i));
 }
 
 /**
@@ -42,7 +38,7 @@ Bot::~Bot() {
  */
 void Bot::login(std::string token) {
     std::shared_ptr<asio::io_context> aioc = std::make_shared<asio::io_context>();
-    bot->initBot(6, token, aioc);
+    bot->isDppBot()->initBot(6, token, aioc);
 }
 
 /**
@@ -51,7 +47,7 @@ void Bot::login(std::string token) {
  * @param intents a uint16_t with all the intents in it
  */
 void Bot::setIntents(uint16_t intents) {
-    bot->intents = intents;
+    bot->isDppBot()->intents = intents;
 }
 
 /**
@@ -59,7 +55,8 @@ void Bot::setIntents(uint16_t intents) {
  * 
  */
 void Bot::initServerJoiner() {
-    bot->handleGUILD_CREATE([this](dpp::Guild guild) {
+    bot->isDppBot()->handleGUILD_CREATE([this](dpp::Guild guild) {
+        std::cout << "\033[1;35mJoined the server with id \033[1;36m" << guild["id"] << "\033[0m" << std::endl;
         this->addCommandHandler(this, guild);
     });
 }
@@ -69,8 +66,8 @@ void Bot::initServerJoiner() {
  * 
  */
 void Bot::initHandlers() {
-    bot->handleREADY([this](json data) { self = data["user"]; std::cout << "\033[1;35mConnected to the servers\033[0m" << std::endl;});
-    bot->handleMESSAGE_CREATE([this](dpp::Message msg) {
+    bot->isDppBot()->handleREADY([this](dpp::json data) { self = data["user"]; std::cout << "\033[1;35mConnected to the servers\033[0m" << std::endl;});
+    bot->isDppBot()->handleMESSAGE_CREATE([this](dpp::Message msg) {
         dpp::User author = *msg.author;
         if(author["id"] == self["id"]) {
             std::cout << "\033[1;36mThis message was send by the bot itself, do not respond to it!\033[0m" << std::endl;
@@ -82,10 +79,10 @@ void Bot::initHandlers() {
         else
             this->sendMessage(*msg.channel_id, false, "WTF this server does not have a handler contact SenpaiR6#1717");
     });
-    bot->handleGUILD_DELETE([this](dpp::Guild guild) {
+    bot->isDppBot()->handleGUILD_DELETE([this](dpp::Guild guild) {
         this->removeCommandHandler(guild);
     });
-    bot->handleCHANNEL_CREATE([this](dpp::Channel ch) {
+    bot->isDppBot()->handleCHANNEL_CREATE([this](dpp::Channel ch) {
         //std::cout << ch.dump(4) << std::endl;
     });
 }
@@ -95,7 +92,7 @@ void Bot::initHandlers() {
  * 
  */
 void Bot::run() {
-    bot->run();
+    bot->isDppBot()->run();
 }
 
 /**
@@ -118,7 +115,7 @@ CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
  * 
  * @return std::shared_ptr<DppBot> the bot object
  */
-std::shared_ptr<DppBot> Bot::hasDpp() {
+BotInterface * Bot::hasDpp() {
     return bot;
 }
 
@@ -138,7 +135,27 @@ std::string Bot::isPrefix() {
  * @param guild the guild to map the new commandhandler to
  */
 void Bot::addCommandHandler(Bot *bot, dpp::Guild guild) {
-    commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(bot, guild, defaultPrefix)));
+    if(commandhandlers.find(guild) == commandhandlers.end()) {
+        std::ifstream configfile("../config.json");
+        dpp::json configure = dpp::json::parse(configfile);
+        bool found = false;
+        for(std::size_t i = 0; i < configure["guild_settings"].size(); ++i) {
+            if(guild["id"] == configure["guild_settings"].at(i)["id"])
+                found = true;
+        }
+        if(!found) {
+            dpp::json newGuild;
+            newGuild["id"] = guild["id"];
+            newGuild["prefix"] = defaultPrefix;
+            newGuild["loadedModules"] = dpp::json::array();
+            configure["guild_settings"].push_back(newGuild);
+            configfile.close();
+            std::ofstream configurefile("../config.json");
+            configurefile << configure;
+            configurefile.close();
+        }
+        commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(bot, guild, defaultPrefix)));
+    }
 }
 
 /**
@@ -156,6 +173,14 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
     }
     if(remove != commandhandlers.end())
         commandhandlers.erase(remove);
+    std::fstream configfile("../config.json");
+    dpp::json configure = dpp::json::parse(configfile);
+    for(std::size_t i = 0; i < configure["guild_settings"].size(); ++i) {
+        if(configure["guild_settings"].at(i)["id"] == guild["id"])
+            configure["guild_settings"].erase(i);
+    }
+    configfile << configure;
+    configfile.close();
 }
 
 /**
@@ -166,7 +191,7 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
  * @param message the message you want to send to the channel
  */
 void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string message) {
-    bot->createMessage()
+    bot->isDppBot()->createMessage()
         ->channel_id(channelid)
         ->content(message)
         ->tts(tts)
@@ -180,7 +205,7 @@ void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string mess
  * @param message the message you want to send
  */
 void Bot::sendMessage(dpp::User user, std::string message) {
-    bot->createDM()
+    bot->isDppBot()->createDM()
         ->recipient_id(dpp::get_snowflake(user["id"]))
         ->onRead([this, message](bool error, dpp::json res) {
             this->sendMessage(dpp::get_snowflake(res["body"]["id"]), false, message);
@@ -195,10 +220,21 @@ void Bot::sendMessage(dpp::User user, std::string message) {
  * @param embed the embedded message to send to that channel
  */
 void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
-    bot->createMessage()
+    bot->isDppBot()->createMessage()
         ->channel_id(channelid)
         ->embed(embed.getEmbed())
         ->run();
+}
+
+dpp::json Bot::getRoles(const dpp::snowflake guild) {
+    bot->isDppBot()->getGuildRoles()
+        ->guild_id(guild)
+        ->onRead([this](bool error, dpp::json response) {
+            return response;
+        })
+        ->run();
+        dpp::json json;
+        return json;
 }
 
 /**
@@ -211,4 +247,12 @@ double Bot::uptime() {
     auto time_now = std::chrono::high_resolution_clock::to_time_t(now);
     auto time_start = std::chrono::high_resolution_clock::to_time_t(starttime);
     return std::difftime(time_now, time_start);
+}
+
+bool Bot::isOwner(std::string username) {
+    for(auto &owner : this->botOwners) {
+        if(!owner.compare(username))
+            return true;
+    }
+    return false;
 }
