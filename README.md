@@ -82,7 +82,7 @@ Once you have downloaded or compiled the bot, complete the following steps to ru
 
 1. ` cd .. ` to move up one folder.
 2. Get your discordbot secret from [here](https://discord.com/developers/applications).
-3. ` echo Bot <secret> > token.dat `
+3. ` echo '{ "token": "<secret>", "intents": "32767", "owners": [ "<your_discord_user>" ] }' > config.json `
 4. ` cd bin `
 5. ` ./src/discordbot `
 
