@@ -14,8 +14,9 @@ std::string AddAdmin::getHelpMessage() {
 
 void AddAdmin::execute(dpp::Message msg) {
     try {
-        dpp::Guild guild = module->isHandler()->isFromGuild();
-        auto bot = module->isHandler()->hasBot()->hasDpp();
+        CommandHandler *handler = module->isHandler();
+        Bot *bot = handler->hasBot();
+        dpp::Guild guild = handler->isFromGuild();
         std::size_t find_args = msg.content->find(" ");
         std::size_t find_role = msg.content->find(" ", find_args + 1);
         std::string role_name = "";
@@ -26,27 +27,41 @@ void AddAdmin::execute(dpp::Message msg) {
             } else {
                 role_name = msg.content->substr(find_args + 2);
             }
-            module->isHandler()->hasBot()->hasDpp()->getGuildRoles()
-                ->guild_id(dpp::get_snowflake(guild["id"]))
-                ->onRead([this, role_name, msg](bool error, dpp::json response) {
-                    auto roles = module->isHandler()->adminRoles();
-                    auto role = dpp::get_snowflake(role_name);
-                    for(std::size_t i = 0; i < response["body"].size(); ++i) {
-                        if(role_name == response["body"].at(i)["id"] && !std::count(roles.begin(), roles.end(), role)) {
-                            module->isHandler()->addAdminRole(role);
-                            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Added the role for you.");
-                            std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
-                            return;
+            auto response = bot->getRoles(dpp::get_snowflake(guild["id"]));
+            auto roles = handler->adminRoles();
+            auto role = dpp::get_snowflake(role_name);
+            if(response == NULL) {
+                bot->sendMessage(*msg.channel_id, false, "This server does not have any roles.");
+                throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
+            }
+            for(std::size_t i = 0; i < response["body"].size(); ++i) {
+                if(role_name == response["body"].at(i)["id"] && !std::count(roles.begin(), roles.end(), role)) {
+                    handler->addAdminRole(role);
+                    bot->sendMessage(*msg.channel_id, false, "Added the role for you.");
+                    dpp::json config = bot->config;
+                    for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
+                        if(config["guild_settings"].at(i)["id"] == guild.at(0)["id"]) {
+                            bool found = false;
+                            for(std::size_t j = 0; j < config["guild_settings"].at(i)["adminroles"].size(); ++j) {
+                                if(!config["guild_settings"].at(i)["adminroles"].at(j).get<std::string>().compare(module->getName()))
+                                    found = true;
+                            }
+                            if(!found)
+                                config["guild_settings"].at(i)["adminroles"].push_back(role);
+                            break;
                         }
                     }
-                })
-                ->run();
+                    bot->updateConfigFile(config);
+                    std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+                    return;
+                }
+            }
             load_msg = "Unable to find this role or this role is already added.";
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, load_msg);
+            bot->sendMessage(*msg.channel_id, false, load_msg);
             throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
         } else {
             load_msg = "You have not given a role to add.";
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, load_msg);
+            bot->sendMessage(*msg.channel_id, false, load_msg);
             throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);
         }
     } catch(CommandException &e) {
@@ -61,6 +76,11 @@ bool AddAdmin::hasPermsToRun(dpp::User user) {
     dpp::Guild guild = module->isHandler()->isFromGuild();
     bool isAdmin = false;
     std::string authorid = user["id"].get<std::string>();
+    std::string compareUser = user["username"].get<std::string>()
+                .append("#")
+                .append(user["discriminator"].get<std::string>());
+    if(module->isHandler()->hasBot()->isOwner(compareUser))
+        return true;
     for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
         if(guild.at(0)["members"].at(i)["user"]["id"] == authorid){
             for(std::size_t j = 0; j < guild.at(0)["members"].at(i)["roles"].size(); ++j) {
