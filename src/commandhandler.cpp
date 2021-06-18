@@ -13,6 +13,7 @@
 #include "../include/commands/load.hpp"
 #include "../include/commands/unload.hpp"
 #include "../include/commands/addadmin.hpp"
+#include "../include/commands/reload.hpp"
 
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
@@ -39,9 +40,10 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     names.clear();
     names.push_back("addadmin");
     commands.push_back(new AddAdmin(names));
-    // names.clear();
-    // names.push_back("help");
-    // commands.push_back();
+    names.clear();
+    names.push_back("reload");
+    names.push_back("rl");
+    commands.push_back(new Reload(names));
     // names.clear();
     // names.push_back("help");
     // commands.push_back();
@@ -53,9 +55,20 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
         command->addToModule(default_module);
     }
     commands.clear();
+    std::string loading{""};
+    for(auto &guild : bot->config["guild_settings"]) {
+        if(guild["id"] == guild.at(0)["id"]) {
+            for(auto &module : guild["loadedModules"]) {
+                loading = module.get<std::string>();
+                for(auto &load : modules) {
+                    if(loading.compare(load->getName()))
+                        this->loadModule(load);
+                }
+            }
+            break;
+        }
+    }
 }
-
-CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix, std::vector<Module *> module): bot{bots}, guild{guilds}, prefix{defaultPrefix}, modules{module} {}
 
 CommandHandler::~CommandHandler() {
     for(auto &module : modules) {
@@ -88,8 +101,7 @@ void CommandHandler::handleMessage(dpp::Message msg) {
 
 void CommandHandler::loadModule(Module *module) {
     module->load();
-    auto config = this->hasBot()->config;
-    std::ofstream configfile("../config.json");
+    auto config = bot->config;
     for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
         if(config["guild_settings"].at(i)["id"] == this->guild.at(0)["id"]) {
             bool found = false;
@@ -102,12 +114,24 @@ void CommandHandler::loadModule(Module *module) {
             break;
         }
     }
-    configfile << config;
-    configfile.close();
+    bot->updateConfigFile(config);
 }
 
 void CommandHandler::unloadModule(Module *module) {
     module->unload();
+    auto config = bot->config;
+    for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
+        if(config["guild_settings"].at(i)["id"] == this->guild.at(0)["id"]) {
+            for(std::size_t j = 0; j < config["guild_settings"].at(i)["loadedModules"].size(); ++j) {
+                if(!config["guild_settings"].at(i)["loadedModules"].at(j).get<std::string>().compare(module->getName())) {
+                    config["guild_settings"].at(i)["loadedModules"].erase(j);
+                    break;
+                }
+            }
+            break;
+        }
+    }
+    bot->updateConfigFile(config);
 }
 
 std::vector<Module *> CommandHandler::getModules() {
@@ -129,6 +153,14 @@ std::vector<Command *> CommandHandler::getCommands() {
 
 void CommandHandler::newPrefix(std::string prefix) {
     this->prefix = prefix;
+    dpp::json config = bot->config;
+    for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
+        if(config["guild_settings"].at(i)["id"] == this->guild.at(0)["id"]) {
+            config["guild_settings"].at(i)["prefix"] = prefix;
+            break;
+        }
+    }
+    bot->updateConfigFile(config);
 }
 
 std::string CommandHandler::isPrefix() {
