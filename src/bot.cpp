@@ -138,6 +138,7 @@ void Bot::addCommandHandler(Bot *bot, dpp::Guild guild) {
     if(commandhandlers.find(guild) == commandhandlers.end()) {
         std::ifstream configfile("../config.json");
         dpp::json configure = dpp::json::parse(configfile);
+        configfile.close();
         bool found = false;
         for(std::size_t i = 0; i < configure["guild_settings"].size(); ++i) {
             if(guild["id"] == configure["guild_settings"].at(i)["id"])
@@ -149,10 +150,7 @@ void Bot::addCommandHandler(Bot *bot, dpp::Guild guild) {
             newGuild["prefix"] = defaultPrefix;
             newGuild["loadedModules"] = dpp::json::array();
             configure["guild_settings"].push_back(newGuild);
-            configfile.close();
-            std::ofstream configurefile("../config.json");
-            configurefile << configure;
-            configurefile.close();
+            this->updateConfigFile(configure);
         }
         commandhandlers.insert(std::pair<dpp::Guild, CommandHandler *>(guild, new CommandHandler(bot, guild, defaultPrefix)));
     }
@@ -173,14 +171,12 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
     }
     if(remove != commandhandlers.end())
         commandhandlers.erase(remove);
-    std::fstream configfile("../config.json");
-    dpp::json configure = dpp::json::parse(configfile);
+    dpp::json configure = config;
     for(std::size_t i = 0; i < configure["guild_settings"].size(); ++i) {
         if(configure["guild_settings"].at(i)["id"] == guild["id"])
             configure["guild_settings"].erase(i);
     }
-    configfile << configure;
-    configfile.close();
+    this->updateConfigFile(configure);
 }
 
 /**
@@ -255,4 +251,11 @@ bool Bot::isOwner(std::string username) {
             return true;
     }
     return false;
+}
+
+void Bot::updateConfigFile(dpp::json configuration) {
+    std::ofstream configfile("../config.json");
+    configfile << configuration;
+    config = configuration;
+    configfile.close();
 }

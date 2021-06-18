@@ -51,6 +51,7 @@ class Bot {
         dpp::json getRoles(const dpp::snowflake);
         double uptime();
         bool isOwner(std::string);
+        void updateConfigFile(dpp::json);
 };
 
 #endif // BOT_HPP
