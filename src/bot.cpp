@@ -68,7 +68,7 @@ void Bot::initServerJoiner() {
 void Bot::initHandlers() {
     bot->isDppBot()->handleREADY([this](dpp::json data) { self = data["user"]; std::cout << "\033[1;35mConnected to the servers\033[0m" << std::endl;});
     bot->isDppBot()->handleMESSAGE_CREATE([this](dpp::Message msg) {
-        dpp::User author = *msg.author;
+        dpp::User author = *msg.author.get();
         if(author["id"] == self["id"]) {
             std::cout << "\033[1;36mThis message was send by the bot itself, do not respond to it!\033[0m" << std::endl;
             return;
@@ -229,8 +229,6 @@ dpp::json Bot::getRoles(const dpp::snowflake guild) {
             return response;
         })
         ->run();
-        dpp::json json;
-        return json;
 }
 
 /**
