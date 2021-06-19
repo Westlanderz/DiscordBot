@@ -34,9 +34,10 @@ This bot, when its run by me, has three versions: first we have a stable version
 
 | Version        | Build status        |
 | ------------- |:-------------:|
-| **Master**     | [![Status Stable](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/master?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/master) |
+| **Release**     | [![Status Release](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/master?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/master) |
+| **Release-Candidate**     | [![Status RC](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/release-candidates?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/release-candidates) |
 | **Beta**     | [![Status Beta](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/beta-releases?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/beta-releases)      |
-| **Dev** | [![Status Dev](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/development?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/development)     |
+| **Alpha** | [![Status Alpha](http://vps.noahknegt.com:8050/api/projects/status/54n02bpcboduksg3/branch/development?svg=true)](http://vps.noahknegt.com:8050/project/AppVeyor/discordbot-9ggtq/branch/development)     |
 
 ### Versioning
 

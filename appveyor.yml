@@ -6,6 +6,7 @@ branches:
   - master
   - development
   - beta-releases
+  - Release-Candidates
 skip_tags: true
 build_script:
 - sh: mkdir bin ; cd bin ; meson .. ; ninja
