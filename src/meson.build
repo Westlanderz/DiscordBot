@@ -11,4 +11,4 @@ executable('discordbot',
          'commands/addadmin.cpp',
          'commands/reload.cpp',
         ]
-    )
+)
