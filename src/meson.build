@@ -10,5 +10,6 @@ executable('discordbot',
          'commands/unload.cpp',
          'commands/addadmin.cpp',
          'commands/reload.cpp',
+         'commands/removeadmin.cpp',
         ]
 )
