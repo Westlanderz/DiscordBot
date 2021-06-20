@@ -71,15 +71,16 @@ void UnLoad::execute(dpp::Message msg) {
 }
 
 bool UnLoad::hasPermsToRun(dpp::User user) {
-    std::vector<dpp::snowflake> admin = module->isHandler()->adminRoles();
-    std::vector<Module *> modules = module->isHandler()->getModules();
-    dpp::Guild guild = module->isHandler()->isFromGuild();
+    auto handler = module->isHandler();
+    std::vector<dpp::snowflake> admin = handler->adminRoles();
+    std::vector<Module *> modules = handler->getModules();
+    dpp::Guild guild = handler->isFromGuild();
     bool isAdmin = false;
     std::string authorid = user["id"].get<std::string>();
     std::string compareUser = user["username"].get<std::string>()
                 .append("#")
                 .append(user["discriminator"].get<std::string>());
-    if(module->isHandler()->hasBot()->isOwner(compareUser))
+    if(handler->hasBot()->isOwner(compareUser))
         return true;
     for(std::size_t i = 0; i < guild.at(0)["members"].size(); ++i) {
         if(guild.at(0)["members"].at(i)["user"]["id"] == authorid){

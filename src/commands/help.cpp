@@ -37,7 +37,7 @@ void Help::execute(dpp::Message msg) {
                     embed.setTitle("Generated help message");
                     embed.addField(command->getName(), command->getHelpMessage(), true);
                     embed.setColor(0xFFCC00);
-                    command->isModule()->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
+                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, embed);
                     return;
                 }
             }
