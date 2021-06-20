@@ -18,15 +18,16 @@ int main() {
 
     std::string token = getToken(config);
     if (token.empty()) {
-        std::cerr << "CRITICAL: "
-                  << "There is no valid way for Echo to obtain a token! Use "
-                     "one of the following ways:"
-                  << std::endl
-                  << "(1) Fill the BOT_TOKEN environment variable with the "
-                     "token (e.g. 'Bot 123456abcdef')."
-                  << std::endl
-                  << "(2) Copy the example `token.eg.dat` as `token.dat` and "
-                     "write your own token to it.\n";
+        std::cerr   << "CRITICAL: "
+                    << "There is no valid way for Echo to obtain a token! Use "
+                    "one of the following ways:"
+                    << std::endl
+                    << "(1) Fill the BOT_TOKEN environment variable with the "
+                    "token (e.g. 'Bot 123456abcdef')."
+                    << std::endl
+                    << "(2) Copy the example `token.eg.dat` as `token.dat` and "
+                    "write your own token to it."
+                    << std::endl;
         exit(1);
     }
 
