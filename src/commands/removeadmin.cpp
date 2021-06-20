@@ -5,6 +5,7 @@
 #include "../../include/commandexception.hpp"
 
 #include <algorithm>
+#include <coroutine>
 
 using namespace bot;
 
@@ -26,7 +27,6 @@ void RemoveAdmin::execute(dpp::Message msg) {
                 std::cout << "\033[1;36mFound role with id \033[1;35m" << role << "\033[0m" << std::endl;
                 auto response = bot->getRoles(dpp::get_snowflake(guild.at(0)["id"]));
                 auto roles = handler->adminRoles();
-                std::cout << response.dump(4) << std::endl;
                 if(response == NULL) {
                     bot->sendMessage(*msg.channel_id, false, "This server does not have any roles.");
                     throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
