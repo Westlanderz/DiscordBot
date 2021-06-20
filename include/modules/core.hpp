@@ -3,16 +3,18 @@
 
 #include "../module.hpp"
 
-class Core : public Module {
-    private:
-        std::string name;
-        std::vector<Command *> includedCommands;
-        bool loaded;
-        CommandHandler *commandHandler;
+namespace bot {
+    class Core : public Module {
+        private:
+            std::string name;
+            std::vector<Command *> includedCommands;
+            bool loaded;
+            CommandHandler *commandHandler;
 
-    public:
-        Core(std::string, CommandHandler *, std::vector<Command *>);
+        public:
+            Core(std::string, CommandHandler *, std::vector<Command *>);
 
-};
+    };
+}
 
 #endif // CORE_HPP

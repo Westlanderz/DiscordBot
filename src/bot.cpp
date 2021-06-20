@@ -2,6 +2,8 @@
 #include "../include/commandhandler.hpp"
 #include "../include/botinterface.hpp"
 
+using namespace bot;
+
 /**
  * @brief Construct a new Bot:: Bot object
  * 

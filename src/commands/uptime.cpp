@@ -4,6 +4,8 @@
 #include "../../include/bot.hpp"
 #include "../../include/commandexception.hpp"
 
+using namespace bot;
+
 Uptime::Uptime(std::vector<std::string> names): Command(names) {}
 
 std::string Uptime::getHelpMessage() {

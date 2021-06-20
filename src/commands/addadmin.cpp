@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+using namespace bot;
+
 AddAdmin::AddAdmin(std::vector<std::string> names): Command(names) {}
 
 std::string AddAdmin::getHelpMessage() {
@@ -17,48 +19,47 @@ void AddAdmin::execute(dpp::Message msg) {
         CommandHandler *handler = module->isHandler();
         Bot *bot = handler->hasBot();
         dpp::Guild guild = handler->isFromGuild();
-        std::size_t find_args = msg.content->find(" ");
-        std::size_t find_role = msg.content->find(" ", find_args + 1);
-        std::string role_name = "";
+        auto role_name = *msg.mention_roles.get();
         std::string load_msg = "";
-        if(find_args != std::string::npos) {
-            if(find_role != std::string::npos) {
-                role_name = msg.content->substr(find_args + 2, find_role - find_args);
-            } else {
-                role_name = msg.content->substr(find_args + 2);
-            }
-            auto response = bot->getRoles(dpp::get_snowflake(guild["id"]));
-            auto roles = handler->adminRoles();
-            auto role = dpp::get_snowflake(role_name);
-            if(response == NULL) {
-                bot->sendMessage(*msg.channel_id, false, "This server does not have any roles.");
+        if(!role_name.empty()) {
+            for(auto &role : role_name) {
+                std::cout << "\033[1;36mFound role with id \033[1;35m" << role << "\033[0m" << std::endl;
+                auto response = bot->getRoles(dpp::get_snowflake(guild.at(0)["id"]));
+                auto roles = handler->adminRoles();
+                std::cout << response.dump(4) << std::endl;
+                if(response == NULL) {
+                    bot->sendMessage(*msg.channel_id, false, "This server does not have any roles.");
+                    throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
+                }
+                for(std::size_t i = 0; i < response["body"].size(); ++i) {
+                    if(role == response["body"].at(i)["id"] && !std::count(roles.begin(), roles.end(), role)) {
+                        handler->addAdminRole(role);
+                        std::cout << "\033[1;36m" << role << "\033[1;35m added to the adminlist for guild " << guild.at(0)["id"] << ".\033[0m" << std::endl;
+                        bot->sendMessage(*msg.channel_id, false, "Added the role for you.");
+                        dpp::json config = bot->config;
+                        for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
+                            if(config["guild_settings"].at(i)["id"] == guild.at(0)["id"]) {
+                                bool found = false;
+                                for(std::size_t j = 0; j < config["guild_settings"].at(i)["adminroles"].size(); ++j) {
+                                    if(!config["guild_settings"].at(i)["adminroles"].at(j).get<std::string>().compare(std::to_string(role))) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if(!found)
+                                    config["guild_settings"].at(i)["adminroles"].push_back(role);
+                                break;
+                            }
+                        }
+                        bot->updateConfigFile(config);
+                        std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
+                        return;
+                    }
+                }
+                load_msg = "Unable to find this role or this role is already added.";
+                bot->sendMessage(*msg.channel_id, false, load_msg);
                 throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
             }
-            for(std::size_t i = 0; i < response["body"].size(); ++i) {
-                if(role_name == response["body"].at(i)["id"] && !std::count(roles.begin(), roles.end(), role)) {
-                    handler->addAdminRole(role);
-                    bot->sendMessage(*msg.channel_id, false, "Added the role for you.");
-                    dpp::json config = bot->config;
-                    for(std::size_t i = 0; i < config["guild_settings"].size(); ++i) {
-                        if(config["guild_settings"].at(i)["id"] == guild.at(0)["id"]) {
-                            bool found = false;
-                            for(std::size_t j = 0; j < config["guild_settings"].at(i)["adminroles"].size(); ++j) {
-                                if(!config["guild_settings"].at(i)["adminroles"].at(j).get<std::string>().compare(module->getName()))
-                                    found = true;
-                            }
-                            if(!found)
-                                config["guild_settings"].at(i)["adminroles"].push_back(role);
-                            break;
-                        }
-                    }
-                    bot->updateConfigFile(config);
-                    std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
-                    return;
-                }
-            }
-            load_msg = "Unable to find this role or this role is already added.";
-            bot->sendMessage(*msg.channel_id, false, load_msg);
-            throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
         } else {
             load_msg = "You have not given a role to add.";
             bot->sendMessage(*msg.channel_id, false, load_msg);

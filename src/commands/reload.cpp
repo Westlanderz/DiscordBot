@@ -4,6 +4,8 @@
 #include "../../include/bot.hpp"
 #include "../../include/commandexception.hpp"
 
+using namespace bot;
+
 Reload::Reload(std::vector<std::string> names): Command(names) {}
 
 std::string Reload::getHelpMessage() {
@@ -12,11 +14,13 @@ std::string Reload::getHelpMessage() {
 
 void Reload::execute(dpp::Message msg) {
     try {
+        CommandHandler *handler = module->isHandler();
+        Bot *bot = handler->hasBot();
         std::size_t find_args = msg.content->find(" ");
         std::size_t find_command = msg.content->find(" ", find_args + 1);
         std::string module_name = "";
         std::string unload_msg = "";
-        std::vector<Module *> modules = module->isHandler()->getModules();
+        std::vector<Module *> modules = handler->getModules();
         if(find_args != std::string::npos) {
             if(find_command != std::string::npos) {
                 module_name = msg.content->substr(find_args + 1, find_command - find_args);
@@ -28,9 +32,9 @@ void Reload::execute(dpp::Message msg) {
             unload_msg = "Unable to find this module or this module is not yet loaded. These are the current loaded modules: ";
             for(auto &_module : modules) {
                 if(_module->isName(module_name) && _module->isLoaded() && _module->getName().compare("core")) {
-                    module->isHandler()->unloadModule(_module);
-                    module->isHandler()->loadModule(_module);
-                    module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, "Reloaded the " + _module->getName() + " module for you.");
+                    handler->unloadModule(_module);
+                    handler->loadModule(_module);
+                    bot->sendMessage(*msg.channel_id, false, "Reloaded the " + _module->getName() + " module for you.");
                     std::cout << "\033[1;32mExecuted " + this->getName() + "\033[0m" << std::endl;
                     return;
                 } else {
@@ -44,7 +48,7 @@ void Reload::execute(dpp::Message msg) {
                         unload_msg.append(". ");
                 }
             }
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, unload_msg);
+            bot->sendMessage(*msg.channel_id, false, unload_msg);
             throw CommandException("Could not execute " + this->getName(), EXECUTE_ERROR, 0);
         } else {
             unload_msg = "You have not given a module to reload. Please select one of the following modules to reload: ";
@@ -58,7 +62,7 @@ void Reload::execute(dpp::Message msg) {
                 } else
                     unload_msg.append(". ");
             }
-            module->isHandler()->hasBot()->sendMessage(*msg.channel_id, false, unload_msg + this->getHelpMessage());
+            bot->sendMessage(*msg.channel_id, false, unload_msg + this->getHelpMessage());
             throw CommandException("Could not execute " + this->getName(), PARAM_ERROR, 0);
         }
     } catch(CommandException &e) {

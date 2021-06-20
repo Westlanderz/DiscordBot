@@ -6,6 +6,8 @@
 
 #include<algorithm>
 
+using namespace bot;
+
 Traceback::Traceback(std::vector<std::string> names): Command(names) {}
 
 std::string Traceback::getHelpMessage() {

@@ -2,6 +2,8 @@
 #include "../include/discordpp/log.hh"
 #include <fstream>
 
+using namespace bot;
+
 std::string getToken(dpp::json);
 
 int main() {

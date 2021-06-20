@@ -15,6 +15,8 @@
 #include "../include/commands/addadmin.hpp"
 #include "../include/commands/reload.hpp"
 
+using namespace bot;
+
 CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string defaultPrefix): bot{bots}, guild{guilds}, prefix{defaultPrefix} {
     std::vector<Command *> commands;
     std::vector<std::string> names;
@@ -57,7 +59,7 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
     commands.clear();
     std::string loading{""};
     for(auto &guild : bot->config["guild_settings"]) {
-        if(guild["id"] == guild.at(0)["id"]) {
+        if(guild["id"] == this->guild.at(0)["id"]) {
             for(auto &module : guild["loadedModules"]) {
                 loading = module.get<std::string>();
                 for(auto &load : modules) {
@@ -65,6 +67,7 @@ CommandHandler::CommandHandler(Bot *bots, dpp::Guild guilds, std::string default
                         this->loadModule(load);
                 }
             }
+            //TODO: load admin roles at reload
             break;
         }
     }
@@ -106,8 +109,10 @@ void CommandHandler::loadModule(Module *module) {
         if(config["guild_settings"].at(i)["id"] == this->guild.at(0)["id"]) {
             bool found = false;
             for(std::size_t j = 0; j < config["guild_settings"].at(i)["loadedModules"].size(); ++j) {
-                if(!config["guild_settings"].at(i)["loadedModules"].at(j).get<std::string>().compare(module->getName()))
+                if(!config["guild_settings"].at(i)["loadedModules"].at(j).get<std::string>().compare(module->getName())) {
                     found = true;
+                    break;
+                }
             }
             if(!found)
                 config["guild_settings"].at(i)["loadedModules"].push_back(module->getName());

@@ -4,6 +4,8 @@
 #include "../../include/bot.hpp"
 #include "../../include/commandexception.hpp"
 
+using namespace bot;
+
 Help::Help(std::vector<std::string> names): Command(names) {}
 
 std::string Help::getHelpMessage() {

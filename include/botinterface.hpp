@@ -12,16 +12,18 @@ inline std::shared_ptr<DppBot> newBot(){
     return std::make_shared<DppBot>();
 }
 
-class BotInterface {
-    private:
-        std::shared_ptr<DppBot> bot;
-    
-    public:
-        BotInterface() {
-            this->bot = newBot();
-        }
-        virtual ~BotInterface() = default;
-        std::shared_ptr<DppBot> isDppBot() { return bot; };
-};
+namespace bot {
+    class BotInterface {
+        private:
+            std::shared_ptr<DppBot> bot;
+        
+        public:
+            BotInterface() {
+                this->bot = newBot();
+            }
+            virtual ~BotInterface() = default;
+            std::shared_ptr<DppBot> isDppBot() { return bot; };
+    };
+}
 
 #endif // BOTINTERFACE_HPP
