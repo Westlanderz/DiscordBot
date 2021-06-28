@@ -225,12 +225,20 @@ void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
 }
 
 dpp::json Bot::getRoles(const dpp::snowflake guild) {
+    dpp::json roles = nullptr;
+    int timeout = 0;
     bot->isDppBot()->getGuildRoles()
         ->guild_id(guild)
-        ->onRead([this](bool error, dpp::json response) {
-            return response;
+        ->onRead([this, &roles](bool error, dpp::json response) {
+            roles = response;
         })
         ->run();
+    //TODO: refactor this piece of shit later
+    while(!roles && timeout < 10) {
+        timeout++;
+        sleep(1);
+    }
+    return roles;
 }
 
 /**
