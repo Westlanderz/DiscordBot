@@ -1417,4 +1417,15 @@ r2=1</panel_attributes>
     <panel_attributes>DMHandler</panel_attributes>
     <additional_attributes/>
   </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2585</x>
+      <y>429</y>
+      <w>110</w>
+      <h>33</h>
+    </coordinates>
+    <panel_attributes>Logger</panel_attributes>
+    <additional_attributes/>
+  </element>
 </diagram>
