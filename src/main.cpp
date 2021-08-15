@@ -7,7 +7,7 @@ using namespace bot;
 std::string getToken(dpp::json);
 
 int main() {
-    dpp::log::filter = dpp::log::info;
+    dpp::log::filter = dpp::log::debug;
     dpp::log::out = &std::cerr;
 
     std::ifstream configfile("../config.json");
