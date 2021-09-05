@@ -40,12 +40,24 @@ inline std::string generate_boundary(const std::string &payload,
     return out;
 }
 } // namespace util
-inline snowflake get_snowflake(std::string src) {
-    snowflake out;
-    std::istringstream(src) >> out;
-    return out;
-}
-inline snowflake get_snowflake(json src) {
-    return get_snowflake(src.get<std::string>());
-}
 } // namespace discordpp
+
+namespace nlohmann {
+
+// https://github.com/nlohmann/json/issues/1749#issuecomment-772996219
+template <class T>
+void to_json(nlohmann::json &j, const std::optional<T> &v) {
+    if (v.has_value())
+        j = *v;
+    else
+        j = nullptr;
+}
+
+template <class T>
+void from_json(const nlohmann::json &j, std::optional<T> &v) {
+    if (j.is_null())
+        v = std::nullopt;
+    else
+        v = j.get<T>();
+}
+} // namespace nlohmann

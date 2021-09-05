@@ -6,60 +6,57 @@
 
 #include <iostream>
 #include <utility>
+#include <map>
 
 #include <boost/asio.hpp>
 
+#define JSON_USE_IMPLICIT_CONVERSIONS 0
 #include <nlohmann/json.hpp>
 
 #include "alias.hh"
+#include "enum.hh"
 #include "log.hh"
+#include "snowflake.hh"
 #include "util.hh"
 
 namespace discordpp {
 class BotStruct {
   public:
+    bool debugUnhandled = true;
+    bool showHeartbeats = true;
     std::multimap<std::string, handleEvent> handlers;
 
     virtual ~BotStruct(){};
 
     class RenderedCall;
 
+    #define Bot BotStruct
+
 #define BASECALL
-#define Bot BotStruct
 #define Class Call
 #define function call
-#define Fields                                                                 \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, method, )                          \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, target, )                          \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, type, )                            \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, body, )                            \
-    NEW_BASIC_RENDERABLE_FIELD(handleWrite, onWrite, )                         \
-    NEW_BASIC_RENDERABLE_FIELD(handleRead, onRead, )
-
 #include "macros/defineCallOpen.hh"
-    // This line intentionally left blank
+    NEW_BASIC_RENDERABLE_FIELD(std::string, method, )
+    NEW_BASIC_RENDERABLE_FIELD(std::string, target, )
+    NEW_BASIC_RENDERABLE_FIELD(std::string, type, )
+    NEW_BASIC_RENDERABLE_FIELD(std::string, body, )
+    NEW_BASIC_RENDERABLE_FIELD(handleWrite, onWrite, )
+    NEW_BASIC_RENDERABLE_FIELD(handleRead, onRead, )
 #include "macros/defineCallClose.hh"
 
-#define Bot BotStruct
 #define Parent Call
 #define Class JsonCall
 #define function callJson
-#define Fields                                                                 \
-    NEW_RENDERABLE_FIELD(json, payload, USEDBY(body))                          \
-    FORWARD_FIELD(std::string, method, )                                       \
-    FORWARD_FIELD(std::string, target, )                                       \
-    HIDE_FIELD(type)                                                           \
-    HIDE_FIELD(body)                                                           \
-    FORWARD_FIELD(handleWrite, onWrite, )                                      \
+#include "macros/defineCallOpen.hh"
+    NEW_RENDERABLE_FIELD(json, payload, USEDBY(body))
+    FORWARD_FIELD(std::string, method, )
+    FORWARD_FIELD(std::string, target, )
+    STATIC_FIELD(std::string, type, "application/json")
+    HIDE_FIELD(body)
+    FORWARD_FIELD(handleWrite, onWrite, )
     FORWARD_FIELD(handleRead, onRead, )
 
-#include "macros/defineCallOpen.hh"
   protected:
-    sptr<const std::string> render_type() override {
-        static auto type =
-            std::make_shared<const std::string>("application/json");
-        return type;
-    }
     virtual sptr<const json> render_payload() {
         return std::make_shared<const json>(*_payload);
     }
@@ -68,21 +65,19 @@ class BotStruct {
     }
 #include "macros/defineCallClose.hh"
 
-#define Bot BotStruct
 #define Parent JsonCall
 #define Class FileCall
 #define function callFile
-#define Fields                                                                 \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, filename, USEDBY(body))            \
-    NEW_BASIC_RENDERABLE_FIELD(std::string, filetype, USEDBY(body))            \
-    NEW_FIELD(std::string, file, USEDBY(body, boundary))                       \
-    FORWARD_FIELD(json, payload, USEDBY(boundary))                             \
-    STATIC_FIELD(std::string, method, "POST")                                  \
-    FORWARD_FIELD(std::string, target, )                                       \
-    FORWARD_FIELD(handleWrite, onWrite, )                                      \
+#include "macros/defineCallOpen.hh"
+    NEW_BASIC_RENDERABLE_FIELD(std::string, filename, USEDBY(body))
+    NEW_BASIC_RENDERABLE_FIELD(std::string, filetype, USEDBY(body))
+    NEW_FIELD(std::string, file, USEDBY(body, boundary))
+    FORWARD_FIELD(json, payload, USEDBY(boundary))
+    FORWARD_FIELD(std::string, method, )
+    FORWARD_FIELD(std::string, target, )
+    FORWARD_FIELD(handleWrite, onWrite, )
     FORWARD_FIELD(handleRead, onRead, )
 
-#include "macros/defineCallOpen.hh"
   protected:
     sptr<const std::string> render_type() override {
         return std::make_shared<const std::string>(
@@ -132,6 +127,8 @@ class BotStruct {
         clear_body();
     }
 #include "macros/defineCallClose.hh"
+
+#undef Bot
 
 #define FIELDS                                                                 \
     FIELD(std::string, method)                                                 \
@@ -202,7 +199,7 @@ class BotStruct {
     }
 
     virtual void connect() = 0;
-    virtual void disconnect(){
+    virtual void disconnect() {
         connected_ = false;
         ready_ = false;
     };
@@ -222,5 +219,7 @@ class BotStruct {
     bool connecting_ = false;
     bool connected_ = false;
     bool ready_ = false;
+
+    virtual void hasRateLimitPlugin() = 0;
 };
 } // namespace discordpp

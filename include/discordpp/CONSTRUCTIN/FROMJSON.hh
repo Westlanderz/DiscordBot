@@ -22,10 +22,10 @@
         auto jk = j[key];                                                      \
         std::transform(jk.begin(), jk.end(), std::back_inserter(sfs),          \
                        [](const json &j) {                                     \
-                            snowflake sf;                                      \
-                            std::istringstream(j.get<std::string>()) >>        \
+                           snowflake sf;                                       \
+                           std::istringstream(j.get<std::string>()) >>         \
                                sf;                                             \
-                            return sf;                                         \
+                           return sf;                                          \
                        });                                                     \
         return std::make_shared<const std::vector<snowflake>>(std::move(sfs)); \
     }())

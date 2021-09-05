@@ -2,6 +2,7 @@
 // Created by Aidan on 3/10/2021.
 //
 
+#include <memory>
 #include "../macros.hh"
 
 #ifdef DEFINE_CALL_OPEN
@@ -22,9 +23,6 @@
 #endif
 #ifndef function
 #error The call needs a function name
-#endif
-#ifndef Fields
-#error The call needs some fields
 #endif
 
 public:
@@ -109,6 +107,60 @@ class Class : public Parent {
         return _##name ? std::make_shared<const type>(*_##name) : nullptr;     \
     }
 
+#define PFR2(KEY, VAR)                                                         \
+    if (!_##VAR) {                                                             \
+        throw std::logic_error(DPP_XSTR(Class) " needs " #VAR);                \
+    }                                                                          \
+    out[KEY] = *_##VAR;
+#define PFO2(KEY, VAR)                                                         \
+    if (_##VAR) {                                                              \
+        out[KEY] = *_##VAR;                                                    \
+    }
+#define PFR1(VAR) PFR2(#VAR, VAR)
+#define PFO1(VAR) PFO2(#VAR, VAR)
+#define PFR(...) DPP_VFUNC(PFR, __VA_ARGS__)
+#define PFO(...) DPP_VFUNC(PFO, __VA_ARGS__)
+
+#define AUTO_PAYLOAD(PFIELDS)                                                  \
+    HIDE_FIELD(payload)                                                        \
+  protected:                                                                   \
+    sptr<const json> render_payload() override {                               \
+        json out;                                                              \
+        PFIELDS                                                                \
+        return std::make_shared<const json>(std::move(out));                   \
+    }
+
+#define REQUIRE_VAR(VAR)                                                       \
+    if (!_##VAR) {                                                             \
+        throw std::logic_error(DPP_XSTR(Class) " needs " #VAR);                \
+    }
+#define TARGET_STRING(VAR) , to_string(*_##VAR)
+
+#define QSO2(KEY, VAR)                                                         \
+    if (_##VAR) {                                                              \
+        out += fmt::format("{}" KEY "={}", first ? "?" : "&", *_##VAR);        \
+        first = false;                                                         \
+    }
+#define QSR2(KEY, VAR)                                                         \
+    REQUIRE_VAR(VAR)                                                           \
+    QSO2(KEY, VAR)
+#define QSO1(VAR) QSO2(#VAR, VAR)
+#define QSR1(VAR) QSR2(#VAR, VAR)
+#define QSO(...) DPP_VFUNC(QSO, __VA_ARGS__)
+#define QSR(...) DPP_VFUNC(QSR, __VA_ARGS__)
+
+#define AUTO_TARGET(TPath, TArgs, QSArgs)                                      \
+    HIDE_FIELD(target)                                                         \
+  protected:                                                                   \
+    sptr<const std::string> render_target() override {                         \
+        DPP_FOR_EACH(REQUIRE_VAR, TArgs)                                       \
+        std::string out =                                                      \
+            fmt::format(TPath DPP_FOR_EACH(TARGET_STRING, TArgs));             \
+        bool first = true;                                                     \
+        QSArgs;                                                                \
+        return std::make_shared<const std::string>(out);                       \
+    }
+
 #ifdef Parent
 #define HIDE_FIELD(name)                                                       \
   protected:                                                                   \
@@ -131,17 +183,3 @@ class Class : public Parent {
         return name(std::make_shared<type>(name##In));                         \
     }
 #endif
-
-#define LAST(FIELD) FIELD
-
-    Fields
-
-#undef SET_NULL
-#undef USEDBY
-#undef NEW_FIELD
-#undef NEW_RENDERABLE_FIELD
-#undef NEW_CUSTOM_RENDERABLE_FIELD
-#undef NEW_BASIC_RENDERABLE_FIELD
-#undef HIDE_FIELD
-#undef STATIC_FIELD
-#undef FORWARD_FIELD

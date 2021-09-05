@@ -1,0 +1,117 @@
+//
+// Created by Aidan on 8/29/2021.
+//
+
+#pragma once
+
+namespace discordpp {
+
+enum ApplicationCommandType { CHAT_INPUT = 1, USER = 2, MESSAGE = 3 };
+
+// https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+enum ChannelType : int {
+    GUILD_TEXT = 0,
+    DM = 1,
+    GUILD_VOICE = 2,
+    GROUP_DM = 3,
+    GUILD_CATEGORY = 4,
+    GUILD_NEWS = 5,
+    GUILD_STORE = 6,
+    GUILD_NEWS_THREAD = 10,
+    GUILD_PUBLIC_THREAD = 11,
+    GUILD_PRIVATE_THREAD = 12,
+    GUILD_STAGE_VOICE = 13
+};
+
+enum InteractionCallbackType : int {
+    PONG = 1,
+    CHANNEL_MESSAGE_WITH_SOURCE = 4,
+    DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5,
+    DEFERRED_UPDATE_MESSAGE = 6,
+    UPDATE_MESSAGE = 7
+};
+
+enum MessageActivityType : int {
+    JOIN = 1,
+    SPECTATE = 2,
+    LISTEN = 3,
+    JOIN_REQUEST = 5
+};
+
+enum MessageFlag : int {
+    CROSSPOSTED = 1 << 0,
+    IS_CROSSPOST = 1 << 1,
+    SUPPRESS_EMBEDS = 1 << 2,
+    SOURCE_MESSAGE_DELETED = 1 << 3,
+    URGENT = 1 << 4
+};
+
+enum MessageType : int {
+    DEFAULT = 0,
+    RECIPIENT_ADD = 1,
+    RECIPIENT_REMOVE = 2,
+    CALL = 3,
+    CHANNEL_NAME_CHANGE = 4,
+    CHANNEL_ICON_CHANGE = 5,
+    CHANNEL_PINNED_MESSAGE = 6,
+    GUILD_MEMBER_JOIN = 7,
+    USER_PREMIUM_GUILD_SUBSCRIPTION = 8,
+    USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1 = 9,
+    USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2 = 10,
+    USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3 = 11,
+    CHANNEL_FOLLOW_ADD = 12,
+    GUILD_DISCOVERY_DISQUALIFIED = 14,
+    GUILD_DISCOVERY_REQUALIFIED = 15,
+    REPLY = 19,
+    APPLICATION_COMMAND = 20
+};
+
+enum WidgetStyleOptions { shield, banner1, banner2, banner3, banner4 };
+
+enum AuditLogEvent {
+    GUILD_UPDATE = 1,
+    CHANNEL_CREATE = 10,
+    CHANNEL_UPDATE = 11,
+    CHANNEL_DELETE = 12,
+    CHANNEL_OVERWRITE_CREATE = 13,
+    CHANNEL_OVERWRITE_UPDATE = 14,
+    CHANNEL_OVERWRITE_DELETE = 15,
+    MEMBER_KICK = 20,
+    MEMBER_PRUNE = 21,
+    MEMBER_BAN_ADD = 22,
+    MEMBER_BAN_REMOVE = 23,
+    MEMBER_UPDATE = 24,
+    MEMBER_ROLE_UPDATE = 25,
+    MEMBER_MOVE = 26,
+    MEMBER_DISCONNECT = 27,
+    BOT_ADD = 28,
+    ROLE_CREATE = 30,
+    ROLE_UPDATE = 31,
+    ROLE_DELETE = 32,
+    INVITE_CREATE = 40,
+    INVITE_UPDATE = 41,
+    INVITE_DELETE = 42,
+    WEBHOOK_CREATE = 50,
+    WEBHOOK_UPDATE = 51,
+    WEBHOOK_DELETE = 52,
+    EMOJI_CREATE = 60,
+    EMOJI_UPDATE = 61,
+    EMOJI_DELETE = 62,
+    MESSAGE_DELETE = 72,
+    MESSAGE_BULK_DELETE = 73,
+    MESSAGE_PIN = 74,
+    MESSAGE_UNPIN = 75,
+    INTEGRATION_CREATE = 80,
+    INTEGRATION_UPDATE = 81,
+    INTEGRATION_DELETE = 82,
+    STAGE_INSTANCE_CREATE = 83,
+    STAGE_INSTANCE_UPDATE = 84,
+    STAGE_INSTANCE_DELETE = 85,
+    STICKER_CREATE = 90,
+    STICKER_UPDATE = 91,
+    STICKER_DELETE = 92,
+    THREAD_CREATE = 110,
+    THREAD_UPDATE = 111,
+    THREAD_DELETE = 112,
+};
+} // namespace discordpp
