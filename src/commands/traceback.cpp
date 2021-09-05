@@ -52,7 +52,7 @@ void Traceback::execute(dpp::Message msg) {
 bool Traceback::hasPermsToRun(dpp::User user) {
     try {
         auto handler = module->isHandler();
-        std::vector<dpp::snowflake> admin = handler->adminRoles();
+        std::vector<dpp::Snowflake> admin = handler->adminRoles();
         std::vector<Module *> modules = handler->getModules();
         dpp::Guild guild = handler->isFromGuild();
         bool isAdmin = false;

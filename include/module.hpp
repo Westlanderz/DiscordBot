@@ -1,5 +1,5 @@
-#ifndef module_hpp
-#define module_hpp
+#ifndef MODULE_HPP
+#define MODULE_HPP
 
 #include <vector>
 #include <string>
@@ -43,4 +43,4 @@ namespace bot {
     };
 }
 
-#endif
+#endif // MODULE_HPP

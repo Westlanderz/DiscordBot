@@ -100,10 +100,10 @@ void Bot::run() {
 /**
  * @brief finds the commandhandler that belongs to that guild
  * 
- * @param guild_id a dpp::snowflake that uniquely defines a guild
+ * @param guild_id a dpp::Snowflake that uniquely defines a guild
  * @return CommandHandler* returns the pointer to the handler of the given guild
  */
-CommandHandler * Bot::isCommandHandler(const dpp::snowflake guild_id) {
+CommandHandler * Bot::isCommandHandler(const dpp::Snowflake guild_id) {
     for(auto it = commandhandlers.begin(); it != commandhandlers.end(); it++) {
         if(it->first["id"] == std::to_string(guild_id)) {
             return it->second;
@@ -188,7 +188,7 @@ void Bot::removeCommandHandler(dpp::Guild guild) {
  * @param tts this boolean sets if the message should use text-to-speech
  * @param message the message you want to send to the channel
  */
-void Bot::sendMessage(const dpp::snowflake channelid, bool tts, std::string message) {
+void Bot::sendMessage(const dpp::Snowflake channelid, bool tts, std::string message) {
     bot->isDppBot()->createMessage()
         ->channel_id(channelid)
         ->content(message)
@@ -217,27 +217,24 @@ void Bot::sendMessage(dpp::User user, std::string message) {
  * @param channelid the channelid to send the message to
  * @param embed the embedded message to send to that channel
  */
-void Bot::sendMessage(const dpp::snowflake channelid, dpp::MessageEmbed embed) {
+void Bot::sendMessage(const dpp::Snowflake channelid, dpp::MessageEmbed embed) {
+    std::vector<json> embeds;
+    embeds.push_back(embed.getEmbed());
     bot->isDppBot()->createMessage()
         ->channel_id(channelid)
-        ->embed(embed.getEmbed())
+        ->embeds(embeds)
         ->run();
 }
 
-dpp::json Bot::getRoles(const dpp::snowflake guild) {
+dpp::json Bot::getRoles(const dpp::Snowflake guild) {
     dpp::json roles = nullptr;
-    int timeout = 0;
     bot->isDppBot()->getGuildRoles()
-        ->guild_id(guild)
-        ->onRead([this, &roles](bool error, dpp::json response) {
-            roles = response;
-        })
-        ->run();
-    //TODO: refactor this piece of shit later
-    while(!roles && timeout < 10) {
-        timeout++;
-        sleep(1);
-    }
+            ->guild_id(guild)
+            ->onRead([this, &roles](bool error, dpp::json response) {
+                roles = response;
+                std::cout << response.dump(4) << std::endl;
+            })
+            ->run();
     return roles;
 }
 

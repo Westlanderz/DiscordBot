@@ -14,12 +14,6 @@
 #include "todo.hh"
 
 namespace discordpp {
-enum StickerFormat : int{
-    PNG = 1,
-    APNG = 2,
-    LOTTIE = 3
-};
-
 // clang-format off
 #define CONSTRUCTNAME Sticker
 #define CONSTRUCTKEYS \

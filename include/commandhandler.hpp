@@ -19,8 +19,8 @@ namespace bot {
             dpp::Guild guild;
             std::string prefix;
             std::vector<Module *> modules;
-            std::vector<dpp::snowflake> adminRole;
-            std::vector<dpp::snowflake> modRole;
+            std::vector<dpp::Snowflake> adminRole;
+            std::vector<dpp::Snowflake> modRole;
             CommandException *lastException;
 
         public:
@@ -37,12 +37,12 @@ namespace bot {
             std::string isPrefix();
             Command * isCommand(std::string);
             dpp::Guild isFromGuild();
-            void addModRole(const dpp::snowflake);
-            void removeModRole(const dpp::snowflake);
-            void addAdminRole(const dpp::snowflake);
-            void removeAdminRole(const dpp::snowflake);
-            std::vector<dpp::snowflake> modRoles();
-            std::vector<dpp::snowflake> adminRoles();
+            void addModRole(const dpp::Snowflake);
+            void removeModRole(const dpp::Snowflake);
+            void addAdminRole(const dpp::Snowflake);
+            void removeAdminRole(const dpp::Snowflake);
+            std::vector<dpp::Snowflake> modRoles();
+            std::vector<dpp::Snowflake> adminRoles();
             Bot * hasBot();
             CommandException * getLastException();
             void setLastException(CommandException *);

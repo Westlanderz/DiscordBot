@@ -219,7 +219,7 @@ FORWARD_FIELD(handleRead, onRead, )
 #define Class BulkOverwriteGuildApplicationCommandsCall
 #define function                                                               \
     bulkOverwriteGuildApplicationCommands, bulkOverwriteGuildCommands
-#include "..macros/defineCallOpen.hh"
+#include "../macros/defineCallOpen.hh"
 NEW_FIELD(Snowflake, application_id, USEDBY(target))
 NEW_FIELD(Snowflake, guild_id, USEDBY(target))
 STATIC_FIELD(std::string, method, "PUT")

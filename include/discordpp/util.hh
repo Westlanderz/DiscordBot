@@ -5,6 +5,7 @@
 #pragma once
 
 #include "alias.hh"
+#include <optional>
 
 namespace discordpp {
 namespace util {

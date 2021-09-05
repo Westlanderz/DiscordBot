@@ -198,11 +198,11 @@ dpp::Guild CommandHandler::isFromGuild() {
     return guild;
 }
 
-void CommandHandler::addModRole(const dpp::snowflake id) {
+void CommandHandler::addModRole(const dpp::Snowflake id) {
     modRole.push_back(id);
 }
 
-void CommandHandler::removeModRole(const dpp::snowflake id) {
+void CommandHandler::removeModRole(const dpp::Snowflake id) {
     auto remove = modRole.end();
     for(auto it = modRole.begin(); it != modRole.end(); it++) {
         if(*it == id)
@@ -212,11 +212,11 @@ void CommandHandler::removeModRole(const dpp::snowflake id) {
         modRole.erase(remove);
 }
 
-void CommandHandler::addAdminRole(const dpp::snowflake id) {
+void CommandHandler::addAdminRole(const dpp::Snowflake id) {
     adminRole.push_back(id);
 }
 
-void CommandHandler::removeAdminRole(const dpp::snowflake id) {
+void CommandHandler::removeAdminRole(const dpp::Snowflake id) {
     auto remove = adminRole.end();
     for(auto it = adminRole.begin(); it != adminRole.end(); it++) {
         if(*it == id)
@@ -226,11 +226,11 @@ void CommandHandler::removeAdminRole(const dpp::snowflake id) {
         adminRole.erase(remove);
 }
 
-std::vector<dpp::snowflake> CommandHandler::modRoles() {
+std::vector<dpp::Snowflake> CommandHandler::modRoles() {
     return modRole;
 }
 
-std::vector<dpp::snowflake> CommandHandler::adminRoles() {
+std::vector<dpp::Snowflake> CommandHandler::adminRoles() {
     return adminRole;
 }
 

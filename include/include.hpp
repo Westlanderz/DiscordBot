@@ -27,11 +27,12 @@
 #include "discordpp/MessageEmbed.hh"
 #include "discordpp/plugin-endpoints.hh"
 #include "discordpp/plugin-constructs.hh"
+#include "discordpp/plugin-interactionhandler.hh"
 
 #ifndef ECHO_EXTERN
 
-extern template class discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>;
-using DppBot = discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>;
+extern template class discordpp::PluginInteractionHandler<discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>>;
+using DppBot = discordpp::PluginInteractionHandler<discordpp::PluginConstructs<discordpp::PluginEndpoints<discordpp::PluginResponder<discordpp::PluginOverload<discordpp::PluginRateLimit<discordpp::WebsocketSimpleWeb<discordpp::RestBeast<discordpp::Bot>>>>>>>>;
 
 namespace asio = boost::asio;
 using json = nlohmann::json;

@@ -9,6 +9,7 @@
 #include "discordpp/constructs/todo.hh"
 #include "discordpp/alias.hh"
 #include "discordpp/MessageEmbed.hh"
+#include "discordpp/snowflake.hh"
 
 namespace dpp = discordpp;
 
@@ -41,15 +42,15 @@ namespace bot {
             void initServerJoiner();
             void initHandlers();
             void run();
-            CommandHandler * isCommandHandler(const dpp::snowflake);
+            CommandHandler * isCommandHandler(const dpp::Snowflake);
             BotInterface * hasDpp();
             std::string isPrefix();
             void addCommandHandler(Bot *, dpp::Guild);
             void removeCommandHandler(dpp::Guild);
-            void sendMessage(const dpp::snowflake, bool, std::string);
+            void sendMessage(const dpp::Snowflake, bool, std::string);
             void sendMessage(dpp::User, std::string);
-            void sendMessage(const dpp::snowflake, const dpp::MessageEmbed);
-            dpp::json getRoles(const dpp::snowflake);
+            void sendMessage(const dpp::Snowflake, const dpp::MessageEmbed);
+            dpp::json getRoles(const dpp::Snowflake);
             double uptime();
             bool isOwner(std::string);
             void updateConfigFile(dpp::json);
