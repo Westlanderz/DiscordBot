@@ -7,7 +7,7 @@ using namespace bot;
 std::string getToken(dpp::json);
 
 int main() {
-    dpp::log::filter = dpp::log::debug;
+    dpp::log::filter = dpp::log::info;
     dpp::log::out = &std::cerr;
 
     std::ifstream configfile("../config.json");
@@ -33,7 +33,7 @@ int main() {
 
     Bot bot("DevBot", "!");
 
-    bot.setIntents(std::stoull(config["intents"].get<std::string>()));
+    bot.setIntents(config["intents"].get<uint16_t>());
     bot.initServerJoiner();
     bot.initHandlers();
     bot.login(token);
