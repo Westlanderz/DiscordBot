@@ -1,5 +1,5 @@
-#ifndef uptime_hpp
-#define uptime_hpp
+#ifndef UPTIME_HPP
+#define UPTIME_HPP
 
 #include "../command.hpp"
 
@@ -12,4 +12,4 @@ namespace bot {
     };
 }
 
-#endif
+#endif // UPTIME_HPP
